@@ -1,0 +1,4364 @@
+fileFormatVersion: 2
+guid: 84568e0282e4e0440a9395d9481680a9
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mage-Cyan_0
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 233
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca2354d10cd9f054a9d2593a2cb2246f
+      internalID: -1647433700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_1
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 233
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d141196a9f8427047afe99f6a9f1c763
+      internalID: -886500767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_2
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 232
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 203fcbbaa9eb64440ab180b0465f2173
+      internalID: 362187716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_3
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 232
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d165d45a2e138524a804ce3dafe39b53
+      internalID: 1241838891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_4
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 233
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9652f821f5a97e478521ca9a2c70e3b
+      internalID: 811294473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_5
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 233
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63710f43b14c463458d8e708aaaa5683
+      internalID: -2143662658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_6
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 232
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53941d85e20f75445806dab821953f2b
+      internalID: 1750589068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_7
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 233
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06e7d5487cfbb6d4eb3ef7b093436fca
+      internalID: -2108144712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_8
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 232
+        width: 14
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7afe81c043d40aa4c80483354897c03a
+      internalID: -608277689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_9
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 232
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 693b40d34d98b244b860f7fd5c1c0b08
+      internalID: -868339984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_10
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 232
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4423595a82fece4f8fb886ef123d5c5
+      internalID: 162197762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_11
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 233
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02f9ca2edc2180a4f80f6e067e31d501
+      internalID: -311670487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_12
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 233
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6863b151470f6824db3a9d382ed2ffcf
+      internalID: -573440287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_13
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 233
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b44e31dca0ccf6549b25c9b53470b109
+      internalID: 1564754203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_14
+      rect:
+        serializedVersion: 2
+        x: 457
+        y: 229
+        width: 14
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ac8a60e55a0f0346a9527c93b172147
+      internalID: 1448602610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_15
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 233
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcaec9dea0f288b479a26895ec8b6df2
+      internalID: 2053843358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_16
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 233
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32c218edc4b5168498e6dc7a6d278e4f
+      internalID: 2027455768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_17
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 233
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 916986d821067e747a5d82c9539d7d70
+      internalID: 1658386793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_18
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 233
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c61cd39ff31dc414390e2b60d407cca3
+      internalID: 888785833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_19
+      rect:
+        serializedVersion: 2
+        x: 616
+        y: 234
+        width: 16
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53f452384a6f5294385581b68a6e9ba7
+      internalID: -1774630974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_20
+      rect:
+        serializedVersion: 2
+        x: 648
+        y: 233
+        width: 16
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7106140ea269bed4481f4a219ed5e145
+      internalID: -1211596388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_21
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 233
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53ebe57485e97384281fb30960ffb42c
+      internalID: -389395219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_22
+      rect:
+        serializedVersion: 2
+        x: 713
+        y: 233
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ea7657a344288d4cb6307662edb4efc
+      internalID: -232036141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_23
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 233
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f05a15356a65ab643b336cc6ecd9e2b6
+      internalID: 715258276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_24
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 201
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5dedb4ab75de6bb468fde20c46a44ae4
+      internalID: 479233356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_25
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 201
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf0f717e14cf0ae4387fab5a7fd03e2d
+      internalID: -2076688939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_26
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 200
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f2cad0efd1360d4f99faffd0d2d1a14
+      internalID: 340046031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_27
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 200
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb9ffaef4504cea4a9112cebb5a85759
+      internalID: 1910583926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_28
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 201
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ac8e782fccf89349837d2417c90bc88
+      internalID: 100998932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_29
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 201
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 268216bbf56467b499d71baca16fbbd2
+      internalID: 1245325570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_30
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 201
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 041cb71cff281d54389da8d1853b29bf
+      internalID: -330085208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_31
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 201
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89ad778e817cd6741855d7a71fe128af
+      internalID: 234238556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_32
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 201
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a032c5487bb552c4e92633c0d2b4af42
+      internalID: -2065064114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_33
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 200
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88a430bedc08a8d40ae21b087ba39b3c
+      internalID: -1881302790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_34
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 200
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d9d9ef3200e447409878d3ab92898c4
+      internalID: -1449738729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_35
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 201
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4e2bf9c72fa59540948b5d2b2d76200
+      internalID: -2020531757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_36
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 201
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84bcb986225145f4b8d512058df73399
+      internalID: 1865724845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_37
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 201
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8198895580dc70341b1ac96c0a9d339f
+      internalID: 400258797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_38
+      rect:
+        serializedVersion: 2
+        x: 457
+        y: 201
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e162403d94f81a4dab9e318a47d6b15
+      internalID: -2120892883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_39
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 201
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df513170f11b78848a38870b7c60f598
+      internalID: 1381876521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_40
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 201
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1dd50a9d758d49c49988d41402e3c89c
+      internalID: -1977871809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_41
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 201
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3081d3ce6adb6542af13c06b3b45796
+      internalID: 786505956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_42
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 201
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b3c7f66ba02f8440af2b42a15d89712
+      internalID: -1767465374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_43
+      rect:
+        serializedVersion: 2
+        x: 615
+        y: 202
+        width: 14
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8642b093f6c874f4794ba87caaf2fc44
+      internalID: -25390762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_44
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 201
+        width: 14
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99ffe32f62716234f80d7938da8ff25d
+      internalID: 120817861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_45
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 201
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c35d66b6bffdb8468a4d4f8a47e74a5
+      internalID: -1045289553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_46
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 201
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7fd407de7485f34f8bf1f7681f6b105
+      internalID: 425771481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_47
+      rect:
+        serializedVersion: 2
+        x: 743
+        y: 201
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ca5172c5d3e382469ae8d36b8037f5a
+      internalID: -1579905830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_48
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 169
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8b332fb29cfd134288731b54d05667c
+      internalID: -1010241552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_49
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 169
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ee67dc989c241d42b92561af1cc0ab4
+      internalID: -114284763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_50
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 168
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3bb927c571ce414baef1099b53c9ddb
+      internalID: 929842874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_51
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 168
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25254bcd665da6e4dad540b115e6c993
+      internalID: -608963220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_52
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 169
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ac08112b3a5e5e49af756ade3d401c9
+      internalID: 1951296038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_53
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 169
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c745df902ca79df4a9542bd39bb8e880
+      internalID: -1327993339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_54
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 169
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 915a3210fe6661e418c3ccb85fa3c6bb
+      internalID: 540695602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_55
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 169
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28985c6a5e9476f47b0b6aa0fbefa515
+      internalID: 1778459339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_56
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 169
+        width: 16
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3959c88bd95a704f9540b597b40aeb8
+      internalID: -504011211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_57
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 169
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d704f585523f4b43b2d6163a5252fc4
+      internalID: 1772620289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_58
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 169
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a5c38c1d97033143b9d7940ae968104
+      internalID: 1566995957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_59
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 169
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1854db7e1e452740afd987124700808
+      internalID: 759256352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_60
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 169
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa103b7f123ab1a4b81e4c180f370c34
+      internalID: -1181110291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_61
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 169
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b3be6039253dc04cbe9bff369076213
+      internalID: 1226259874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_62
+      rect:
+        serializedVersion: 2
+        x: 457
+        y: 169
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ac8495f8a8a6a94ea9dc3f9f4ce2139
+      internalID: -2000822000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_63
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 169
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53604fbf603c8d744add3868eb5d0b23
+      internalID: -301520355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_64
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 169
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02b64f3ef2f5cf646b265fc6d423250b
+      internalID: 285248828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_65
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 169
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67157489e00c5314aadef75752689adf
+      internalID: 230636279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_66
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 169
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 905d77cd08ae32c449049bfa25f489ca
+      internalID: -38606989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_67
+      rect:
+        serializedVersion: 2
+        x: 615
+        y: 169
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0354ec5399733614e895120e95474943
+      internalID: 221592518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_68
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 169
+        width: 14
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57ac1258394633046b9bb1c26f2a994e
+      internalID: -1239311702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_69
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 169
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7969585d13c69e46b5eaad2412ddd8d
+      internalID: 1576498228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_70
+      rect:
+        serializedVersion: 2
+        x: 707
+        y: 167
+        width: 21
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd6f38c9c2414bc4896aca12cef71916
+      internalID: -1660880721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_71
+      rect:
+        serializedVersion: 2
+        x: 739
+        y: 168
+        width: 21
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8431ef818b067d4aa2eeca5bdbcdd2c
+      internalID: -179933769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_72
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 137
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c73127da0fe45048b33672541e2d71b
+      internalID: -233580439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_73
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 137
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b87a085d99f5e9f4080f09505f292310
+      internalID: 1618077427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_74
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 136
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f07fd236adfdd849977a4f10cdfe1f6
+      internalID: -1692360421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_75
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 136
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20a12174a5defaa42990ce0186e30c4d
+      internalID: 585593282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_76
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 137
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28ceddd96432dcd49866191f64055443
+      internalID: 1382543527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_77
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 137
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a9bd13152860b94eb5ff57f5e7a84e5
+      internalID: 1470335510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_78
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 137
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b34d99e6c2f5f6f4787784b2ba2c7ed4
+      internalID: 1286854619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_79
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 137
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3e2d021146f5eb479fbc1b264677ff1
+      internalID: 657085050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_80
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 137
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c271cdc6bc88db4bb6fa36c91d53528
+      internalID: 348985975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_81
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 137
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5fe702cdf7b5e5c47aaab048bb458ce5
+      internalID: 760356966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_82
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 137
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ef46e961d541ea409d3b60bbf24fe93
+      internalID: -1515320974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_83
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 137
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42c25436961b7b04f828303a9b30c9f2
+      internalID: -835010009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_84
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 137
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8bf42b8bedd24924395a25d00bc3abbd
+      internalID: 704869769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_85
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 137
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7c230336c31278459a3f937abdbce67
+      internalID: 1757062772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_86
+      rect:
+        serializedVersion: 2
+        x: 457
+        y: 137
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f99d852f38095c645a62deb7f803a38f
+      internalID: -769568002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_87
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 137
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb00353a939b1114a8b1bf53d646e913
+      internalID: 1853093032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_88
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 137
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7927d76b1fe805346a689d7ba35cf00a
+      internalID: -295816162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_89
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 137
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f6c0a890d583564cad52668099d34cc
+      internalID: 35988615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_90
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 137
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b95bafc0ebe6b83489e6a404102325be
+      internalID: -1910079376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_91
+      rect:
+        serializedVersion: 2
+        x: 616
+        y: 136
+        width: 14
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fb6676e2cc0cbe4a826b3185e83cdfc
+      internalID: 1226698205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_92
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 137
+        width: 14
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0d0b5d1721460548920580d3597f8a8
+      internalID: -262067453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_93
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 137
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2fbed3fc1f569c4db7472afa24f1ffd
+      internalID: -1728641784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_94
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 132
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3c9a77000ccd7e4b954cd02ae6900b2
+      internalID: 2041522594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_95
+      rect:
+        serializedVersion: 2
+        x: 743
+        y: 133
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a4b8346cebeb7541935f17f2449a85f
+      internalID: 1035802957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_96
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 105
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4feaea32199818746828b3cab960f775
+      internalID: -461614064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_97
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 105
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff2cae0fb8a1f3d4bae692f7572fff97
+      internalID: -229459358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_98
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 104
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24864cf6962ef7d4a911c07238580e28
+      internalID: -495040214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_99
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 104
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e60555dadc35de4397febee2e501bcf
+      internalID: 2087022351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_100
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 105
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 401507ba9d150ee4b89c813d853b91b1
+      internalID: -968163262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_101
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 105
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30b4465a527b3174fbc811a0a760f852
+      internalID: 1348161563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_102
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 105
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aea8fea65727f0a4296c0d152b650871
+      internalID: 1682639447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_103
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 105
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38725079097027546a1e384dbefe227b
+      internalID: 1141535202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_104
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 105
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23abd366759a9634e904589253206d14
+      internalID: 1893261902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_105
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 105
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6a0e27a3971c5246bab8e7893340770
+      internalID: -599549528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_106
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 105
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a04f9e058fbe244b9975cf8327969dd
+      internalID: -1365557024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_107
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 105
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: facd2af789417f04a9e7bfa99c65b957
+      internalID: -1164817624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_108
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 105
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b138a523591c2874894d4ead5330d08e
+      internalID: -1374819929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_109
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 105
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39e60138d7e30e34f918f9fb9e351594
+      internalID: -829820784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_110
+      rect:
+        serializedVersion: 2
+        x: 457
+        y: 105
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 825d976c4101cfb40ae85cdc074635e8
+      internalID: 1015072812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_111
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 105
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d22e38212f5f3784abef7d86fcc0d669
+      internalID: -584960946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_112
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 105
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df6b30951e9726d4a914165078c8516a
+      internalID: 1026950493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_113
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 105
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f06f1d62364f1354b920a03c4f316ec8
+      internalID: -1189915509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_114
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 105
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1eaee0fc5434794c802085b9e009f3b
+      internalID: -1459130385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_115
+      rect:
+        serializedVersion: 2
+        x: 616
+        y: 104
+        width: 16
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00cfc32e16fe8464ca7b30b746f2d4b5
+      internalID: -524705239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_116
+      rect:
+        serializedVersion: 2
+        x: 648
+        y: 105
+        width: 16
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65b4207276238304e93f1e3d4e9c16e6
+      internalID: -1078542373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_117
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 105
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbd9a11aedc93e64785a7e8606463f1b
+      internalID: -831128052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_118
+      rect:
+        serializedVersion: 2
+        x: 713
+        y: 99
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b9629338c6fd244388eb702c111aa17
+      internalID: 1648747545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_119
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 100
+        width: 14
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10edf0f330c10634d91b4279eefae78a
+      internalID: -1304075071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_120
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 73
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9965a96e5da6be45b9883a37e46802d
+      internalID: -1708385522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_121
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 73
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72e1d75e802838a4d8861a1f89d880b7
+      internalID: -383342198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_122
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 72
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b988881c379c65419efa59c0e1eb806
+      internalID: 230413321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_123
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 72
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f25bd93c3443be4287610da5729b56c
+      internalID: 1641378158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_124
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 73
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c877f248cb5308246b2e6a54625b2e2a
+      internalID: -143145288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_125
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 73
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7d9928a17620264caff700aabc0173c
+      internalID: -2051473311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_126
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 73
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87803748a1955b74786cc76ee09a38c7
+      internalID: 1384222327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_127
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 73
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fad8983a467a2584ca9152f280f672b9
+      internalID: -284261501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_128
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 73
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5bdeae72e038c4740bf28b54d5c3cfcd
+      internalID: -937850758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_129
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 73
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7a1548576fe4b5408ebc2c99bbdff6e
+      internalID: 2114449805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_130
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 73
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b963938c28d678646a8c3338e7a68986
+      internalID: -226768019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_131
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 73
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e37813e647687f345b4331acf98ce79a
+      internalID: -103876084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_132
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 73
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d59f2133e95bf06409058f5c2b590857
+      internalID: 1773099613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_133
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 73
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3abbff8259215714790cd9c693012598
+      internalID: 1177958688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_134
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 73
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b77f14130e7591c4d946b5655d780173
+      internalID: -988667997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_135
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 73
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3697938ab36459c4aaf50091a38f1bba
+      internalID: 1423947476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_136
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 73
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61eaab5c8b1c9694e86bca2991ae914b
+      internalID: 1341849977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_137
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 73
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74836ac0a3a11d64a98389130ea39c5e
+      internalID: 908094507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_138
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 73
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5024f54721227d43892fb96bc390c80
+      internalID: 786022356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_139
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 72
+        width: 14
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9115f584a4ae0a41be12b992f719d85
+      internalID: -2028239491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_140
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 73
+        width: 14
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0967e3d95ccb4a4da0efea16532f647
+      internalID: 196128897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_141
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 73
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d3c4f5f83384824d98932f14e0a566c
+      internalID: -1114040081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_142
+      rect:
+        serializedVersion: 2
+        x: 714
+        y: 66
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38904e986c6d1e34ba944612e28907cc
+      internalID: -292217952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_143
+      rect:
+        serializedVersion: 2
+        x: 746
+        y: 67
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04fd0f5c644aaa4478ca386ba5e02a88
+      internalID: -1941306129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_144
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 41
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7799f0788b2eff44cb178eb16868a76f
+      internalID: -2000222551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_145
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 41
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84c24b59f61072542a5a3656e283caa6
+      internalID: 1071028043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_146
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 40
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd17132b89b1d674893acff789cae8fe
+      internalID: -775424641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_147
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 40
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bf00b02ba44bd240a8ca1cda6faa9cc
+      internalID: -1724202173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_148
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 41
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b465a34ca5e73a54eb880c7ecee22332
+      internalID: 1779081743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_149
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 41
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9afce427ac778104ba3bdd335a434f60
+      internalID: -385064259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_150
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 41
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f731d287ac3c6c84d81a2eaba17a453e
+      internalID: -1923701806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_151
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 41
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f38195b6555b21469de2460b9a0c3f9
+      internalID: 1364207830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_152
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 41
+        width: 16
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ccd94126ab051f489182cc58feb1213
+      internalID: 304461915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_153
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 41
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af20f15edcfb1cb46bebc4bef6e7a015
+      internalID: 1417106798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_154
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 41
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4adaba5a7104a584f9d701bba8e5c620
+      internalID: -2019871854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_155
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 41
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 176996092de2a1f49abaae53e694137d
+      internalID: -293441300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_156
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 41
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab827493b4edea54eb5c09da7c2b5d78
+      internalID: 1418623064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_157
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 41
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 791498a1add433f47a445c27055ae028
+      internalID: 463604226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_158
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 41
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 052cd9466fcc20e4ba3aeffce88a7845
+      internalID: 803123279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_159
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 41
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef438ce4a8825a34286bce79a738f73a
+      internalID: 1725648028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_160
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 41
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 606572ffbcecca9488df5b7e64dd8079
+      internalID: -1263378189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_161
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 41
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab6b1d90ad1290a4e8baf8c31e086c03
+      internalID: 120665519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_162
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 41
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c2de000604fda84e888d6bb37d50a09
+      internalID: 1339957686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_163
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 41
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b527426187244c4db736430503e009f
+      internalID: 1985108972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_164
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 41
+        width: 14
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 746f350b7aa8417439750ed604498d85
+      internalID: 1459939923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_165
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 41
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fff9b69740ff904cbf7a0e427a89fef
+      internalID: 448359932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_166
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 39
+        width: 21
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3038e377f51b9a54cb52ea947e4cba17
+      internalID: 544015923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_167
+      rect:
+        serializedVersion: 2
+        x: 744
+        y: 40
+        width: 21
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7c4c27f8749b2f47b43a9904914288c
+      internalID: 120223971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_168
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 9
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77bb44750f8f84847b5217ddce18ffd8
+      internalID: -1602969212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_169
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 9
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32d8ebaa28ee75a40bbc932ff73ba191
+      internalID: -1905598590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_170
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 8
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00bad0771d962eb4da73055da5a7c5a8
+      internalID: -1410249814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_171
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 8
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 122adb73af237c44ba631fa2c89b9c98
+      internalID: 219315788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_172
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 9
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0880f02531f5ac943b44583b9faadc62
+      internalID: -1178871923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_173
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 9
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 789a2bc45ef454b49ad2f48483a5c1da
+      internalID: 1028747131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_174
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 9
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad4731f63508f2647a0772f4018b315f
+      internalID: 1038612082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_175
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 9
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fda018653bbd8fb4c8cd75735c8bea4f
+      internalID: 583071673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_176
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 9
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2121122e4721be64b97202d3923b8ba2
+      internalID: -2055144112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_177
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 8
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03a5d360124ebbe44addafc9d1424c70
+      internalID: -2123930504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_178
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 8
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07863767c465404429472f88165f7f78
+      internalID: 1506214823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_179
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 8
+        width: 15
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0d1ade9c450036489ddbb12132a4080
+      internalID: -509415998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_180
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 9
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f28d74234c849648a74166763f4607c
+      internalID: 1843711500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_181
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 9
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ca9c948ddd3ab64388f98a358ae93b5
+      internalID: 1469298849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_182
+      rect:
+        serializedVersion: 2
+        x: 455
+        y: 8
+        width: 16
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11166d89cb6d440428d3dd521f7cd225
+      internalID: -43358254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_183
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 9
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a181c32e218e09c4a8eea47ecc80d9d9
+      internalID: 2111705742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_184
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 9
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ea9dfe838ccf084ba0515da440419d2
+      internalID: 176148633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_185
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 9
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ab79d3cd95e6e7498c31538cd7f5655
+      internalID: 664457053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_186
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 9
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbf746a89fabd094993e6d55be5b4a7f
+      internalID: -560927616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_187
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 10
+        width: 14
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32b86a0201dab284b94136dcf2fd66da
+      internalID: 1861247135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_188
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 9
+        width: 14
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e165b0a81e08ddd48abccbb7fe6ff162
+      internalID: 1908915096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_189
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 9
+        width: 14
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cdd1aa1416cdf144a4818c0e5458584
+      internalID: 1989275123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_190
+      rect:
+        serializedVersion: 2
+        x: 714
+        y: 9
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa5400f65e84c734b8f3732cecb31d88
+      internalID: -1568556849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mage-Cyan_191
+      rect:
+        serializedVersion: 2
+        x: 746
+        y: 9
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4889ef932deb922498edd86afbf603e0
+      internalID: 1766692676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Mage-Cyan_0: -1647433700
+      Mage-Cyan_1: -886500767
+      Mage-Cyan_10: 162197762
+      Mage-Cyan_100: -968163262
+      Mage-Cyan_101: 1348161563
+      Mage-Cyan_102: 1682639447
+      Mage-Cyan_103: 1141535202
+      Mage-Cyan_104: 1893261902
+      Mage-Cyan_105: -599549528
+      Mage-Cyan_106: -1365557024
+      Mage-Cyan_107: -1164817624
+      Mage-Cyan_108: -1374819929
+      Mage-Cyan_109: -829820784
+      Mage-Cyan_11: -311670487
+      Mage-Cyan_110: 1015072812
+      Mage-Cyan_111: -584960946
+      Mage-Cyan_112: 1026950493
+      Mage-Cyan_113: -1189915509
+      Mage-Cyan_114: -1459130385
+      Mage-Cyan_115: -524705239
+      Mage-Cyan_116: -1078542373
+      Mage-Cyan_117: -831128052
+      Mage-Cyan_118: 1648747545
+      Mage-Cyan_119: -1304075071
+      Mage-Cyan_12: -573440287
+      Mage-Cyan_120: -1708385522
+      Mage-Cyan_121: -383342198
+      Mage-Cyan_122: 230413321
+      Mage-Cyan_123: 1641378158
+      Mage-Cyan_124: -143145288
+      Mage-Cyan_125: -2051473311
+      Mage-Cyan_126: 1384222327
+      Mage-Cyan_127: -284261501
+      Mage-Cyan_128: -937850758
+      Mage-Cyan_129: 2114449805
+      Mage-Cyan_13: 1564754203
+      Mage-Cyan_130: -226768019
+      Mage-Cyan_131: -103876084
+      Mage-Cyan_132: 1773099613
+      Mage-Cyan_133: 1177958688
+      Mage-Cyan_134: -988667997
+      Mage-Cyan_135: 1423947476
+      Mage-Cyan_136: 1341849977
+      Mage-Cyan_137: 908094507
+      Mage-Cyan_138: 786022356
+      Mage-Cyan_139: -2028239491
+      Mage-Cyan_14: 1448602610
+      Mage-Cyan_140: 196128897
+      Mage-Cyan_141: -1114040081
+      Mage-Cyan_142: -292217952
+      Mage-Cyan_143: -1941306129
+      Mage-Cyan_144: -2000222551
+      Mage-Cyan_145: 1071028043
+      Mage-Cyan_146: -775424641
+      Mage-Cyan_147: -1724202173
+      Mage-Cyan_148: 1779081743
+      Mage-Cyan_149: -385064259
+      Mage-Cyan_15: 2053843358
+      Mage-Cyan_150: -1923701806
+      Mage-Cyan_151: 1364207830
+      Mage-Cyan_152: 304461915
+      Mage-Cyan_153: 1417106798
+      Mage-Cyan_154: -2019871854
+      Mage-Cyan_155: -293441300
+      Mage-Cyan_156: 1418623064
+      Mage-Cyan_157: 463604226
+      Mage-Cyan_158: 803123279
+      Mage-Cyan_159: 1725648028
+      Mage-Cyan_16: 2027455768
+      Mage-Cyan_160: -1263378189
+      Mage-Cyan_161: 120665519
+      Mage-Cyan_162: 1339957686
+      Mage-Cyan_163: 1985108972
+      Mage-Cyan_164: 1459939923
+      Mage-Cyan_165: 448359932
+      Mage-Cyan_166: 544015923
+      Mage-Cyan_167: 120223971
+      Mage-Cyan_168: -1602969212
+      Mage-Cyan_169: -1905598590
+      Mage-Cyan_17: 1658386793
+      Mage-Cyan_170: -1410249814
+      Mage-Cyan_171: 219315788
+      Mage-Cyan_172: -1178871923
+      Mage-Cyan_173: 1028747131
+      Mage-Cyan_174: 1038612082
+      Mage-Cyan_175: 583071673
+      Mage-Cyan_176: -2055144112
+      Mage-Cyan_177: -2123930504
+      Mage-Cyan_178: 1506214823
+      Mage-Cyan_179: -509415998
+      Mage-Cyan_18: 888785833
+      Mage-Cyan_180: 1843711500
+      Mage-Cyan_181: 1469298849
+      Mage-Cyan_182: -43358254
+      Mage-Cyan_183: 2111705742
+      Mage-Cyan_184: 176148633
+      Mage-Cyan_185: 664457053
+      Mage-Cyan_186: -560927616
+      Mage-Cyan_187: 1861247135
+      Mage-Cyan_188: 1908915096
+      Mage-Cyan_189: 1989275123
+      Mage-Cyan_19: -1774630974
+      Mage-Cyan_190: -1568556849
+      Mage-Cyan_191: 1766692676
+      Mage-Cyan_2: 362187716
+      Mage-Cyan_20: -1211596388
+      Mage-Cyan_21: -389395219
+      Mage-Cyan_22: -232036141
+      Mage-Cyan_23: 715258276
+      Mage-Cyan_24: 479233356
+      Mage-Cyan_25: -2076688939
+      Mage-Cyan_26: 340046031
+      Mage-Cyan_27: 1910583926
+      Mage-Cyan_28: 100998932
+      Mage-Cyan_29: 1245325570
+      Mage-Cyan_3: 1241838891
+      Mage-Cyan_30: -330085208
+      Mage-Cyan_31: 234238556
+      Mage-Cyan_32: -2065064114
+      Mage-Cyan_33: -1881302790
+      Mage-Cyan_34: -1449738729
+      Mage-Cyan_35: -2020531757
+      Mage-Cyan_36: 1865724845
+      Mage-Cyan_37: 400258797
+      Mage-Cyan_38: -2120892883
+      Mage-Cyan_39: 1381876521
+      Mage-Cyan_4: 811294473
+      Mage-Cyan_40: -1977871809
+      Mage-Cyan_41: 786505956
+      Mage-Cyan_42: -1767465374
+      Mage-Cyan_43: -25390762
+      Mage-Cyan_44: 120817861
+      Mage-Cyan_45: -1045289553
+      Mage-Cyan_46: 425771481
+      Mage-Cyan_47: -1579905830
+      Mage-Cyan_48: -1010241552
+      Mage-Cyan_49: -114284763
+      Mage-Cyan_5: -2143662658
+      Mage-Cyan_50: 929842874
+      Mage-Cyan_51: -608963220
+      Mage-Cyan_52: 1951296038
+      Mage-Cyan_53: -1327993339
+      Mage-Cyan_54: 540695602
+      Mage-Cyan_55: 1778459339
+      Mage-Cyan_56: -504011211
+      Mage-Cyan_57: 1772620289
+      Mage-Cyan_58: 1566995957
+      Mage-Cyan_59: 759256352
+      Mage-Cyan_6: 1750589068
+      Mage-Cyan_60: -1181110291
+      Mage-Cyan_61: 1226259874
+      Mage-Cyan_62: -2000822000
+      Mage-Cyan_63: -301520355
+      Mage-Cyan_64: 285248828
+      Mage-Cyan_65: 230636279
+      Mage-Cyan_66: -38606989
+      Mage-Cyan_67: 221592518
+      Mage-Cyan_68: -1239311702
+      Mage-Cyan_69: 1576498228
+      Mage-Cyan_7: -2108144712
+      Mage-Cyan_70: -1660880721
+      Mage-Cyan_71: -179933769
+      Mage-Cyan_72: -233580439
+      Mage-Cyan_73: 1618077427
+      Mage-Cyan_74: -1692360421
+      Mage-Cyan_75: 585593282
+      Mage-Cyan_76: 1382543527
+      Mage-Cyan_77: 1470335510
+      Mage-Cyan_78: 1286854619
+      Mage-Cyan_79: 657085050
+      Mage-Cyan_8: -608277689
+      Mage-Cyan_80: 348985975
+      Mage-Cyan_81: 760356966
+      Mage-Cyan_82: -1515320974
+      Mage-Cyan_83: -835010009
+      Mage-Cyan_84: 704869769
+      Mage-Cyan_85: 1757062772
+      Mage-Cyan_86: -769568002
+      Mage-Cyan_87: 1853093032
+      Mage-Cyan_88: -295816162
+      Mage-Cyan_89: 35988615
+      Mage-Cyan_9: -868339984
+      Mage-Cyan_90: -1910079376
+      Mage-Cyan_91: 1226698205
+      Mage-Cyan_92: -262067453
+      Mage-Cyan_93: -1728641784
+      Mage-Cyan_94: 2041522594
+      Mage-Cyan_95: 1035802957
+      Mage-Cyan_96: -461614064
+      Mage-Cyan_97: -229459358
+      Mage-Cyan_98: -495040214
+      Mage-Cyan_99: 2087022351
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

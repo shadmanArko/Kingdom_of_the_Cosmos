@@ -44,6 +44,15 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""8eb46d56-7c92-40c7-92b7-8ee36da57b8c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -112,6 +121,17 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d658cb97-b36f-4ba3-b572-e229dfeb6624"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardAndMouse"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -161,6 +181,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_PlayerControl = asset.FindActionMap("PlayerControl", throwIfNotFound: true);
         m_PlayerControl_MeleeAttack = m_PlayerControl.FindAction("MeleeAttack", throwIfNotFound: true);
         m_PlayerControl_Movement = m_PlayerControl.FindAction("Movement", throwIfNotFound: true);
+        m_PlayerControl_Look = m_PlayerControl.FindAction("Look", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -224,12 +245,14 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private List<IPlayerControlActions> m_PlayerControlActionsCallbackInterfaces = new List<IPlayerControlActions>();
     private readonly InputAction m_PlayerControl_MeleeAttack;
     private readonly InputAction m_PlayerControl_Movement;
+    private readonly InputAction m_PlayerControl_Look;
     public struct PlayerControlActions
     {
         private @InputMaster m_Wrapper;
         public PlayerControlActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @MeleeAttack => m_Wrapper.m_PlayerControl_MeleeAttack;
         public InputAction @Movement => m_Wrapper.m_PlayerControl_Movement;
+        public InputAction @Look => m_Wrapper.m_PlayerControl_Look;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -245,6 +268,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
         }
 
         private void UnregisterCallbacks(IPlayerControlActions instance)
@@ -255,6 +281,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
         }
 
         public void RemoveCallbacks(IPlayerControlActions instance)
@@ -303,5 +332,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     {
         void OnMeleeAttack(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
     }
 }

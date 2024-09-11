@@ -20,5 +20,10 @@ namespace PlayerScripts
             movement = direction.normalized;
             rb.velocity = movement * moveSpeed;
         }
+
+        public void Attack(Vector2 direction)
+        {
+            
+        }
     }
 }

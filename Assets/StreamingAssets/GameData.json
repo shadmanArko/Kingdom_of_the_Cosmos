@@ -1,0 +1,78 @@
+{
+  "champions": [
+    {
+      "name": "Astra",
+      "tribe": "Celestial",
+      "health": 120.0,
+      "pickupRange": 2.5,
+      "baseDamage": 15.0,
+      "attackSpeed": 1.2,
+      "criticalDamageMultiplier": 2.5,
+      "resistance": 0.2,
+      "dodgeChance": 0.15,
+      "weaponType": "Sword",
+      "luckOfGettingDrop": 0.05
+    },
+    {
+      "name": "Karn",
+      "tribe": "Savage",
+      "health": 200.0,
+      "pickupRange": 1.5,
+      "baseDamage": 25.0,
+      "attackSpeed": 0.9,
+      "criticalDamageMultiplier": 1.8,
+      "resistance": 0.3,
+      "dodgeChance": 0.1,
+      "weaponType": "Axe",
+      "luckOfGettingDrop": 0.08
+    }
+  ],
+  "weapons": [
+    {
+      "weaponName": "Celestial Sword",
+      "damage": 40.0,
+      "fireRate": 1.0,
+      "range": 3.5,
+      "projectileSpeed": 0.0,
+      "ammoCapacity": 0,
+      "reloadTime": 0.0,
+      "spread": 0.0,
+      "projectileCount": 1,
+      "piercing": 1,
+      "knockBack": 1.2,
+      "criticalChance": 0.2,
+      "criticalDamageMultiplier": 2.5,
+      "damageType": "Slashing",
+      "recoil": 0.0,
+      "accuracy": 1.0,
+      "cooldown": 1.0,
+      "aoeRadius": 0.0,
+      "isHoming": false,
+      "durability": 100.0,
+      "weaponType": "Sword"
+    },
+    {
+      "weaponName": "Savage Axe",
+      "damage": 60.0,
+      "fireRate": 0.8,
+      "range": 2.0,
+      "projectileSpeed": 0.0,
+      "ammoCapacity": 0,
+      "reloadTime": 0.0,
+      "spread": 0.0,
+      "projectileCount": 1,
+      "piercing": 2,
+      "knockBack": 1.5,
+      "criticalChance": 0.25,
+      "criticalDamageMultiplier": 2.0,
+      "damageType": "Blunt",
+      "recoil": 0.0,
+      "accuracy": 0.9,
+      "cooldown": 1.5,
+      "aoeRadius": 0.0,
+      "isHoming": false,
+      "durability": 80.0,
+      "weaponType": "Axe"
+    }
+  ]
+}

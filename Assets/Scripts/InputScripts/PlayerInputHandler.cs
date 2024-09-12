@@ -12,8 +12,6 @@ namespace InputScripts
         private InputMaster _inputControls;
 
         [SerializeField] private PlayerController unit;
-        [SerializeField] private ScreenShakeManager screenShakeManager;
-        [SerializeField] private BulletPool bulletPool;
         
         private Vector2 _moveInput;
 
@@ -63,17 +61,17 @@ namespace InputScripts
         private void MeleeAttackInput()
         {
             Debug.Log($"Shoot triggered");
+            var bulletPoolManager = GameReferenceStorage.Instance.bulletPoolingManager;
+            var screenShakeManager = GameReferenceStorage.Instance.screenShakeManager;
             var unitPos = (Vector2) unit.transform.position;
-            var bullet = bulletPool.GetObject();
+            var bullet = bulletPoolManager.Pool.Get();
+            
             bullet.transform.position = unitPos;
-
             var mousePos = ReadMousePosition();
             Vector2 direction = mousePos - transform.position;
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             bullet.transform.rotation = Quaternion.Euler(0, 0, angle - 90);
-            
-            var bulletScript = bullet.GetComponent<Bullet>();
-            bulletScript.Initialize(bulletPool, direction);
+            bullet.Initialize(bulletPoolManager.Pool, direction);
             screenShakeManager.ShakeScreen();
         }
 

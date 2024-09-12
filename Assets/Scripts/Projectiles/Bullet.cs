@@ -1,20 +1,18 @@
-﻿using ObjectPool;
+﻿using UnityEngine.Pool;
 using UnityEngine;
 
 namespace Projectiles
 {
     public class Bullet : MonoBehaviour
     {
-        [SerializeField] private Rigidbody2D rBody;
+        private ObjectPool<Bullet> _pool;
         
         public float speed = 10f;
         public float lifetime = 2f;
-
         public Vector2 direction;
 
+        [SerializeField] private Rigidbody2D rBody;
         [SerializeField] private float lifetimeCounter;
-        private BulletPool _pool;
-
         [SerializeField] private bool isInitialized = false;
         
         private void Start()
@@ -41,24 +39,28 @@ namespace Projectiles
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            // Handle collision logic here
             if(collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Wall"))
                 ReturnToPool();
         }
 
-        public void Initialize(BulletPool tempPool, Vector2 dir)
+        public void Initialize(ObjectPool<Bullet> tempPool, Vector2 dir)
         {
             _pool = tempPool;
             direction = dir;
             lifetimeCounter = lifetime;
             isInitialized = true;
-            
         }
 
         private void ReturnToPool()
         {
-            _pool.ReturnObject(gameObject);
+            _pool.Release(this);
             isInitialized = false;
+        }
+
+
+        public void SetPool(ObjectPool<Bullet> pool)
+        {
+            _pool = pool;
         }
     }
 }

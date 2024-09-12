@@ -1,11 +1,18 @@
+using System;
 using System.IO;
 using UnityEngine;
+using Zenject;
 
 namespace SaveAndLoad
 {
-    public  class SaveAndLoadManager : MonoBehaviour
+    public  class SaveAndLoadManager
     {
-        public static SaveAndLoadManager Instance;
+        private SaveDataScriptable _saveDataScriptable;
+        public SaveAndLoadManager(SaveDataScriptable saveDataScriptable)
+        {
+            _saveDataScriptable = saveDataScriptable;
+            InitializeSavePath();
+        }
         // Define a class to hold the save data.
         // The name of the folder where we will save our files.
         private string saveFolder = "SaveData";
@@ -14,20 +21,10 @@ namespace SaveAndLoad
         // The full path where the save file will be stored.
         private string saveFilePath;
 
-        void Awake()
+        [Inject]
+        void LoadData()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-                InitializeSavePath();
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-            
-           
+            _saveDataScriptable.saveData = LoadDataFromFile();
         }
 
         private void InitializeSavePath()
@@ -45,10 +42,10 @@ namespace SaveAndLoad
         }
 
         // Method to save the data.
-        public void SaveDataToFile(SaveData data)
+        public void SaveDataToFile()
         {
             // Convert the object to a JSON string.
-            string json = JsonUtility.ToJson(data);
+            string json = JsonUtility.ToJson(_saveDataScriptable.saveData);
 
             // Write the JSON string to a file.
             File.WriteAllText(saveFilePath, json);

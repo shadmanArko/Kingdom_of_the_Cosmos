@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1278470095925631877}
   - component: {fileID: 3878785499377661370}
   - component: {fileID: 1432012799176028318}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,6 +134,10 @@ PrefabInstance:
     - target: {fileID: 835876435100262795, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
       propertyPath: m_Name
       value: PlayerObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 835876435100262795, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 835876435100262795, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
       propertyPath: m_IsActive
@@ -280,6 +284,10 @@ PrefabInstance:
     - target: {fileID: 6647660289440691330, guid: d28eb4b30135d0d48bb739336c6447c5, type: 3}
       propertyPath: m_Name
       value: Input Handler
+      objectReference: {fileID: 0}
+    - target: {fileID: 6647660289440691330, guid: d28eb4b30135d0d48bb739336c6447c5, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6757851923265503427, guid: d28eb4b30135d0d48bb739336c6447c5, type: 3}
       propertyPath: unit

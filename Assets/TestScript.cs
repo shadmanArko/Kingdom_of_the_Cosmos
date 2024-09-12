@@ -16,8 +16,6 @@ public class TestScript : MonoBehaviour
             name = "bla"
         };
         
-        SaveAndLoadManager.Instance.SaveDataToFile(saveFile);
-        var saveData =  SaveAndLoadManager.Instance.LoadDataFromFile();
         // var gameData =  GameDataLoader.Instance.LoadGameData();
         // Debug.Log(saveData);
     }

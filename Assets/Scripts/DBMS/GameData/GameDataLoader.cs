@@ -28,17 +28,7 @@ namespace GameData
                 // Deserialize the JSON into the GameData object.
                 _gameDataScriptable.gameData = JsonUtility.FromJson<GameData>(json);
                 Debug.Log("Game data loaded successfully.");
-
-                // You can now access _gameData.champions and _gameData.weapons
-                foreach (var champion in _gameDataScriptable.gameData.champions)
-                {
-                    Debug.Log($"Loaded Champion: {champion.name}, Tribe: {champion.tribe}");
-                }
-
-                foreach (var weapon in _gameDataScriptable.gameData.weapons)
-                {
-                    Debug.Log($"Loaded Weapon: {weapon.weaponName}, Damage: {weapon.damage}");
-                }
+                
 
             }
             else

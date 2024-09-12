@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cbfccfe19f14111bc6d2524d4e30c4d, type: 3}
+  m_Name: GameDataScriptable
+  m_EditorClassIdentifier: 
+  gameData:
+    champions:
+    - name: Astra
+      tribe: Celestial
+      health: 120
+      pickupRange: 2.5
+      baseDamage: 15
+      attackSpeed: 1.2
+      criticalDamageMultiplier: 2.5
+      resistance: 0.2
+      dodgeChance: 0.15
+      weaponType: Sword
+      luckOfGettingDrop: 0.05
+    - name: Karn
+      tribe: Savage
+      health: 200
+      pickupRange: 1.5
+      baseDamage: 25
+      attackSpeed: 0.9
+      criticalDamageMultiplier: 1.8
+      resistance: 0.3
+      dodgeChance: 0.1
+      weaponType: Axe
+      luckOfGettingDrop: 0.08
+    weapons:
+    - weaponName: Celestial Sword
+      damage: 40
+      fireRate: 1
+      range: 3.5
+      projectileSpeed: 0
+      ammoCapacity: 0
+      reloadTime: 0
+      spread: 0
+      projectileCount: 1
+      piercing: 1
+      knockBack: 1.2
+      criticalChance: 0.2
+      criticalDamageMultiplier: 2.5
+      damageType: Slashing
+      recoil: 0
+      accuracy: 1
+      cooldown: 1
+      aoeRadius: 0
+      isHoming: 0
+      durability: 100
+      weaponType: Sword
+    - weaponName: Savage Axe
+      damage: 60
+      fireRate: 0.8
+      range: 2
+      projectileSpeed: 0
+      ammoCapacity: 0
+      reloadTime: 0
+      spread: 0
+      projectileCount: 1
+      piercing: 2
+      knockBack: 1.5
+      criticalChance: 0.25
+      criticalDamageMultiplier: 2
+      damageType: Blunt
+      recoil: 0
+      accuracy: 0.9
+      cooldown: 1.5
+      aoeRadius: 0
+      isHoming: 0
+      durability: 80
+      weaponType: Axe

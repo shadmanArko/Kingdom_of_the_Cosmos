@@ -51,6 +51,8 @@ MonoBehaviour:
   moveSpeed: 5
   movement: {x: 0, y: 0}
   rb: {fileID: 3878785499377661370}
+  playerAnimationController: {fileID: 2120594961658747589}
+  playerInputHandler: {fileID: 8226866991430459187}
 --- !u!50 &3878785499377661370
 Rigidbody2D:
   serializedVersion: 4
@@ -133,51 +135,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 835876435100262795, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
       propertyPath: m_Name
-      value: PlayerObject
-      objectReference: {fileID: 0}
-    - target: {fileID: 835876435100262795, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 835876435100262795, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4687637573899238682, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
-      propertyPath: m_FlipX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4687637573899238682, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
-      propertyPath: m_Size.x
-      value: 0.875
-      objectReference: {fileID: 0}
-    - target: {fileID: 4687637573899238682, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
-      propertyPath: m_Size.y
-      value: 1.0625
-      objectReference: {fileID: 0}
-    - target: {fileID: 4687637573899238682, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -1647433700, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
-    - target: {fileID: 4687637573899238682, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
-      propertyPath: m_DrawMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4687637573899238682, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
-      propertyPath: m_SortingLayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4687637573899238682, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 1586970795
-      objectReference: {fileID: 0}
-    - target: {fileID: 4687637573899238682, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4687637573899238682, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
-      propertyPath: m_RenderingLayerMask
-      value: 2
+      value: PlayerAnimationController
       objectReference: {fileID: 0}
     - target: {fileID: 8707764273265996899, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
       propertyPath: m_LocalPosition.x
@@ -224,6 +182,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
+--- !u!114 &2120594961658747589 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 220404837635855694, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
+  m_PrefabInstance: {fileID: 2189546470010982283}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 509596b58f72226419f5382db43f65b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7402481350280510440 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8707764273265996899, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
@@ -304,3 +273,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1267233756804214139, guid: d28eb4b30135d0d48bb739336c6447c5, type: 3}
   m_PrefabInstance: {fileID: 3450607743264038896}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8226866991430459187 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6757851923265503427, guid: d28eb4b30135d0d48bb739336c6447c5, type: 3}
+  m_PrefabInstance: {fileID: 3450607743264038896}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59300c6fbc331b146b9c2286706a6b07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

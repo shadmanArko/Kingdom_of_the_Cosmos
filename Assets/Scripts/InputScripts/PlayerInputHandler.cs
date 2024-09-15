@@ -1,15 +1,21 @@
 using ObjectPool;
 using PlayerScripts;
-using Projectiles;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities;
+using Zenject;
 
 namespace InputScripts
 {
     public class PlayerInputHandler : MonoBehaviour
     {
         private InputMaster _inputControls;
+
+        private BulletPoolingManager _bulletPoolingManager;
+        private ScreenShakeManager _screenShakeManager;
+        
+        private InputActionMap keyboardMap;
+        private InputActionMap gamepadMap;
 
         [SerializeField] private PlayerController unit;
         
@@ -20,12 +26,22 @@ namespace InputScripts
         private void Awake()
         {
             _inputControls = new InputMaster();
+            // keyboardMap = inp.actions.FindActionMap("Keyboard");
+            // gamepadMap = playerInput.actions.FindActionMap("Gamepad");
+        
             SubscribeToActions();
+        }
+
+        [Inject]
+        private void InitializeDiReference(ScreenShakeManager screenShakeManager, BulletPoolingManager bulletPoolingManager)
+        {
+            _screenShakeManager = screenShakeManager;
+            _bulletPoolingManager = bulletPoolingManager;
         }
 
         private void SubscribeToActions()
         {
-            _inputControls.PlayerControl.MeleeAttack.performed += _ => MeleeAttackInput();
+            _inputControls.PlayerControl.MeleeAttack.performed += _ => AttackInput();
         }
 
         #region Enable and Disable
@@ -58,21 +74,20 @@ namespace InputScripts
 
         #endregion
         
-        private void MeleeAttackInput()
+        private void AttackInput()
         {
             Debug.Log($"Shoot triggered");
-            var bulletPoolManager = GameReferenceStorage.Instance.bulletPoolingManager;
-            var screenShakeManager = GameReferenceStorage.Instance.screenShakeManager;
+            
             var unitPos = (Vector2) unit.transform.position;
-            var bullet = bulletPoolManager.Pool.Get();
+            var bullet = _bulletPoolingManager.Pool.Get();
             
             bullet.transform.position = unitPos;
             var mousePos = ReadMousePosition();
             Vector2 direction = mousePos - transform.position;
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             bullet.transform.rotation = Quaternion.Euler(0, 0, angle - 90);
-            bullet.Initialize(bulletPoolManager.Pool, direction);
-            screenShakeManager.ShakeScreen();
+            bullet.Initialize(_bulletPoolingManager.Pool, direction);
+            _screenShakeManager.ShakeScreen();
         }
 
 

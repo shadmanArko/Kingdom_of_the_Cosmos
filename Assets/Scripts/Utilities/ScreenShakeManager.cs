@@ -4,29 +4,36 @@ using UnityEngine;
 
 namespace Utilities
 {
-    public class ScreenShakeManager : MonoBehaviour
+    public class ScreenShakeManager
     {
-        [SerializeField] private CinemachineVirtualCamera cineMachineVirtualCamera;
-        [SerializeField] private CinemachineBasicMultiChannelPerlin cineMachinePerlin;
+        private CinemachineVirtualCamera _cineMachineVirtualCamera;
+        private CinemachineBasicMultiChannelPerlin _cineMachinePerlin;
 
-        [SerializeField] private float shakeIntensity;
-        [SerializeField] private float shakeTime;
+        private float _shakeIntensity;
+        private float _shakeTime;
 
-        [SerializeField] private float timer;
+        private float _timer;
 
-        private void Start()
+        public ScreenShakeManager(CinemachineVirtualCamera cineMachineVirtualCamera)
         {
-            cineMachinePerlin = cineMachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-            cineMachinePerlin.m_AmplitudeGain = 0f;
+            _cineMachineVirtualCamera = cineMachineVirtualCamera;
+            
+            _cineMachinePerlin = _cineMachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            _cineMachinePerlin.m_AmplitudeGain = 0f;
+
+            _shakeIntensity = 0.2f;
+            _shakeTime = 0.5f;
+            _timer = _shakeTime;
         }
 
         public async void ShakeScreen()
         {
-            timer = shakeTime;
+            _timer = _shakeTime;
 
-            while (timer > 0)
+            Debug.Log("Screen Shaking!!");
+            while (_timer > 0)
             {
-                timer -= Time.deltaTime;
+                _timer -= Time.deltaTime;
                 StartCameraShake();
                 await Task.Delay(1);
             }
@@ -36,13 +43,13 @@ namespace Utilities
 
         private void StartCameraShake()
         {
-            cineMachinePerlin.m_AmplitudeGain = shakeIntensity;
+            _cineMachinePerlin.m_AmplitudeGain = _shakeIntensity;
         }
 
         private void StopCameraShake()
         {
-            cineMachinePerlin.m_AmplitudeGain = 0f;
-            timer = 0f;
+            _cineMachinePerlin.m_AmplitudeGain = 0f;
+            _timer = 0f;
         }
     }
 }

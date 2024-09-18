@@ -1,5 +1,6 @@
 using Cinemachine;
 using InputScripts;
+using TestScripts.WeaponsTest;
 using UnityEngine;
 using Zenject;
 

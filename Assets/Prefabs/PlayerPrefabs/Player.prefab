@@ -262,6 +262,10 @@ PrefabInstance:
       propertyPath: unit
       value: 
       objectReference: {fileID: 1278470095925631877}
+    - target: {fileID: 6757851923265503427, guid: d28eb4b30135d0d48bb739336c6447c5, type: 3}
+      propertyPath: attackBase
+      value: 
+      objectReference: {fileID: 11400000, guid: c568db81eacf8de45ae37902b13b8a34, type: 2}
     m_RemovedComponents:
     - {fileID: 1474992380231495400, guid: d28eb4b30135d0d48bb739336c6447c5, type: 3}
     m_RemovedGameObjects: []

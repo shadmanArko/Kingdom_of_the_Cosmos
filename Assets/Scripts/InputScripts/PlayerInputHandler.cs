@@ -1,5 +1,7 @@
 using ObjectPool;
+using ObjectPoolScripts;
 using PlayerScripts;
+using TestScripts.WeaponsTest;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities;
@@ -13,6 +15,7 @@ namespace InputScripts
 
         private BulletPoolingManager _bulletPoolingManager;
         private ScreenShakeManager _screenShakeManager;
+        private AbilityPoolManager _abilityPoolManager;
         
         private InputActionMap keyboardMap;
         private InputActionMap gamepadMap;
@@ -33,10 +36,11 @@ namespace InputScripts
         }
 
         [Inject]
-        private void InitializeDiReference(ScreenShakeManager screenShakeManager, BulletPoolingManager bulletPoolingManager)
+        private void InitializeDiReference(ScreenShakeManager screenShakeManager, BulletPoolingManager bulletPoolingManager, AbilityPoolManager abilityPoolManager)
         {
             _screenShakeManager = screenShakeManager;
             _bulletPoolingManager = bulletPoolingManager;
+            _abilityPoolManager = abilityPoolManager;
         }
 
         private void SubscribeToActions()
@@ -79,15 +83,20 @@ namespace InputScripts
             Debug.Log($"Shoot triggered");
             
             var unitPos = (Vector2) unit.transform.position;
-            var bullet = _bulletPoolingManager.Pool.Get();
-            
-            bullet.transform.position = unitPos;
-            var mousePos = ReadMousePosition();
-            Vector2 direction = mousePos - transform.position;
-            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            bullet.transform.rotation = Quaternion.Euler(0, 0, angle - 90);
-            bullet.Initialize(_bulletPoolingManager.Pool, direction);
+            // var bullet = _bulletPoolingManager.Pool.Get();
+            //
+            // bullet.transform.position = unitPos;
+            // var mousePos = ReadMousePosition();
+            // Vector2 direction = mousePos - transform.position;
+            // var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            // bullet.transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+            // bullet.Initialize(_bulletPoolingManager.Pool, direction);
+            if(attackBase == null) return;
+            attackBase.Attack(_bulletPoolingManager, unitPos, ReadMousePosition());
             _screenShakeManager.ShakeScreen();
+            
+            _abilityPoolManager.ActivateAbility(Vector2.zero, ReadMousePosition());
+            // lastActivationTime = Time.time;
         }
 
 
@@ -99,6 +108,21 @@ namespace InputScripts
             var worldPosition = Camera.main!.ScreenToWorldPoint(mousePosition);
             return worldPosition;
         }
+
+        #endregion
+        
+        
+        
+        
+        #region Test
+
+        [SerializeField] private AttackBase attackBase;
+
+        // public void UseSecondAttack(Vector2 mouseDir)
+        // {
+        //     if(attackBase == null) return;
+        //     var direction = attackBase.Attack(unit.transform.position, mouseDir);
+        // }
 
         #endregion
     }

@@ -17,3 +17,4 @@ MonoBehaviour:
   cineMachineVirtualCamera: {fileID: 9105542840309947734, guid: d4d33789ec79bcc4a9a1de7b896e9ad5, type: 3}
   playerController: {fileID: 1278470095925631877, guid: d6ae14d1606a5884bb3a62e8302004b8, type: 3}
   bulletPoolingManager: {fileID: 7786539364499800036, guid: b25314b1a873c92469bad58a6a05869d, type: 3}
+  abilityPoolManager: {fileID: 619772437927866082, guid: ac4b1f35a2a6bec40ae427417134ab6a, type: 3}

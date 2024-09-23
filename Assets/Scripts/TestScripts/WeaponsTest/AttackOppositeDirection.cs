@@ -1,9 +1,9 @@
 using ObjectPool;
+using ObjectPoolScripts;
 using UnityEngine;
 
 namespace TestScripts.WeaponsTest
 {
-    [CreateAssetMenu(fileName = "AttackOppositeDirection", menuName = "Testing/OppositeDirection")]
     public class AttackOppositeDirection : AttackBase
     {
         public override void Attack(BulletPoolingManager manager, Vector2 attackerPos, Vector2 mousePos)

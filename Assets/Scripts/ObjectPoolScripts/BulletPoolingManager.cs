@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace ObjectPool
+namespace ObjectPoolScripts
 {
     public class BulletPoolingManager : MonoBehaviour
     {

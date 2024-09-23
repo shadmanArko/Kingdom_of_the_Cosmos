@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525e3bda2e95b234bad7c9c3e188ed74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackBase: {fileID: 0}
+  attackBase: {fileID: 11400000, guid: a635ae1755ada454e80a400edb7c1534, type: 2}
   bulletSpeed: 10
   duration: 2

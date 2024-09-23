@@ -1,25 +1,23 @@
-using System.Collections;
 using System.Threading.Tasks;
-using ObjectPool;
+using ObjectPoolScripts;
 using UnityEngine;
 
 namespace TestScripts.WeaponsTest
 {
-    [CreateAssetMenu(fileName = "AttackOneDirection", menuName = "Testing/OneDirection")]
-    public class AttackOneDirection : AttackBase
+    public class ShootOnceInMouseDirection : AttackBase
     {
         public override async void Attack(BulletPoolingManager manager, Vector2 attackerPos, Vector2 mousePos)
         {
-            // var bullet = manager.Pool.Get();
-            //
-            // bullet.transform.position = attackerPos;
-            //
-            // var direction = mousePos - attackerPos;
-            // var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            // bullet.transform.rotation = Quaternion.Euler(0, 0, angle - 90);
-            // bullet.Initialize(manager.Pool, direction);
+            var bullet = manager.Pool.Get();
+            
+            bullet.transform.position = attackerPos;
+            
+            var direction = mousePos - attackerPos;
+            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            bullet.transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+            bullet.Initialize(manager.Pool, direction);
 
-            await ShootBullet(manager, attackerPos);
+            // await ShootBullet(manager, attackerPos);
 
         }
 

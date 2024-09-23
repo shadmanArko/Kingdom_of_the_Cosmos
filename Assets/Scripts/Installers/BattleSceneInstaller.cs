@@ -15,7 +15,8 @@ namespace Installers
     {
         [SerializeField] private GameDataScriptable gameDataScriptable;
         [SerializeField] private SaveDataScriptable saveDataScriptable;
-    
+
+        [SerializeField] private Camera mainCamera;
         [SerializeField] private CinemachineVirtualCamera cineMachineVirtualCamera;
         [SerializeField] private PlayerController playerController;
 
@@ -29,6 +30,7 @@ namespace Installers
             Container.Bind<GameDataLoader>().AsTransient().NonLazy();
             Container.Bind<SaveAndLoadManager>().AsTransient().NonLazy();
 
+            Container.Bind<Camera>().FromComponentInNewPrefab(mainCamera).AsSingle().NonLazy();
             Container.Bind<CinemachineVirtualCamera>().FromComponentInNewPrefab(cineMachineVirtualCamera).AsSingle();
             Container.Bind<ScreenShakeManager>().AsSingle();
             Container.Bind<PlayerController>().FromComponentInNewPrefab(playerController).AsSingle().NonLazy();

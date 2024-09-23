@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using ObjectPool;
 using PlayerScripts;
+using Signals.BattleSceneSignals;
 using TestScripts.WeaponsTest;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -8,8 +9,10 @@ using Zenject;
 
 namespace ObjectPoolScripts
 {
-    public class AbilityPoolManager : MonoBehaviour
+    public class AbilityPoolManager : MonoBehaviour, IInitializable
     {
+        private SignalBus _signalBus;
+        
         private BulletPoolingManager _bulletPoolingManager;
         private PlayerController _playerController;
         
@@ -22,16 +25,19 @@ namespace ObjectPoolScripts
         [SerializeField] private List<AttackBase> attackBases;
 
         [Inject]
-        private void InitializeDiReference(BulletPoolingManager bulletPoolingManager, PlayerController playerController)
+        private void InitializeDiReference(BulletPoolingManager bulletPoolingManager, PlayerController playerController, SignalBus signalBus)
         {
             _bulletPoolingManager = bulletPoolingManager;
             _playerController = playerController;
+            _signalBus = signalBus;
         }
 
         private void Start()
         {
             Pool = new ObjectPool<Ability>(CreateAbility, OnGetAbilityFromPool, OnReleaseAbilityToPool,
                 OnDestroyAbility, true, defaultPoolSize, maxPoolSize);
+            
+            // _signalBus.Subscribe<MeleeAttackSignal>();
         }
 
         private Ability CreateAbility()
@@ -41,10 +47,10 @@ namespace ObjectPoolScripts
             return ability;
         }
         
-        public void ActivateAbility(Vector3 position, Vector2 mousePos)
+        public void ActivateAbility(Vector2 mousePos)
         {
             var ability = Pool.Get();
-            ability.transform.position = position;
+            ability.transform.position = _playerController.gameObject.transform.position;
             ability.Activate(_bulletPoolingManager, _playerController, attackBases[Random.Range(0,attackBases.Count)], mousePos);
         }
 
@@ -61,6 +67,11 @@ namespace ObjectPoolScripts
         private static void OnDestroyAbility(Ability ability)
         {
             Destroy(ability.gameObject);
+        }
+
+        public void Initialize()
+        {
+            
         }
     }
 }

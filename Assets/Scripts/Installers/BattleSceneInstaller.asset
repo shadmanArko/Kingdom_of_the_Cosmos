@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameDataScriptable: {fileID: 11400000, guid: a9632d417614a524a9543ddd207f00e3, type: 2}
   saveDataScriptable: {fileID: 11400000, guid: 17bdde4769ff8f34cb0728a64042aa55, type: 2}
+  runningDataScriptable: {fileID: 11400000, guid: 5df82ea76d232234d9b1359b054d9f98, type: 2}
   mainCamera: {fileID: 8679467037699793955, guid: f2b7dee03f53cc248a18673a9c7fd289, type: 3}
   cineMachineVirtualCamera: {fileID: 9105542840309947734, guid: d4d33789ec79bcc4a9a1de7b896e9ad5, type: 3}
   playerController: {fileID: 1278470095925631877, guid: d6ae14d1606a5884bb3a62e8302004b8, type: 3}

@@ -1,4 +1,5 @@
 using Cinemachine;
+using DBMS.RunningData;
 using GameData;
 using ObjectPool;
 using ObjectPoolScripts;
@@ -15,6 +16,7 @@ namespace Installers
     {
         [SerializeField] private GameDataScriptable gameDataScriptable;
         [SerializeField] private SaveDataScriptable saveDataScriptable;
+        [SerializeField] private RunningDataScriptable runningDataScriptable;
 
         [SerializeField] private Camera mainCamera;
         [SerializeField] private CinemachineVirtualCamera cineMachineVirtualCamera;
@@ -27,6 +29,7 @@ namespace Installers
         {
             Container.Bind<GameDataScriptable>().FromInstance(gameDataScriptable).AsSingle();
             Container.Bind<SaveDataScriptable>().FromInstance(saveDataScriptable).AsSingle();
+            Container.Bind<RunningDataScriptable>().FromInstance(runningDataScriptable).AsSingle();
             Container.Bind<GameDataLoader>().AsTransient().NonLazy();
             Container.Bind<SaveAndLoadManager>().AsTransient().NonLazy();
 

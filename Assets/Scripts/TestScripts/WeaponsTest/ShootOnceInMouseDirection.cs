@@ -1,21 +1,35 @@
 using System.Threading.Tasks;
+using DBMS.RunningData;
 using ObjectPoolScripts;
+using PlayerScripts;
 using UnityEngine;
+using Zenject;
 
 namespace TestScripts.WeaponsTest
 {
     public class ShootOnceInMouseDirection : AttackBase
     {
-        public override async void Attack(BulletPoolingManager manager, Vector2 attackerPos, Vector2 mousePos)
+        [Inject] private BulletPoolingManager _bulletPoolingManager;
+        [Inject] private RunningDataScriptable _runningDataScriptable;
+        [Inject] private PlayerController _playerController;
+
+        public ShootOnceInMouseDirection(BulletPoolingManager bulletPoolingManager, RunningDataScriptable runningDataScriptable, PlayerController playerController)
         {
-            var bullet = manager.Pool.Get();
-            
+            _bulletPoolingManager = bulletPoolingManager;
+            _runningDataScriptable = runningDataScriptable;
+            _playerController = playerController;
+        }
+
+        public override void Attack()
+        {
+            var bullet = _bulletPoolingManager.Pool.Get();
+            var attackerPos = _playerController.gameObject.transform.position;
             bullet.transform.position = attackerPos;
             
-            var direction = mousePos - attackerPos;
+            var direction = _runningDataScriptable.attackDirection;
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             bullet.transform.rotation = Quaternion.Euler(0, 0, angle - 90);
-            bullet.Initialize(manager.Pool, direction);
+            bullet.Initialize(_bulletPoolingManager.Pool, direction);
 
             // await ShootBullet(manager, attackerPos);
 
@@ -41,6 +55,5 @@ namespace TestScripts.WeaponsTest
                 await Task.Delay(1000);
             }
         }
-        
     }
 }

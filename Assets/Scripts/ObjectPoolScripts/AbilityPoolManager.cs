@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DBMS.RunningData;
 using ObjectPool;
 using PlayerScripts;
 using Signals.BattleSceneSignals;
@@ -9,12 +10,13 @@ using Zenject;
 
 namespace ObjectPoolScripts
 {
-    public class AbilityPoolManager : MonoBehaviour, IInitializable
+    public class AbilityPoolManager : MonoBehaviour
     {
         private SignalBus _signalBus;
         
         private BulletPoolingManager _bulletPoolingManager;
         private PlayerController _playerController;
+        private RunningDataScriptable _runningDataScriptable;
         
         public ObjectPool<Ability> Pool { get; private set; }
         [SerializeField] private Ability abilityPrefab;
@@ -25,10 +27,11 @@ namespace ObjectPoolScripts
         [SerializeField] private List<AttackBase> attackBases;
 
         [Inject]
-        private void InitializeDiReference(BulletPoolingManager bulletPoolingManager, PlayerController playerController, SignalBus signalBus)
+        private void InitializeDiReference(BulletPoolingManager bulletPoolingManager, PlayerController playerController, SignalBus signalBus, RunningDataScriptable runningDataScriptable)
         {
             _bulletPoolingManager = bulletPoolingManager;
             _playerController = playerController;
+            _runningDataScriptable = runningDataScriptable;
             _signalBus = signalBus;
         }
 
@@ -37,7 +40,7 @@ namespace ObjectPoolScripts
             Pool = new ObjectPool<Ability>(CreateAbility, OnGetAbilityFromPool, OnReleaseAbilityToPool,
                 OnDestroyAbility, true, defaultPoolSize, maxPoolSize);
             
-            // _signalBus.Subscribe<MeleeAttackSignal>();
+            _signalBus.Subscribe<MeleeAttackSignal>(ActivateAbility);
         }
 
         private Ability CreateAbility()
@@ -47,11 +50,14 @@ namespace ObjectPoolScripts
             return ability;
         }
         
-        public void ActivateAbility(Vector2 mousePos)
+        private void ActivateAbility()
         {
             var ability = Pool.Get();
             ability.transform.position = _playerController.gameObject.transform.position;
-            ability.Activate(_bulletPoolingManager, _playerController, attackBases[Random.Range(0,attackBases.Count)], mousePos);
+            // var attackAbility = new ShootOnceInMouseDirection(_bulletPoolingManager, _runningDataScriptable, _playerController);
+            var attackAbility =
+                new AttackOppositeDirection(_bulletPoolingManager, _runningDataScriptable, _playerController);
+            ability.Activate(attackAbility);
         }
 
         private void OnGetAbilityFromPool(Ability ability)
@@ -67,11 +73,6 @@ namespace ObjectPoolScripts
         private static void OnDestroyAbility(Ability ability)
         {
             Destroy(ability.gameObject);
-        }
-
-        public void Initialize()
-        {
-            
         }
     }
 }

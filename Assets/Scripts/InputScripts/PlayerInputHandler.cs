@@ -1,3 +1,4 @@
+using DBMS.RunningData;
 using ObjectPool;
 using ObjectPoolScripts;
 using PlayerScripts;
@@ -15,8 +16,13 @@ namespace InputScripts
         private InputMaster _inputControls;
 
         [Inject] private readonly SignalBus _signalBus;
+
+        private RunningDataScriptable _runningDataScriptable;
         private ScreenShakeManager _screenShakeManager;
         private AbilityPoolManager _abilityPoolManager;
+
+        private PlayerController _playerController;
+        
         private Camera _camera;
         
         private InputActionMap keyboardMap;
@@ -40,11 +46,13 @@ namespace InputScripts
         }
 
         [Inject]
-        private void InitializeDiReference(Camera cam, ScreenShakeManager screenShakeManager, BulletPoolingManager bulletPoolingManager, AbilityPoolManager abilityPoolManager)
+        private void InitializeDiReference(Camera cam, ScreenShakeManager screenShakeManager, BulletPoolingManager bulletPoolingManager, AbilityPoolManager abilityPoolManager, RunningDataScriptable runningDataScriptable, PlayerController playerController)
         {
             _screenShakeManager = screenShakeManager;
             _camera = cam;
             _abilityPoolManager = abilityPoolManager;
+            _runningDataScriptable = runningDataScriptable;
+            _playerController = playerController;
         }
 
         private void SubscribeToActions()
@@ -60,6 +68,8 @@ namespace InputScripts
 
             _mousePositionAction = _inputControls.PlayerControl.MousePosition;
             _mousePositionAction.Enable();
+            
+            _signalBus.Subscribe<MouseMovementSignal>(UpdateMouseMovement);
         }
 
         private void OnDisable()
@@ -90,14 +100,10 @@ namespace InputScripts
         
         private void AttackInput()
         {
-            Debug.Log($"Shoot triggered");
+            _signalBus.Fire<MeleeAttackSignal>();
             
-            // _signalBus.Fire<MeleeAttackSignal>();
-            
+            // _abilityPoolManager.ActivateAbility();
             _screenShakeManager.ShakeScreen();
-            
-            _abilityPoolManager.ActivateAbility(ReadPreviousMousePosition());
-            // lastActivationTime = Time.time;
         }
 
 
@@ -119,14 +125,21 @@ namespace InputScripts
             var distance = Vector3.Distance(mousePos, _lastMousePosition);
 
             if (!(distance > _movementThreshold)) return;
-            _lastMousePosition = mousePos;  // Update position
-            Vector3 mouseWorldPosition =
+            _lastMousePosition = mousePos;
+            var mouseWorldPosition =
                 _camera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, _camera.nearClipPlane));
-            _signalBus.Fire(new MouseMovementSignal(mouseWorldPosition));
-            Debug.Log($"Mouse position move signal fired {mousePos}");
+            var direction = (_playerController.gameObject.transform.position - mouseWorldPosition).normalized;
+            _signalBus.Fire(new MouseMovementSignal(direction));
+            // Debug.Log($"Mouse position move signal fired {mousePos}");
         }
 
         #endregion
+
+        private void UpdateMouseMovement(MouseMovementSignal mouseMovementSignal)
+        {
+            _runningDataScriptable.attackDirection = mouseMovementSignal.MousePos;
+            // Debug.Log("Mouse Pos updated to running data scriptable");
+        }
         
     }
 }

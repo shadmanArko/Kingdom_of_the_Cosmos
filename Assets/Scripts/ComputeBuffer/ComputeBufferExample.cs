@@ -5,7 +5,7 @@ public class ComputeBufferExample : MonoBehaviour
     public ComputeShader computeShader;
     private int kernelHandle;
     private ComputeBuffer buffer;
-    private const int SIZE = 1024;
+    private const int SIZE = 1024000;
 
     void Start()
     {
@@ -25,17 +25,7 @@ public class ComputeBufferExample : MonoBehaviour
         computeShader.SetBuffer(kernelHandle, "result", buffer);
 
         // Run compute shader
-        computeShader.Dispatch(kernelHandle, SIZE / 64, 1, 1);
-
-        // Get results
-        int[] results = new int[SIZE];
-        buffer.GetData(results);
-
-        // Print first few results
-        for (int i = 0; i < 10; i++)
-        {
-            Debug.Log($"Result[{i}] = {results[i]}");
-        }
+        RunComputeShader();
     }
 
     void OnDestroy()
@@ -60,5 +50,7 @@ public class ComputeBufferExample : MonoBehaviour
         {
             Debug.Log($"Result[{i}] = {results[i]}");
         }
+        Debug.Log($"size of array {results.Length}");
+
     }
 }

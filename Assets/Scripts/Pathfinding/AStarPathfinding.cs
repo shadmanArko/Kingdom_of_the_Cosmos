@@ -32,31 +32,13 @@ public class AStarPathfinding
         {
             startTileCoordinates *= -1;
             goalTileCoordinates *= -1;
-            // _grid = new Node[GridSizeX, GridSizeY];
-            //
-            // for (int x = 0; x < GridSizeX; x++)
-            // {
-            //     for (int y = 0; y < GridSizeY; y++)
-            //     {
-            //         var tempTileCoord = new TileCoordinates
-            //         {
-            //             X = x,
-            //             Y = y
-            //         };
-            //        // _grid[x, y] = new Node(tempTileCoord, null, int.MaxValue, float.MaxValue, true); //todo change is walkable
-            //     }
-            // }
 
             _openSet = new List<AStarNode>();
             _closedSet = new HashSet<AStarNode>();
 
-            // AStarNode startNode = grid[startTileCoordinates.X, startTileCoordinates.Y];
-            // AStarNode goalNode = grid[goalTileCoordinates.X, goalTileCoordinates.Y];
+            
             AStarNode startNode = GetNode(grid, startTileCoordinates.x, startTileCoordinates.y);
             AStarNode goalNode = GetNode(grid, goalTileCoordinates.x, goalTileCoordinates.y);
-
-            // GD.Print($"start node is null: {startNode == null}");
-            // GD.Print($"goal node is null: {goalNode == null}");
 
             startNode.GCost = 0; // Set GCost of the start node to zero
             startNode.HCost = GetDistance(startNode, goalNode); // Set HCost using the heuristic
@@ -132,15 +114,7 @@ public class AStarPathfinding
                     {
                         int neighborX = aStarNode.TileCoordinateX + xOffset;
                         int neighborY = aStarNode.TileCoordinateY + yOffset;
-
-                        // if (neighborX >= 0 && neighborX < _gridSizeX && neighborY >= 0 && neighborY < _gridSizeY)
-                        // {
-                        //     AStarNode neighbor = grid[neighborX, neighborY];
-                        //     // Adjust the movement cost for diagonal neighbors to be higher
-                        //     int movementCost = xOffset != 0 && yOffset != 0 ? 14 : 10; // 14 for diagonals, 10 for straight
-                        //     neighbor.GCost = aStarNode.GCost + movementCost;
-                        //     neighbors.Add(neighbor);
-                        // }
+                        
                         foreach (var starNode in grid)
                         {
                             if (starNode.TileCoordinateX == neighborX && starNode.TileCoordinateY == neighborY)

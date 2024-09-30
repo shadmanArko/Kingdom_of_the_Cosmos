@@ -1,0 +1,157 @@
+// Shared structure definition
+struct Node
+{
+    int2 position;
+    float gCost;
+    float hCost;
+    float fCost;
+    int parentIndex;
+    bool isWalkable;
+};
+
+// Shared buffer definitions
+RWStructuredBuffer<Node> nodes;
+RWStructuredBuffer<int2> pathRequests;
+RWStructuredBuffer<int> pathResults;
+RWStructuredBuffer<int2> walkabilityUpdates;
+
+// Shared variables
+int2 gridSize;
+int numPathRequests;
+bool canMoveDiagonally;
+int numWalkabilityUpdates;
+
+// Shared functions
+int GetIndex(int2 pos)
+{
+    return pos.y * gridSize.x + pos.x;
+}
+
+float GetDistance(int2 a, int2 b)
+{
+    int2 distance = abs(a - b);
+    int diagonal = min(distance.x, distance.y);
+    int straight = abs(distance.x - distance.y);
+    return diagonal * 14 + straight * 10;
+}
+
+#pragma kernel InitializeNodes
+[numthreads(64,1,1)]
+void InitializeNodes (uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= (uint)(gridSize.x * gridSize.y)) return;
+    
+    int2 pos = int2(id.x % gridSize.x, id.x / gridSize.x);
+    nodes[id.x].position = pos;
+    nodes[id.x].isWalkable = true; // You may want to initialize this based on your map data
+    nodes[id.x].gCost = 1.#INF;
+    nodes[id.x].hCost = 1.#INF;
+    nodes[id.x].fCost = 1.#INF;
+    nodes[id.x].parentIndex = -1;
+}
+
+#pragma kernel UpdateNodeWalkability
+[numthreads(64,1,1)]
+void UpdateNodeWalkability (uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= (uint)numWalkabilityUpdates) return;
+    
+    int2 pos = walkabilityUpdates[id.x];
+    int index = pos.y * gridSize.x + pos.x;
+    
+    if (index >= 0 && index < gridSize.x * gridSize.y)
+    {
+        nodes[index].isWalkable = !nodes[index].isWalkable; // Toggle walkability
+    }
+}
+
+#pragma kernel FindPath
+[numthreads(64,1,1)]
+void FindPath (uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= (uint)numPathRequests) return;
+
+    int2 startPos = pathRequests[id.x * 2];
+    int2 goalPos = pathRequests[id.x * 2 + 1];
+    
+    int startIndex = GetIndex(startPos);
+    int goalIndex = GetIndex(goalPos);
+
+    // Initialize start node
+    nodes[startIndex].gCost = 0;
+    nodes[startIndex].hCost = GetDistance(startPos, goalPos);
+    nodes[startIndex].fCost = nodes[startIndex].hCost;
+
+    // A* algorithm
+    bool pathFound = false;
+    int currentIndex = startIndex;
+    int iterations = 0;
+    while (iterations < 1000) // Limit iterations to prevent infinite loops
+    {
+        iterations++;
+        if (currentIndex == goalIndex)
+        {
+            pathFound = true;
+            break;
+        }
+
+        // Find neighbors
+        for (int y = -1; y <= 1; y++)
+        {
+            for (int x = -1; x <= 1; x++)
+            {
+                if (!canMoveDiagonally && x != 0 && y != 0) continue;
+                
+                int2 neighborPos = nodes[currentIndex].position + int2(x, y);
+                if (neighborPos.x < 0 || neighborPos.x >= gridSize.x || neighborPos.y < 0 || neighborPos.y >= gridSize.y) continue;
+                
+                int neighborIndex = GetIndex(neighborPos);
+                if (!nodes[neighborIndex].isWalkable) continue;
+
+                float tentativeGCost = nodes[currentIndex].gCost + GetDistance(nodes[currentIndex].position, neighborPos);
+                if (tentativeGCost < nodes[neighborIndex].gCost)
+                {
+                    nodes[neighborIndex].parentIndex = currentIndex;
+                    nodes[neighborIndex].gCost = tentativeGCost;
+                    nodes[neighborIndex].hCost = GetDistance(neighborPos, goalPos);
+                    nodes[neighborIndex].fCost = nodes[neighborIndex].gCost + nodes[neighborIndex].hCost;
+                }
+            }
+        }
+
+        // Find next node with lowest fCost
+        float lowestFCost = 1.#INF;
+        int lowestFCostIndex = -1;
+        for (int i = 0; i < gridSize.x * gridSize.y; i++)
+        {
+            if (nodes[i].fCost < lowestFCost && nodes[i].parentIndex != -1)
+            {
+                lowestFCost = nodes[i].fCost;
+                lowestFCostIndex = i;
+            }
+        }
+
+        if (lowestFCostIndex == -1) break; // No path found
+        currentIndex = lowestFCostIndex;
+    }
+
+    // Store result
+    if (pathFound)
+    {
+        int resultIndex = id.x * gridSize.x * gridSize.y;
+        int pathLength = 0;
+        int currentPathIndex = goalIndex;
+        while (currentPathIndex != startIndex && pathLength < gridSize.x * gridSize.y)
+        {
+            pathResults[resultIndex + pathLength] = currentPathIndex;
+            currentPathIndex = nodes[currentPathIndex].parentIndex;
+            pathLength++;
+        }
+        pathResults[resultIndex + pathLength] = startIndex;
+        pathResults[id.x] = pathLength + 1; // Store path length at the start of each result
+    }
+    else
+    {
+        pathResults[id.x] = 0; // Indicate no path found
+    }
+}

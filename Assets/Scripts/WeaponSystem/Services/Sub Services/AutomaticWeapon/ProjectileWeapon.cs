@@ -9,7 +9,7 @@ namespace WeaponSystem.AutomaticWeapon
 
         public override bool CanActivate()
         {
-            return Time.time % weaponData.Cooldown == 0;
+            return Time.time % weaponData.cooldown == 0;
         }
     }
 }

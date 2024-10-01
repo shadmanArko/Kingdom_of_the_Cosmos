@@ -23,18 +23,18 @@ namespace WeaponSystem
             // Assume you load data from JSON here
             WeaponDatabase weaponDatabase = LoadWeaponDataFromJson();
 
-            foreach (var category in weaponDatabase.WeaponCategories)
+            foreach (var category in weaponDatabase.weaponCategories)
             {
-                foreach (var weaponData in category.Weapons)
+                foreach (var weaponData in category.weapons)
                 {
                     IWeapon weapon = null;
 
-                    if (weaponData.Type == "Controlled")
+                    if (weaponData.type == "Controlled")
                     {
                         weapon = new MeleeWeapon(weaponData); // Or ProjectileWeapon, based on category
                         controlledWeapons.Add(weapon);
                     }
-                    else if (weaponData.Type == "Automatic")
+                    else if (weaponData.type == "Automatic")
                     {
                         weapon = new ProjectileWeapon(weaponData);
                         automaticWeapons.Add(weapon);
@@ -62,7 +62,7 @@ namespace WeaponSystem
         {
             IWeapon newWeapon;
 
-            if (weaponData.Type == "Controlled")
+            if (weaponData.type == "Controlled")
             {
                 newWeapon = new MeleeWeapon(weaponData); // Or ProjectileWeapon, based on category
                 controlledWeapons.Add(newWeapon);
@@ -74,7 +74,7 @@ namespace WeaponSystem
                     activeControlledWeapon.Activate();
                 }
             }
-            else if (weaponData.Type == "Automatic")
+            else if (weaponData.type == "Automatic")
             {
                 newWeapon = new ProjectileWeapon(weaponData);
                 automaticWeapons.Add(newWeapon);
@@ -87,7 +87,7 @@ namespace WeaponSystem
             }
 
 
-            Debug.Log("New weapon added: " + weaponData.Name);
+            Debug.Log("New weapon added: " + weaponData.name);
         }
 
         public void UpgradeControlledWeapon(string weaponName, int newDamage, float newCooldown)

@@ -2,9 +2,12 @@
 
 namespace WeaponSystem.WeaponModels
 {
+    [System.Serializable]
     public class WeaponCategory
     {
-        public string Category { get; set; }
-        public List<WeaponData> Weapons { get; set; }
+        public string category;
+        public List<WeaponData> weapons;
+
+        
     }
 }

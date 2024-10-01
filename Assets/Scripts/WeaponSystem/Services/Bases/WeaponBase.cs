@@ -15,25 +15,25 @@ namespace WeaponSystem
 
         public virtual void Activate()
         {
-            Debug.Log(weaponData.Name + " activated!");
+            Debug.Log(weaponData.name + " activated!");
         }
 
         public virtual void Deactivate()
         {
-            Debug.Log(weaponData.Name + " deactivated!");
+            Debug.Log(weaponData.name + " deactivated!");
         }
 
         public abstract bool CanActivate();
         public void UpgradeWeapon(int newDamage, float newCooldown)
         {
-            weaponData.Damage = newDamage;
-            weaponData.Cooldown = newCooldown;
-            Debug.Log($"{weaponData.Name} upgraded! New Damage: {newDamage}, New Cooldown: {newCooldown}");
+            weaponData.damage = newDamage;
+            weaponData.cooldown = newCooldown;
+            Debug.Log($"{weaponData.name} upgraded! New damage: {newDamage}, New cooldown: {newCooldown}");
         }
 
         public string GetName()
         {
-            return weaponData.Name;
+            return weaponData.name;
         }
     }
 }

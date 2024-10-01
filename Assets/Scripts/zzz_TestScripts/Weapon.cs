@@ -5,8 +5,8 @@ namespace Models
     [Serializable]
     public class Weapon
     {
-        public string weaponName;
-        public float damage;
+        
+        
         public float fireRate;
         public float range;
         public float projectileSpeed;
@@ -21,7 +21,6 @@ namespace Models
         public string damageType;
         public float recoil;
         public float accuracy;
-        public float cooldown;
         public float aoeRadius;
         public bool isHoming;
         public float durability;

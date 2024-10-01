@@ -1,0 +1,26 @@
+Key,English (en),French (fr),Spanish (es)
+GREETING,Hello,Bonjour,Hola
+FAREWELL,Goodbye,Au revoir,Adios
+START_GAME,Start Game,Commencer le jeu,Iniciar juego
+OPTIONS,Options,Options,Opciones
+SETTINGS,Settings,Parametres,Configuracion
+PLAY,Play,Jouer,Jugar
+PAUSE,Pause,Pause,Pausa
+RESUME,Resume,Reprendre,Reanudar
+QUIT,Quit,Quitter,Salir
+LOADING,Loading...,Chargement...,Cargando...
+SAVE_GAME,Save Game,Sauvegarder la partie,Guardar partida
+LOAD_GAME,Load Game,Charger la partie,Cargar partida
+LANGUAGE,Language,Langue,Idioma
+VOLUME,Volume,Volume,Volumen
+GRAPHICS,Graphics,Graphismes,Graficos
+HIGH,High,Eleve,Alto
+MEDIUM,Medium,Moyen,Medio
+LOW,Low,Bas,Bajo
+NEW_GAME,New Game,Nouvelle partie,Nuevo juego
+CONTINUE,Continue,Continuer,Continuar
+MULTIPLAYER,Multiplayer,Multijoueur,Multijugador
+SINGLE_PLAYER,Single Player,Un joueur,Un jugador
+TUTORIAL,Tutorial,Tutoriel,Tutorial
+LEVEL,Level,Niveau,Nivel
+SCORE,Score,Score,Puntuacion

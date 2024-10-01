@@ -15,7 +15,7 @@ namespace Installers
 
             Container.DeclareSignal<MeleeAttackSignal>();
             Container.DeclareSignal<MouseMovementSignal>();
-            Container.DeclareSignal<AutomaticWeaponTriggerSignal>();
+            
         }
     }
 }

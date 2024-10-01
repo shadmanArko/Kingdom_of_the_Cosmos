@@ -7,6 +7,7 @@ using PlayerScripts;
 using SaveAndLoad;
 using UnityEngine;
 using Utilities;
+using WeaponSystem;
 using Zenject;
 
 namespace Installers
@@ -39,6 +40,7 @@ namespace Installers
             Container.Bind<PlayerController>().FromComponentInNewPrefab(playerController).AsSingle().NonLazy();
             Container.Bind<BulletPoolingManager>().FromComponentInNewPrefab(bulletPoolingManager).AsSingle();
             Container.Bind<AbilityPoolManager>().FromComponentInNewPrefab(abilityPoolManager).AsSingle();
+            Container.Bind<WeaponManager>().AsSingle();
         }
     }
 }

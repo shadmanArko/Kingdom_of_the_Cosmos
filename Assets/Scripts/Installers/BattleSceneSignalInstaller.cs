@@ -1,5 +1,6 @@
 using Signals.BattleSceneSignals;
 using UnityEngine;
+using WeaponSystem;
 using Zenject;
 
 namespace Installers
@@ -14,6 +15,7 @@ namespace Installers
 
             Container.DeclareSignal<MeleeAttackSignal>();
             Container.DeclareSignal<MouseMovementSignal>();
+            Container.DeclareSignal<AutomaticWeaponTriggerSignal>();
         }
     }
 }

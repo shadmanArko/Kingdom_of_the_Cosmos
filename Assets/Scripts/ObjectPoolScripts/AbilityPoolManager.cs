@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using DBMS.RunningData;
 using ObjectPool;
-using PlayerScripts;
+using Player;
 using Signals.BattleSceneSignals;
 using TestScripts.WeaponsTest;
 using UnityEngine;
@@ -40,7 +40,7 @@ namespace ObjectPoolScripts
             Pool = new ObjectPool<Ability>(CreateAbility, OnGetAbilityFromPool, OnReleaseAbilityToPool,
                 OnDestroyAbility, true, defaultPoolSize, maxPoolSize);
             
-            _signalBus.Subscribe<MeleeAttackSignal>(ActivateAbility);
+            // _signalBus.Subscribe<MeleeAttackSignal>(ActivateAbility);
         }
 
         private Ability CreateAbility()

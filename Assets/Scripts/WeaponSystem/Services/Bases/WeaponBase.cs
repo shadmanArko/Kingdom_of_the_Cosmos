@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using WeaponSystem.WeaponModels;
+using Zenject;
 
 namespace WeaponSystem
 {
@@ -13,12 +14,12 @@ namespace WeaponSystem
             this.weaponData = data;
         }
 
-        public virtual void Activate()
+        public virtual void Activate(SignalBus signalBus)
         {
             Debug.Log(weaponData.name + " activated!");
         }
 
-        public virtual void Deactivate()
+        public virtual void Deactivate(SignalBus signalBus)
         {
             Debug.Log(weaponData.name + " deactivated!");
         }

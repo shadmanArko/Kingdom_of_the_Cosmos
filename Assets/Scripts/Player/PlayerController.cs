@@ -1,10 +1,9 @@
 using Cinemachine;
 using InputScripts;
-using TestScripts.WeaponsTest;
 using UnityEngine;
 using Zenject;
 
-namespace PlayerScripts
+namespace Player
 {
     public class PlayerController : MonoBehaviour
     {

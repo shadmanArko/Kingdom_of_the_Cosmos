@@ -1,7 +1,7 @@
 using DBMS.RunningData;
 using ObjectPool;
 using ObjectPoolScripts;
-using PlayerScripts;
+using Player;
 using Signals.BattleSceneSignals;
 using TestScripts.WeaponsTest;
 using UnityEngine;

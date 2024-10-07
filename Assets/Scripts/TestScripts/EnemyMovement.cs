@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -10,38 +11,78 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float obstacleAvoidanceRadius = 1f;
     [SerializeField] private float neighborAvoidanceRadius = 0.5f;
+    [SerializeField] private float minSpawnDistance = 1f; // Minimum distance between spawned enemies
     
     public Transform playerTransform;
     public GameObject enemyObject;
     public int numberOfEnemies = 100;
+    [SerializeField] private float spawnAreaSize = 100f; // Size of the spawn area
     
     private NativeArray<float3> currentPositions;
     private NativeArray<float3> newPositions;
     private NativeArray<float3> obstaclePositions;
-    
+
     private void Awake()
     {
-        SpawnEnemies();
+        SpawnEnemiesWithSafeDistance();
         InitializeArrays();
     }
 
-    private void SpawnEnemies()
+    private void SpawnEnemiesWithSafeDistance()
     {
+        List<Vector2> spawnedPositions = new List<Vector2>();
+        
         for (int i = 0; i < numberOfEnemies; i++)
         {
-            Instantiate(enemyObject,
-                new Vector3(UnityEngine.Random.Range(-100, 100), UnityEngine.Random.Range(-100, 100), 0f),
+            Vector2 spawnPos = GetSafeSpawnPosition(spawnedPositions);
+            GameObject enemy = Instantiate(enemyObject,
+                new Vector3(spawnPos.x, spawnPos.y, 0f),
                 Quaternion.identity, transform);
+            spawnedPositions.Add(spawnPos);
         }
+    }
+
+    private Vector2 GetSafeSpawnPosition(List<Vector2> existingPositions)
+    {
+        const int maxAttempts = 100;
+        int attempts = 0;
+        
+        while (attempts < maxAttempts)
+        {
+            Vector2 candidatePos = new Vector2(
+                UnityEngine.Random.Range(-spawnAreaSize, spawnAreaSize),
+                UnityEngine.Random.Range(-spawnAreaSize, spawnAreaSize)
+            );
+            
+            bool isSafe = true;
+            foreach (Vector2 existingPos in existingPositions)
+            {
+                if (Vector2.Distance(candidatePos, existingPos) < minSpawnDistance)
+                {
+                    isSafe = false;
+                    break;
+                }
+            }
+            
+            if (isSafe || attempts == maxAttempts - 1)
+            {
+                return candidatePos;
+            }
+            
+            attempts++;
+        }
+        
+        // If we couldn't find a safe position after max attempts,
+        // add some random offset to avoid exact overlap
+        Vector2 fallbackPos = existingPositions.Count > 0 ? existingPositions[0] : Vector2.zero;
+        return fallbackPos + UnityEngine.Random.insideUnitCircle * minSpawnDistance;
     }
 
     private void InitializeArrays()
     {
-        // Initialize both position arrays with the actual number of enemies
         currentPositions = new NativeArray<float3>(numberOfEnemies, Allocator.Persistent);
         newPositions = new NativeArray<float3>(numberOfEnemies, Allocator.Persistent);
         
-        // Cache obstacle positions
         GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
         obstaclePositions = new NativeArray<float3>(obstacles.Length, Allocator.Persistent);
         
@@ -49,13 +90,6 @@ public class EnemyMovement : MonoBehaviour
         {
             obstaclePositions[i] = obstacles[i].transform.position;
         }
-    }
-
-    private void OnDestroy()
-    {
-        if (currentPositions.IsCreated) currentPositions.Dispose();
-        if (newPositions.IsCreated) newPositions.Dispose();
-        if (obstaclePositions.IsCreated) obstaclePositions.Dispose();
     }
 
     [BurstCompile]
@@ -73,7 +107,13 @@ public class EnemyMovement : MonoBehaviour
         public void Execute(int index)
         {
             float3 currentPos = currentPositions[index];
-            float3 dirToPlayer = math.normalize(playerPosition - currentPos);
+            float3 dirToPlayer = playerPosition - currentPos;
+            float distToPlayer = math.length(dirToPlayer);
+            
+            // Safe normalization of direction to player
+            float3 normalizedDirToPlayer = distToPlayer > float.Epsilon 
+                ? dirToPlayer / distToPlayer 
+                : new float3(0, 1, 0); // Default direction if at same position
             
             // Avoid obstacles
             float3 avoidanceForce = float3.zero;
@@ -82,13 +122,20 @@ public class EnemyMovement : MonoBehaviour
                 float3 toObstacle = currentPos - obstaclePositions[i];
                 float distance = math.length(toObstacle);
                 
-                if (distance < obstacleRadius)
+                if (distance > float.Epsilon && distance < obstacleRadius)
                 {
-                    avoidanceForce += math.normalize(toObstacle) / distance;
+                    avoidanceForce += toObstacle / (distance * distance); // Squared falloff
                 }
             }
             
-            // Avoid other enemies (simple flocking behavior)
+            // Normalize avoidance force safely
+            float avoidanceMagnitude = math.length(avoidanceForce);
+            if (avoidanceMagnitude > float.Epsilon)
+            {
+                avoidanceForce /= avoidanceMagnitude;
+            }
+            
+            // Avoid other enemies
             float3 separationForce = float3.zero;
             int neighborCount = 0;
             
@@ -99,20 +146,36 @@ public class EnemyMovement : MonoBehaviour
                 float3 toNeighbor = currentPos - currentPositions[i];
                 float distance = math.length(toNeighbor);
                 
-                if (distance < neighborRadius)
+                if (distance > float.Epsilon && distance < neighborRadius)
                 {
-                    separationForce += math.normalize(toNeighbor) / distance;
+                    separationForce += toNeighbor / (distance * distance); // Squared falloff
                     neighborCount++;
                 }
             }
             
+            // Normalize separation force safely
             if (neighborCount > 0)
             {
-                separationForce /= neighborCount;
+                float separationMagnitude = math.length(separationForce);
+                if (separationMagnitude > float.Epsilon)
+                {
+                    separationForce /= separationMagnitude;
+                }
             }
             
-            // Combine forces
-            float3 finalDirection = math.normalize(dirToPlayer + avoidanceForce + separationForce);
+            // Combine forces with weights
+            float3 finalDirection = normalizedDirToPlayer + avoidanceForce * 1.5f + separationForce;
+            float finalMagnitude = math.length(finalDirection);
+            
+            // Safe normalization of final direction
+            if (finalMagnitude > float.Epsilon)
+            {
+                finalDirection /= finalMagnitude;
+            }
+            else
+            {
+                finalDirection = new float3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f), 0); // Random direction if forces cancel out
+            }
             
             // Update position
             newPositions[index] = currentPos + finalDirection * moveSpeed * deltaTime;
@@ -121,13 +184,11 @@ public class EnemyMovement : MonoBehaviour
 
     private void Update()
     {
-        // Update current positions array from transforms
         for (int i = 0; i < numberOfEnemies; i++)
         {
             currentPositions[i] = transform.GetChild(i).position;
         }
 
-        // Create and schedule the job
         var job = new EnemyMovementJob
         {
             playerPosition = playerTransform.position,
@@ -143,11 +204,17 @@ public class EnemyMovement : MonoBehaviour
         JobHandle handle = job.Schedule(numberOfEnemies, 64);
         handle.Complete();
 
-        // Update actual GameObjects using the new positions
         for (int i = 0; i < numberOfEnemies; i++)
         {
             transform.GetChild(i).position = newPositions[i];
-            currentPositions[i] = newPositions[i]; // Update current positions for next frame
+            currentPositions[i] = newPositions[i];
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (currentPositions.IsCreated) currentPositions.Dispose();
+        if (newPositions.IsCreated) newPositions.Dispose();
+        if (obstaclePositions.IsCreated) obstaclePositions.Dispose();
     }
 }

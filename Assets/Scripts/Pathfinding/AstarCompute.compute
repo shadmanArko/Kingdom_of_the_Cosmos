@@ -7,6 +7,8 @@ struct Node
     float fCost;
     int parentIndex;
     bool isWalkable;
+    bool isOpen;    // Add this to track open set
+    bool isClosed;  // Add this to track closed set
 };
 
 // Shared buffer definitions
@@ -67,7 +69,7 @@ void UpdateNodeWalkability (uint3 id : SV_DispatchThreadID)
 
 #pragma kernel FindPath
 [numthreads(64,1,1)]
-void FindPath (uint3 id : SV_DispatchThreadID)
+void FindPath(uint3 id : SV_DispatchThreadID)
 {
     if (id.x >= (uint)numPathRequests) return;
 
@@ -76,82 +78,113 @@ void FindPath (uint3 id : SV_DispatchThreadID)
     
     int startIndex = GetIndex(startPos);
     int goalIndex = GetIndex(goalPos);
+    
+    // Reset all nodes for this pathfinding instance
+    for (int i = 0; i < gridSize.x * gridSize.y; i++)
+    {
+        nodes[i].gCost = 1.#INF;
+        nodes[i].hCost = 1.#INF;
+        nodes[i].fCost = 1.#INF;
+        nodes[i].parentIndex = -1;
+        nodes[i].isOpen = false;
+        nodes[i].isClosed = false;
+    }
 
     // Initialize start node
     nodes[startIndex].gCost = 0;
     nodes[startIndex].hCost = GetDistance(startPos, goalPos);
     nodes[startIndex].fCost = nodes[startIndex].hCost;
+    nodes[startIndex].isOpen = true;
 
-    // A* algorithm
     bool pathFound = false;
-    int currentIndex = startIndex;
+    const int maxIterations = 1000;
     int iterations = 0;
-    while (iterations < 1000) // Limit iterations to prevent infinite loops
+
+    while (iterations < maxIterations)
     {
         iterations++;
-        if (currentIndex == goalIndex)
+        
+        // Find current node (lowest fCost in open set)
+        int currentIndex = -1;
+        float lowestFCost = 1.#INF;
+        
+        for (int i = 0; i < gridSize.x * gridSize.y; i++)
         {
-            pathFound = true;
+            if (nodes[i].isOpen && nodes[i].fCost < lowestFCost)
+            {
+                lowestFCost = nodes[i].fCost;
+                currentIndex = i;
+            }
+        }
+        
+        if (currentIndex == -1 || currentIndex == goalIndex)
+        {
+            pathFound = (currentIndex == goalIndex);
             break;
         }
 
-        // Find neighbors
+        // Move current node from open to closed set
+        nodes[currentIndex].isOpen = false;
+        nodes[currentIndex].isClosed = true;
+        
+        // Process neighbors
+        int2 currentPos = nodes[currentIndex].position;
+        
         for (int y = -1; y <= 1; y++)
         {
             for (int x = -1; x <= 1; x++)
             {
+                if (x == 0 && y == 0) continue;
                 if (!canMoveDiagonally && x != 0 && y != 0) continue;
                 
-                int2 neighborPos = nodes[currentIndex].position + int2(x, y);
-                if (neighborPos.x < 0 || neighborPos.x >= gridSize.x || neighborPos.y < 0 || neighborPos.y >= gridSize.y) continue;
+                int2 neighborPos = currentPos + int2(x, y);
+                
+                // Check bounds
+                if (neighborPos.x < 0 || neighborPos.x >= gridSize.x ||
+                    neighborPos.y < 0 || neighborPos.y >= gridSize.y)
+                    continue;
                 
                 int neighborIndex = GetIndex(neighborPos);
-                if (!nodes[neighborIndex].isWalkable) continue;
+                
+                // Skip if not walkable or in closed set
+                if (!nodes[neighborIndex].isWalkable || nodes[neighborIndex].isClosed)
+                    continue;
 
-                float tentativeGCost = nodes[currentIndex].gCost + GetDistance(nodes[currentIndex].position, neighborPos);
-                if (tentativeGCost < nodes[neighborIndex].gCost)
+                // Calculate new path cost
+                float moveCost = (abs(x) + abs(y) == 1) ? 10 : 14; // 10 for orthogonal, 14 for diagonal
+                float newGCost = nodes[currentIndex].gCost + moveCost;
+                
+                if (!nodes[neighborIndex].isOpen || newGCost < nodes[neighborIndex].gCost)
                 {
-                    nodes[neighborIndex].parentIndex = currentIndex;
-                    nodes[neighborIndex].gCost = tentativeGCost;
+                    nodes[neighborIndex].gCost = newGCost;
                     nodes[neighborIndex].hCost = GetDistance(neighborPos, goalPos);
-                    nodes[neighborIndex].fCost = nodes[neighborIndex].gCost + nodes[neighborIndex].hCost;
+                    nodes[neighborIndex].fCost = newGCost + nodes[neighborIndex].hCost;
+                    nodes[neighborIndex].parentIndex = currentIndex;
+                    nodes[neighborIndex].isOpen = true;
                 }
             }
         }
-
-        // Find next node with lowest fCost
-        float lowestFCost = 1.#INF;
-        int lowestFCostIndex = -1;
-        for (int i = 0; i < gridSize.x * gridSize.y; i++)
-        {
-            if (nodes[i].fCost < lowestFCost && nodes[i].parentIndex != -1)
-            {
-                lowestFCost = nodes[i].fCost;
-                lowestFCostIndex = i;
-            }
-        }
-
-        if (lowestFCostIndex == -1) break; // No path found
-        currentIndex = lowestFCostIndex;
     }
 
-    // Store result
+    // Reconstruct path if found
     if (pathFound)
     {
-        int resultIndex = id.x * gridSize.x * gridSize.y;
         int pathLength = 0;
         int currentPathIndex = goalIndex;
+        int resultIndex = id.x * gridSize.x * gridSize.y;
+        
         while (currentPathIndex != startIndex && pathLength < gridSize.x * gridSize.y)
         {
-            pathResults[resultIndex + pathLength] = currentPathIndex;
+            pathResults[resultIndex + pathLength + 1] = currentPathIndex;
             currentPathIndex = nodes[currentPathIndex].parentIndex;
             pathLength++;
         }
-        pathResults[resultIndex + pathLength] = startIndex;
-        pathResults[id.x] = pathLength + 1; // Store path length at the start of each result
+        
+        pathResults[resultIndex + pathLength + 1] = startIndex;
+        pathResults[id.x] = pathLength + 1;
     }
     else
     {
-        pathResults[id.x] = 0; // Indicate no path found
+        pathResults[id.x] = 0; // No path found
     }
 }

@@ -25,33 +25,62 @@ public class AStarComputeManager : MonoBehaviour
     {
         InitializeComputeShader();
         walkableTiles = new List<Vector2Int>();
-        RandomizeWalkableTiles(0.7f); // Make 70% of tiles walkable
+        RandomizeWalkableTiles(1f); // Make 70% of tiles walkable
     }
 
     void InitializeComputeShader()
     {
+        // Find kernels
         initializeKernel = computeShader.FindKernel("InitializeNodes");
         findPathKernel = computeShader.FindKernel("FindPath");
+        updateWalkabilityKernel = computeShader.FindKernel("UpdateNodeWalkability");
 
-        // Create and initialize nodes buffer
-        nodesBuffer = new ComputeBuffer(gridSizeX * gridSizeY, sizeof(float) * 5 + sizeof(int) * 3);
-        computeShader.SetBuffer(initializeKernel, "nodes", nodesBuffer);
-        computeShader.SetInts("gridSize", new int[] { gridSizeX, gridSizeY });
-        computeShader.Dispatch(initializeKernel, Mathf.CeilToInt(gridSizeX * gridSizeY / 64f), 1, 1);
+        // Calculate stride for Node struct
+        int nodeStride = sizeof(float) * 3 + // gCost, hCost, fCost
+                        sizeof(int) * 3 +    // position.x, position.y, parentIndex
+                        sizeof(int);         // isWalkable, isOpen, isClosed packed into one int
 
-        // Create path requests and results buffers
+        // Create buffers
+        nodesBuffer = new ComputeBuffer(gridSizeX * gridSizeY, nodeStride);
         pathRequestsBuffer = new ComputeBuffer(MAX_PATH_REQUESTS * 2, sizeof(int) * 2);
         pathResultsBuffer = new ComputeBuffer(MAX_PATH_REQUESTS * gridSizeX * gridSizeY, sizeof(int));
+        walkabilityUpdatesBuffer = new ComputeBuffer(MAX_WALKABILITY_UPDATES, sizeof(int) * 2);
 
+        // Set buffers for all kernels
+        computeShader.SetBuffer(initializeKernel, "nodes", nodesBuffer);
         computeShader.SetBuffer(findPathKernel, "nodes", nodesBuffer);
         computeShader.SetBuffer(findPathKernel, "pathRequests", pathRequestsBuffer);
         computeShader.SetBuffer(findPathKernel, "pathResults", pathResultsBuffer);
+        computeShader.SetBuffer(updateWalkabilityKernel, "nodes", nodesBuffer);
+        computeShader.SetBuffer(updateWalkabilityKernel, "walkabilityUpdates", walkabilityUpdatesBuffer);
+
+        // Set shared variables
+        computeShader.SetInts("gridSize", new int[] { gridSizeX, gridSizeY });
         computeShader.SetBool("canMoveDiagonally", canMoveDiagonally);
 
-        updateWalkabilityKernel = computeShader.FindKernel("UpdateNodeWalkability");
-        walkabilityUpdatesBuffer = new ComputeBuffer(MAX_WALKABILITY_UPDATES, sizeof(int) * 2);
-        computeShader.SetBuffer(updateWalkabilityKernel, "walkabilityUpdates", walkabilityUpdatesBuffer);
-        computeShader.SetBuffer(updateWalkabilityKernel, "nodes", nodesBuffer);
+        // Initialize nodes
+        computeShader.Dispatch(initializeKernel, Mathf.CeilToInt(gridSizeX * gridSizeY / 64f), 1, 1);
+    }
+
+    public void DebugPath(Vector2Int start, Vector2Int goal)
+    {
+        Debug.Log($"Attempting to find path from {start} to {goal}");
+        Debug.Log($"Start walkable: {walkableTiles.Contains(start)}");
+        Debug.Log($"Goal walkable: {walkableTiles.Contains(goal)}");
+        
+        var path = FindPath(start, goal);
+        if (path != null)
+        {
+            Debug.Log($"Path found with {path.Count} steps:");
+            foreach (var point in path)
+            {
+                Debug.Log($"-> {point}");
+            }
+        }
+        else
+        {
+            Debug.Log("No path found");
+        }
     }
 
     public List<Vector2Int> FindPath(Vector2Int start, Vector2Int goal)
@@ -59,7 +88,11 @@ public class AStarComputeManager : MonoBehaviour
         InitializeComputeShader();
         Vector2Int[] requests = new Vector2Int[] { start, goal };
         pathRequestsBuffer.SetData(requests);
-
+        if (!walkableTiles.Contains(start))
+        {
+            Debug.Log($"Is Not walkable tile {start.x}, {start.y}");
+            return null;
+        }
         computeShader.SetInt("numPathRequests", 1);
         computeShader.Dispatch(findPathKernel, 1, 1, 1);
 
@@ -110,6 +143,7 @@ public class AStarComputeManager : MonoBehaviour
             int pathLength = results[requestIndex];
             if (pathLength == 0)
             {
+                Debug.Log($"No path found for {starts[requestIndex]}");
                 paths.Add(null); // No path found for this request
                 continue;
             }

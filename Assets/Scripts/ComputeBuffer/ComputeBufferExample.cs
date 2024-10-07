@@ -46,11 +46,11 @@ public class ComputeBufferExample : MonoBehaviour
         // Get and print results (you might want to modify this part based on your needs)
         int[] results = new int[SIZE];
         buffer.GetData(results);
-        for (int i = 0; i < 10; i++)
-        {
-            Debug.Log($"Result[{i}] = {results[i]}");
-        }
-        Debug.Log($"size of array {results.Length}");
+        // for (int i = 0; i < 10; i++)
+        // {
+        //     Debug.Log($"Result[{i}] = {results[i]}");
+        // }
+        // Debug.Log($"size of array {results.Length}");
 
     }
 }

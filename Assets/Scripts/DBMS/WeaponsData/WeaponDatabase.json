@@ -1,0 +1,54 @@
+﻿{
+  "weaponCategories": [
+    {
+      "category": "Pistols",
+      "weapons": [
+        {
+          "name": "Standard Pistol",
+          "damage": 15,
+          "cooldown": 0.5,
+          "type": "Controlled",
+          "triggerCondition": null
+        },
+        {
+          "name": "Burst Pistol",
+          "damage": 12,
+          "cooldown": 0.3,
+          "type": "Automatic",
+          "triggerCondition": "ThreeRoundBurst"
+        }
+      ]
+    },
+    {
+      "category": "Rifles",
+      "weapons": [
+        {
+          "name": "Assault Rifle",
+          "damage": 25,
+          "cooldown": 0.1,
+          "type": "Automatic",
+          "triggerCondition": "FullAuto"
+        },
+        {
+          "name": "Sniper Rifle",
+          "damage": 100,
+          "cooldown": 2.0,
+          "type": "Controlled",
+          "triggerCondition": null
+        }
+      ]
+    },
+    {
+      "category": "Heavy Weapons",
+      "weapons": [
+        {
+          "name": "Rocket Launcher",
+          "damage": 150,
+          "cooldown": 3.0,
+          "type": "Controlled",
+          "triggerCondition": null
+        }
+      ]
+    }
+  ]
+}

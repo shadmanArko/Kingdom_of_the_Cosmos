@@ -11,10 +11,9 @@ namespace Installers
         
         public override void InstallBindings()
         {
-            SignalBusInstaller.Install(Container);
+            
 
-            Container.DeclareSignal<MeleeAttackSignal>();
-            Container.DeclareSignal<MouseMovementSignal>();
+            
             
         }
     }

@@ -1,6 +1,6 @@
 ﻿using Signals.BattleSceneSignals;
 using UnityEngine;
-using WeaponSystem.WeaponModels;
+using WeaponSystem.Models;
 using Zenject;
 
 namespace WeaponSystem.ControlledWeapon
@@ -13,22 +13,24 @@ namespace WeaponSystem.ControlledWeapon
         {
             // For controlled weapons, check input
             // return Input.GetKeyDown(KeyCode.Space); // Example key
-            return false;
+            return true;
         }
 
         public override void Activate(SignalBus signalBus)
         {
             signalBus.Subscribe<MeleeAttackSignal>(TriggerAttack);
+            Debug.Log($"Activated weapon: {weaponData.name}");
         }
 
         public override void Deactivate(SignalBus signalBus)
         {
-            signalBus.Subscribe<MeleeAttackSignal>(TriggerAttack);
+            signalBus.Unsubscribe<MeleeAttackSignal>(TriggerAttack);
+            Debug.Log($"Deactivated weapon: {weaponData.name}");
         }
 
         private void TriggerAttack()
         {
-            Debug.Log("Melee attack triggered manually");
+            Debug.Log($"Attacked with Weapon {weaponData.name}");
         }
     }
 }

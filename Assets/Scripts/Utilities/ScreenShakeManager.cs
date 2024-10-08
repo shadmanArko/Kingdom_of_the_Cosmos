@@ -29,8 +29,7 @@ namespace Utilities
         public async void ShakeScreen()
         {
             _timer = _shakeTime;
-
-            Debug.Log("Screen Shaking!!");
+            
             while (_timer > 0)
             {
                 _timer -= Time.deltaTime;

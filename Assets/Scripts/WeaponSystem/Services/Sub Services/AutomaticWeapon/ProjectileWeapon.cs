@@ -1,5 +1,5 @@
 using UnityEngine;
-using WeaponSystem.WeaponModels;
+using WeaponSystem.Models;
 
 namespace WeaponSystem.AutomaticWeapon
 {

@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities;
 using Zenject;
+using zzz_TestScripts.Signals.BattleSceneSignals;
 
 namespace InputScripts
 {
@@ -58,6 +59,8 @@ namespace InputScripts
         private void SubscribeToActions()
         {
             _inputControls.PlayerControl.MeleeAttack.performed += _ => AttackInput();
+            _inputControls.PlayerControl.Reload.performed += _ => Reload();
+            _inputControls.PlayerControl.SwitchWeapon.performed += _ => SwitchWeapon();
         }
 
         #region Enable and Disable
@@ -104,6 +107,16 @@ namespace InputScripts
             
             // _abilityPoolManager.ActivateAbility();
             _screenShakeManager.ShakeScreen();
+        }
+
+        private void Reload()
+        {
+            _signalBus.Fire<ReloadSignal>();
+        }
+
+        private void SwitchWeapon()
+        {
+            _signalBus.Fire<SwitchControlledWeaponSignal>();
         }
 
 

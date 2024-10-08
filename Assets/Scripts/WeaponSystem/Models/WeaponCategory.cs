@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace WeaponSystem.WeaponModels
+namespace WeaponSystem.Models
 {
-    [System.Serializable]
+    [Serializable]
     public class WeaponCategory
     {
         public string category;

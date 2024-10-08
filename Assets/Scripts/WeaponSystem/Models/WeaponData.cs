@@ -1,6 +1,8 @@
-﻿namespace WeaponSystem.WeaponModels
+﻿using System;
+
+namespace WeaponSystem.Models
 {
-    [System.Serializable]
+    [Serializable]
     public class WeaponData
     {
         public string name;

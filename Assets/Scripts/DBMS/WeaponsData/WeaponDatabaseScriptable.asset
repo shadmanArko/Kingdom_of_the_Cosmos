@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbcfc67e987294233aecc90950448c89, type: 3}
-  m_Name: WeaponInstaller
+  m_Script: {fileID: 11500000, guid: f4d07560fcd14ff399dbaa1075583977, type: 3}
+  m_Name: WeaponDatabaseScriptable
   m_EditorClassIdentifier: 
-  weaponDatabaseScriptable: {fileID: 11400000, guid: e5d2f64ff9a54d04ba4bd2bee7596a97, type: 2}
+  weaponDatabase:
+    weaponCategories: []

@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 
-namespace WeaponSystem.WeaponModels
+namespace WeaponSystem.Models
 {
-    [System.Serializable]
+    [Serializable]
     public class WeaponDatabase
     {
         public List<WeaponCategory> weaponCategories;

@@ -1,16 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DBMS.JsonToScriptable;
+using DBMS.WeaponsData;
 using UnityEngine;
 using WeaponSystem.AutomaticWeapon;
 using WeaponSystem.ControlledWeapon;
-using WeaponSystem.WeaponModels;
+using WeaponSystem.Models;
 using Zenject;
+using zzz_TestScripts.Signals.BattleSceneSignals;
 
 namespace WeaponSystem.Managers
 {
     public class WeaponManager
     {
-        [Inject] private SignalBus _signalBus;
+        private SignalBus _signalBus;
+        private WeaponDatabaseScriptable _weaponDatabaseScriptable;
+        private WeaponDataLoader _weaponDataLoader;
 
         private List<IWeapon> _controlledWeapons = new();
         private List<IWeapon> automaticWeapons = new();
@@ -19,46 +24,29 @@ namespace WeaponSystem.Managers
         private int currentControlledIndex = 0;
 
         [Inject]
-        public WeaponManager(SignalBus signalBus)
+        public WeaponManager(SignalBus signalBus, WeaponDatabaseScriptable weaponDatabaseScriptable, WeaponDataLoader weaponDataLoader)
         {
             _signalBus = signalBus;
+            _weaponDatabaseScriptable = weaponDatabaseScriptable;
+            _weaponDataLoader = weaponDataLoader;
+            SubscribeToActions();
             Start();
+        }
+
+        private void SubscribeToActions()
+        {
+            _signalBus.Subscribe<ReloadSignal>(Reload);
+            _signalBus.Subscribe<SwitchControlledWeaponSignal>(HandleControlledWeaponSwitch);
         }
 
         private void Start()
         {
             Debug.Log($"signal bus is null {_signalBus == null}");
             // Assume you load data from JSON here
-            WeaponDatabase weaponDatabase = LoadWeaponDataFromJson();
+            LoadWeaponDataFromJson();
             NewTestControlledWeapon();
-            // foreach (var category in weaponDatabase.weaponCategories)
-            // {
-            //     foreach (var weaponData in category.weapons)
-            //     {
-            //         IWeapon weapon;
-            //
-            //         if (weaponData.type == "Controlled")
-            //         {
-            //             weapon = new MeleeWeapon(weaponData); // Or ProjectileWeapon, based on category
-            //             _controlledWeapons.Add(weapon);
-            //         }
-            //         else if (weaponData.type == "Automatic")
-            //         {
-            //             weapon = new ProjectileWeapon(weaponData);
-            //             automaticWeapons.Add(weapon);
-            //         }
-            //     }
-            // }
-
-            // Initialize first controlled weapon
-            // if (_controlledWeapons.Count > 0)
-            // {
-            //     activeControlledWeapon = _controlledWeapons[0];
-            //     activeControlledWeapon.Activate(_signalBus);
-            // }
-
-            // Subscribe to signal bus for automatic triggers
-            _signalBus.Subscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
+            
+            _signalBus!.Subscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
         }
 
         private void Update()
@@ -124,13 +112,10 @@ namespace WeaponSystem.Managers
 
         private void HandleControlledWeaponSwitch()
         {
-            if (Input.GetKeyDown(KeyCode.Tab)) // Example switch key
-            {
-                activeControlledWeapon.Deactivate(_signalBus);
-                currentControlledIndex = (currentControlledIndex + 1) % _controlledWeapons.Count;
-                activeControlledWeapon = _controlledWeapons[currentControlledIndex];
-                activeControlledWeapon.Activate(_signalBus);
-            }
+            activeControlledWeapon.Deactivate(_signalBus);
+            currentControlledIndex = (currentControlledIndex + 1) % _controlledWeapons.Count;
+            activeControlledWeapon = _controlledWeapons[currentControlledIndex];
+            activeControlledWeapon.Activate(_signalBus);
         }
 
         private void OnAutomaticWeaponTrigger(AutomaticWeaponTriggerSignal signal)
@@ -144,27 +129,32 @@ namespace WeaponSystem.Managers
             }
         }
 
-        private WeaponDatabase LoadWeaponDataFromJson()
+        private void LoadWeaponDataFromJson()
         {
-            // Implement JSON loading here
-            return new WeaponDatabase();
+            _weaponDataLoader.LoadWeaponData();
         }
 
         #region For Test
-
-        [ContextMenu("New Test Controlled Weapon")]
+        
         private void NewTestControlledWeapon()
         {
-            var weaponData = new WeaponData
-            {
-                cooldown = 1f,
-                damage = 100,
-                name = "Good Weapon",
-                triggerCondition = "Good Condition",
-                type = "Controlled"
-            };
+            var weaponData = _weaponDatabaseScriptable.weaponDatabase.weaponCategories[0].weapons[0];
+            var weaponData1 = _weaponDatabaseScriptable.weaponDatabase.weaponCategories[1].weapons[1];
             
             AddNewWeapon(weaponData);
+            AddNewWeapon(weaponData1);
+        }
+
+        private void Reload()
+        {
+            if (_controlledWeapons.Count <= 0)
+            {
+                Debug.Log("No more weapons in equipped");
+                return;
+            }
+            
+            _controlledWeapons[^1].Deactivate(_signalBus);
+            Debug.Log("Unsubscribe melee weapon");
         }
 
         #endregion

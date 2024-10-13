@@ -1,0 +1,36 @@
+#pragma kernel CSMain
+
+struct Enemy
+{
+    float2 position;
+    float2 velocity;
+};
+
+RWStructuredBuffer<Enemy> enemyBuffer; // Buffer storing enemy data
+float2 playerPosition;                 // Player's current position (passed from CPU)
+float deltaTime;                       // Frame delta time
+float moveSpeed;                       // Speed of enemy movement
+int enemyCount;                        // Total number of enemies (passed from CPU)
+
+[numthreads(256, 1, 1)] // Work on 256 enemies per thread group
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    uint index = id.x;
+
+    // Ensure that we do not go beyond the valid range
+    if (index >= enemyCount)
+        return;
+
+    // Fetch the enemy data
+    Enemy enemy = enemyBuffer[index];
+
+    // Calculate direction towards the player
+    float2 direction = normalize(playerPosition - enemy.position);
+
+    // Update enemy position with velocity
+    enemy.velocity = direction * moveSpeed * deltaTime;
+    enemy.position += enemy.velocity;
+
+    // Write back updated enemy data
+    enemyBuffer[index] = enemy;
+}

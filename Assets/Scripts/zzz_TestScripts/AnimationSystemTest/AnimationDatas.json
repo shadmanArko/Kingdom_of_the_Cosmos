@@ -1,0 +1,12 @@
+﻿[
+  {
+    "stateName": "Idle",
+    "clipPath": "Animations/IdleAnimation",
+    "speed": 1.0
+  },
+  {
+    "stateName": "Walk",
+    "clipPath": "Animations/WalkAnimation",
+    "speed": 1.2
+  }
+]

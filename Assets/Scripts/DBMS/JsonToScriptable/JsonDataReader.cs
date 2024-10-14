@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DBMS.JsonToScriptable
 {
-    public class JsonToScriptableReader
+    public class JsonDataReader
     {
         public static T LoadFromJson<T>(string filePath) where T : class
         {

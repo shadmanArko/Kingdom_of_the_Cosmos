@@ -49,11 +49,6 @@ namespace WeaponSystem.Managers
             _signalBus!.Subscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
         }
 
-        private void Update()
-        {
-            HandleControlledWeaponSwitch();
-        }
-
         public void AddNewWeapon(WeaponData weaponData)
         {
             IWeapon newWeapon;

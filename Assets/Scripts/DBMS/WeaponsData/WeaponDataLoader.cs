@@ -15,7 +15,7 @@ namespace DBMS.WeaponsData
         public void LoadWeaponData()
         {
             var weaponDatabaseFilePath = "Assets/Scripts/DBMS/WeaponsData/WeaponDatabase.json";
-            var weaponDatabase = JsonToScriptableReader.LoadFromJson<WeaponDatabase>(weaponDatabaseFilePath);
+            var weaponDatabase = JsonDataReader.LoadFromJson<WeaponDatabase>(weaponDatabaseFilePath);
         
             if (weaponDatabase != null)
             {

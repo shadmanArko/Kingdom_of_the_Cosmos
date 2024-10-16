@@ -4,8 +4,8 @@ using DBMS.JsonToScriptable;
 using DBMS.WeaponsData;
 using UnityEngine;
 using WeaponSystem.AutomaticWeapon;
-using WeaponSystem.ControlledWeapon;
 using WeaponSystem.Models;
+using WeaponSystem.Services.Sub_Services.ControlledWeapon;
 using Zenject;
 using zzz_TestScripts.Signals.BattleSceneSignals;
 

@@ -1,12 +1,14 @@
-﻿[
-  {
-    "stateName": "Idle",
-    "clipPath": "Animations/IdleAnimation",
-    "speed": 1.0
-  },
-  {
-    "stateName": "Walk",
-    "clipPath": "Animations/WalkAnimation",
-    "speed": 1.2
-  }
-]
+﻿{
+  "AnimationDatas": [
+    {
+      "stateName": "idle",
+      "clipPath": "Animations/idle",
+      "speed": 1.0
+    },
+    {
+      "stateName": "attack",
+      "clipPath": "Animations/attack",
+      "speed": 1.0
+    }
+  ]
+}

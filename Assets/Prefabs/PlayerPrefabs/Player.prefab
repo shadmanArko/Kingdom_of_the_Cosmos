@@ -51,7 +51,7 @@ MonoBehaviour:
   moveSpeed: 5
   movement: {x: 0, y: 0}
   rb: {fileID: 3878785499377661370}
-  playerAnimationController: {fileID: 0}
+  playerAnimationController: {fileID: 2120594961658747589}
   playerInputHandler: {fileID: 8226866991430459187}
 --- !u!50 &3878785499377661370
 Rigidbody2D:
@@ -137,6 +137,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerAnimationController
       objectReference: {fileID: 0}
+    - target: {fileID: 5204891945627156628, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c60fd047a7e200c468e18eed83cea13a, type: 2}
     - target: {fileID: 8707764273265996899, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -182,6 +186,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
+--- !u!114 &2120594961658747589 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 220404837635855694, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
+  m_PrefabInstance: {fileID: 2189546470010982283}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 509596b58f72226419f5382db43f65b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7402481350280510440 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8707764273265996899, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}

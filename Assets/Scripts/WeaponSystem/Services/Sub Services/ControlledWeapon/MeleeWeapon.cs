@@ -3,7 +3,7 @@ using UnityEngine;
 using WeaponSystem.Models;
 using Zenject;
 
-namespace WeaponSystem.ControlledWeapon
+namespace WeaponSystem.Services.Sub_Services.ControlledWeapon
 {
     public class MeleeWeapon : WeaponBase
     {

@@ -21,9 +21,11 @@ public class AnimationStateSetter
                 Debug.LogError("The Animator must have an AnimatorController assigned, not an AnimatorOverrideController.");
                 return;
             }
-            _overrideController = new AnimatorOverrideController(_baseController);
-            _overrideController.name = "NewPlayerAnimatorOverrideController";
-            _animator.runtimeAnimatorController = _overrideController;
+            // _overrideController = new AnimatorOverrideController(_baseController);
+            // _overrideController.name = "NewPlayerAnimatorOverrideController";
+            // _animator.runtimeAnimatorController = _overrideController;
+
+            
         }
 
         public void SetupAnimationStates(string jsonFilePath)
@@ -31,54 +33,39 @@ public class AnimationStateSetter
             var jsonData = JsonDataReader.LoadFromJson<AnimationDatabase>(jsonFilePath);
             var animationDataList = jsonData.AnimationDatas;
 
+            var states = _baseController.layers[0].stateMachine.states;
+
             foreach (var animationData in animationDataList)
             {
-                Debug.Log($"anim data found: {animationData.stateName}");
-            }
-
-            var clipOverrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-            _overrideController.GetOverrides(clipOverrides);
-
-            foreach (var data in animationDataList)
-            {
-                var clip = Resources.Load<AnimationClip>(data.clipPath);
-                if (clip != null)
+                var clip = Resources.Load<AnimationClip>(animationData.clipPath);
+                if (clip == null)
                 {
-                    var originalClip = _overrideController[data.stateName];
-                    Debug.Log($"Original clip is null {originalClip == null}");
-                    Debug.Log($"found original clip {originalClip.name}");
-                    
-                    var index = clipOverrides.FindIndex(kvp => kvp.Key == originalClip);
-                    var modifiedClipOverride = new KeyValuePair<AnimationClip, AnimationClip>(originalClip, clip);
-                    clipOverrides[index] = modifiedClipOverride;
-                    
-                    // clipOverrides.Add(new KeyValuePair<AnimationClip, AnimationClip>(originalClip, clip));
-                    SetAnimationSpeed(data.stateName, data.speed);
+                    Debug.LogError($"Animation clip is null: {animationData.stateName}");
+                    continue;
                 }
-                else
-                {
-                    Debug.LogError($"Animation clip not found at path: {data.clipPath}");
-                }
+                
+                var matchedState = states.FirstOrDefault(thisState => thisState.state.name == animationData.stateName);
+                if(matchedState.state == null) continue;
+                matchedState.state.motion = clip;
+                matchedState.state.speed = animationData.speed;
             }
-
-            _overrideController.ApplyOverrides(clipOverrides);
         }
 
-        private void SetAnimationSpeed(string stateName, float speed)
-        {
-            foreach (var layer in _baseController.layers)
-            {
-                var stateMachine = layer.stateMachine;
-                foreach (var childState in stateMachine.states)
-                {
-                    if (childState.state.name == stateName)
-                    {
-                        childState.state.speed = speed;
-                        return;
-                    }
-                }
-            }
-            Debug.LogWarning($"Animation state '{stateName}' not found in the Animator Controller.");
-        }
+        // private void SetAnimationSpeed(string stateName, float speed)
+        // {
+        //     foreach (var layer in _baseController.layers)
+        //     {
+        //         var stateMachine = layer.stateMachine;
+        //         foreach (var childState in stateMachine.states)
+        //         {
+        //             if (childState.state.name == stateName)
+        //             {
+        //                 childState.state.speed = speed;
+        //                 return;
+        //             }
+        //         }
+        //     }
+        //     Debug.LogWarning($"Animation state '{stateName}' not found in the Animator Controller.");
+        // }
     }
 }

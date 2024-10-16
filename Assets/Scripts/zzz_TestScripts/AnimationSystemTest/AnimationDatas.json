@@ -8,7 +8,12 @@
     {
       "stateName": "attack",
       "clipPath": "Animations/attack",
-      "speed": 1.0
+      "speed": 1.5
+    },
+    {
+      "stateName": "run",
+      "clipPath": "Animations/run",
+      "speed": 1.2
     }
   ]
 }

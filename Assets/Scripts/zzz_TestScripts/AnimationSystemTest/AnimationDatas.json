@@ -1,0 +1,19 @@
+﻿{
+  "AnimationDatas": [
+    {
+      "stateName": "idle",
+      "clipPath": "Animations/idle",
+      "speed": 1.0
+    },
+    {
+      "stateName": "attack",
+      "clipPath": "Animations/attack",
+      "speed": 1.5
+    },
+    {
+      "stateName": "run",
+      "clipPath": "Animations/run",
+      "speed": 1.2
+    }
+  ]
+}

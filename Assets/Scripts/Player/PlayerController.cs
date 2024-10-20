@@ -32,7 +32,7 @@ namespace Player
 
         public void Attack(Vector2 direction)
         {
-            
+            playerAnimationController.PlayAnimation("attack");
         }
     }
 }

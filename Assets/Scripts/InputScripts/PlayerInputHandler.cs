@@ -105,7 +105,7 @@ namespace InputScripts
         {
             _signalBus.Fire<MeleeAttackSignal>();
             
-            // _abilityPoolManager.ActivateAbility();
+            _playerController.Attack(Vector2.zero);
             _screenShakeManager.ShakeScreen();
         }
 

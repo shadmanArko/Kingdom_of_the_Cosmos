@@ -46,6 +46,7 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < enemiesPerWave; i++)
         {
             GameObject enemy = enemyPool.Get();
+            enemy.transform.SetParent(transform);
             PositionEnemy(enemy);
             enemyManager.AddEnemy(enemy);
         }

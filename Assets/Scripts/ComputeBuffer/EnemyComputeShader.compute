@@ -1,0 +1,86 @@
+#pragma kernel CSMain
+
+struct Enemy
+{
+    float2 position;
+    float2 velocity;
+};
+
+RWStructuredBuffer<Enemy> enemyBuffer;
+StructuredBuffer<float2> obstacleBuffer;
+float2 playerPosition;
+float deltaTime;
+float moveSpeed;
+float obstacleAvoidanceRadius;
+float neighborAvoidanceRadius;
+int enemyCount;
+int obstacleCount;
+
+[numthreads(256, 1, 1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    uint index = id.x;
+
+    if (index >= (uint)enemyCount)
+        return;
+
+    Enemy enemy = enemyBuffer[index];
+
+    float2 dirToPlayer = playerPosition - enemy.position;
+    float distToPlayer = length(dirToPlayer);
+    
+    float2 normalizedDirToPlayer = distToPlayer > 0.001f 
+        ? dirToPlayer / distToPlayer 
+        : float2(sin(enemy.position.x * 1000), cos(enemy.position.y * 1000));
+    
+    float2 avoidanceForce = float2(0, 0);
+    for (int i = 0; i < obstacleCount; i++)
+    {
+        float2 toObstacle = enemy.position - obstacleBuffer[i];
+        float distance = length(toObstacle);
+        
+        if (distance > 0.001f && distance < obstacleAvoidanceRadius)
+        {
+            avoidanceForce += toObstacle / (distance * distance);
+        }
+    }
+    
+    float2 separationForce = float2(0, 0);
+    int neighborCount = 0;
+    
+    for (int i = 0; i < enemyCount; i++)
+    {
+        if (i == index) continue;
+        
+        float2 toNeighbor = enemy.position - enemyBuffer[i].position;
+        float distance = length(toNeighbor);
+        
+        if (distance > 0.001f && distance < neighborAvoidanceRadius)
+        {
+            separationForce += toNeighbor / (distance * distance);
+            neighborCount++;
+        }
+    }
+    
+    if (neighborCount > 0)
+    {
+        separationForce /= (float)neighborCount;
+    }
+    
+    float2 finalDirection = normalizedDirToPlayer + avoidanceForce * 1.5f + separationForce;
+    float finalMagnitude = length(finalDirection);
+    
+    if (finalMagnitude > 0.001f)
+    {
+        finalDirection /= finalMagnitude;
+    }
+    else
+    {
+        finalDirection = float2(sin(enemy.position.x * 1000), cos(enemy.position.y * 1000));
+    }
+    
+    float speed = max(moveSpeed * 0.5f, moveSpeed * finalMagnitude);
+    enemy.position += finalDirection * speed * deltaTime;
+
+    enemyBuffer[index] = enemy;
+}

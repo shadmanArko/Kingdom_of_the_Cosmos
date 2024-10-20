@@ -505,14 +505,11 @@ MonoBehaviour:
   moveSpeed: 1.2
   obstacleAvoidanceRadius: 1.2
   neighborAvoidanceRadius: 1
-  spawnAreaSize: 100
-  gridCellSize: 5
-  maxEnemiesPerCell: 20
-  useGPUInstancing: 1
-  updateInterval: 0.1
+  minSpawnDistance: 1
   playerTransform: {fileID: 1747096803}
   enemyObject: {fileID: 3740269002705187921, guid: 4f41e63255007534ca02468b77a9c299, type: 3}
-  numberOfEnemies: 5000
+  numberOfEnemies: 1000
+  spawnAreaSize: 100
 --- !u!1 &1747096801
 GameObject:
   m_ObjectHideFlags: 0

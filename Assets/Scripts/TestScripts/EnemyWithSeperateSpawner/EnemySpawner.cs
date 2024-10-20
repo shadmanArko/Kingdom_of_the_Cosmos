@@ -6,6 +6,7 @@ public class EnemySpawner : MonoBehaviour
     [Header("Spawn Settings")]
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private int enemiesPerWave = 10;
+    [SerializeField] private int increaseEnemiesPerWave = 3;
     [SerializeField] private float timeBetweenWaves = 5f;
     [SerializeField] private float spawnRadius = 10f;
     [SerializeField] private float forwardSpawnBias = 0.7f; // 0 to 1, higher values spawn more enemies in front
@@ -48,6 +49,8 @@ public class EnemySpawner : MonoBehaviour
             PositionEnemy(enemy);
             enemyManager.AddEnemy(enemy);
         }
+
+        enemiesPerWave += increaseEnemiesPerWave;
     }
 
     private void PositionEnemy(GameObject enemy)

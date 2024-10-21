@@ -4,6 +4,7 @@ struct Enemy
 {
     float2 position;
     float2 velocity;
+    float stuckness;
 };
 
 RWStructuredBuffer<Enemy> enemyBuffer;
@@ -15,6 +16,7 @@ float obstacleAvoidanceRadius;
 float neighborAvoidanceRadius;
 int enemyCount;
 int obstacleCount;
+float stucknessThreshold;
 
 [numthreads(256, 1, 1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
@@ -57,14 +59,14 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         
         if (distance > 0.001f && distance < neighborAvoidanceRadius)
         {
-            separationForce += toNeighbor / (distance * distance);
+            separationForce += normalize(toNeighbor) / distance;
             neighborCount++;
         }
     }
     
     if (neighborCount > 0)
     {
-        separationForce /= (float)neighborCount;
+        separationForce = normalize(separationForce) * 2.0;
     }
     
     float2 finalDirection = normalizedDirToPlayer + avoidanceForce * 1.5f + separationForce;
@@ -79,7 +81,12 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         finalDirection = float2(sin(enemy.position.x * 1000), cos(enemy.position.y * 1000));
     }
     
-    float speed = max(moveSpeed * 0.5f, moveSpeed * finalMagnitude);
+    // Calculate stuckness
+    float totalForce = length(avoidanceForce) + length(separationForce);
+    enemy.stuckness = clamp(enemy.stuckness + (totalForce > stucknessThreshold ? deltaTime : -deltaTime), 0, 1);
+
+    float stucknessMultiplier = 1 - enemy.stuckness;
+    float speed = max(moveSpeed * 0.5f, moveSpeed * finalMagnitude) * stucknessMultiplier;
     enemy.position += finalDirection * speed * deltaTime;
 
     enemyBuffer[index] = enemy;

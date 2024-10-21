@@ -12,6 +12,7 @@ public class GameStatUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = -1; // No frame rate limi
         EnemyManager.EnemyCountUpdated += EnemyCountUpdated;
     }
 
@@ -20,10 +21,19 @@ public class GameStatUI : MonoBehaviour
         enemyCountText.text = $"Current Enemies: {obj}";
     }
 
-    // Update is called once per frame
+    private float timer = 0f;
+    private float refreshInterval = 0.5f; // update every half second
+
     void Update()
     {
-        fpsText.text = $"fps: {(int)(1.0f / Time.smoothDeltaTime)}";
+        timer += Time.deltaTime;
+
+        if (timer >= refreshInterval)
+        {
+            int fps = (int)(1.0f / Time.smoothDeltaTime);
+            fpsText.text = $"fps: {fps}";
+            timer = 0f; // reset the timer
+        }
     }
 
     private void OnDestroy()

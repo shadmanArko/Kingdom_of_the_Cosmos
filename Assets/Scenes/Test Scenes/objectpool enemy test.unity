@@ -956,12 +956,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdcae60934c8424b892fbdf2167ff5a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTransform: {fileID: 1747096803}
+  spawner: {fileID: 1675116753}
+  enemyComputeShader: {fileID: 7200000, guid: 85e1cb728b113fa43951232d108c1651, type: 3}
   moveSpeed: 4
   obstacleAvoidanceRadius: 1
   neighborAvoidanceRadius: 1
-  useComputeShader: 0
-  playerTransform: {fileID: 1747096803}
-  enemyComputeShader: {fileID: 7200000, guid: 85e1cb728b113fa43951232d108c1651, type: 3}
+  collisionDistance: 1
+  checkInterval: 0.2
+  stucknessThreshold: 2
 --- !u!1 &1675116752
 GameObject:
   m_ObjectHideFlags: 0
@@ -1079,7 +1082,6 @@ GameObject:
   - component: {fileID: 1747096802}
   - component: {fileID: 1747096804}
   - component: {fileID: 1747096805}
-  - component: {fileID: 1747096806}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1167,6 +1169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  spawner: {fileID: 1675116753}
 --- !u!50 &1747096805
 Rigidbody2D:
   serializedVersion: 4
@@ -1194,41 +1197,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &1747096806
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1747096801}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.53125
 --- !u!1 &2120593484
 GameObject:
   m_ObjectHideFlags: 0

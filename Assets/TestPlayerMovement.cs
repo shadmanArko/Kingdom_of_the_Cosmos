@@ -6,6 +6,7 @@ public class TestPlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     private Rigidbody2D rb;
+    [SerializeField] private EnemySpawner spawner;
 
     void Start()
     {
@@ -27,4 +28,20 @@ public class TestPlayerMovement : MonoBehaviour
         // Apply movement to the rigidbody
         rb.velocity = movement;
     }
+    // private void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     if (other.CompareTag("Enemy"))
+    //     {
+    //         // Enemy touched the player, return it to the pool
+    //         if (spawner != null)
+    //         {
+    //             spawner.ReleaseEnemy(other.gameObject);
+    //         }
+    //         else
+    //         {
+    //             Debug.LogWarning("EnemySpawner not set. Destroying enemy instead.");
+    //             Destroy(other.gameObject);
+    //         }
+    //     }
+    // }
 }

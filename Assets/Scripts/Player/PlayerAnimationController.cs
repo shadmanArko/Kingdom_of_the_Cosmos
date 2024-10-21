@@ -17,9 +17,9 @@ namespace Player
         [ContextMenu("Set New Animations")]
         public void SetNewAnimations()
         {
-            var animStateSetter = new AnimationStateSetter(animator);
-            var animJsonFilePath = "Assets/Scripts/zzz_TestScripts/AnimationSystemTest/AnimationDatas.json";
-            animStateSetter.SetupAnimationStates(animJsonFilePath);
+            // var animStateSetter = new AnimationStateSetter(animator);
+            // var animJsonFilePath = "Assets/Scripts/zzz_TestScripts/AnimationSystemTest/AnimationDatas.json";
+            // animStateSetter.SetupAnimationStates(animJsonFilePath);
         }
 
         public void SetSprite()

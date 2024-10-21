@@ -62,19 +62,19 @@ namespace zzz_TestScripts.AnimationLoadingFromSpriteSheets
                 return;
             }
 
-            var assetPath = AssetDatabase.GetAssetPath(textureToModify);
-            var importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
-
-            if (importer != null)
-            {
-                importer.spritePixelsPerUnit = pixelsPerUnit;
-                importer.SaveAndReimport();
-                Debug.Log($"Set Pixels Per Unit to {pixelsPerUnit} for {textureToModify.name}");
-            }
-            else
-            {
-                Debug.LogError($"Failed to get TextureImporter for {textureToModify.name}");
-            }
+            // var assetPath = AssetDatabase.GetAssetPath(textureToModify);
+            // var importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
+            //
+            // if (importer != null)
+            // {
+            //     importer.spritePixelsPerUnit = pixelsPerUnit;
+            //     importer.SaveAndReimport();
+            //     Debug.Log($"Set Pixels Per Unit to {pixelsPerUnit} for {textureToModify.name}");
+            // }
+            // else
+            // {
+            //     Debug.LogError($"Failed to get TextureImporter for {textureToModify.name}");
+            // }
         }
     }
 }

@@ -133,6 +133,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7397414394396932977}
     m_Modifications:
+    - target: {fileID: 220404837635855694, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
+      propertyPath: animationDataScriptable
+      value: 
+      objectReference: {fileID: 11400000, guid: 709365bb27b674a43a33880e4b166799, type: 2}
     - target: {fileID: 835876435100262795, guid: 8914f7822210b5d4f8dc0b89dcf21600, type: 3}
       propertyPath: m_Name
       value: PlayerAnimationController

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Models;
 using UnityEngine;
+using zzz_TestScripts.AnimationSystemTest;
 
 namespace zzz_TestScripts.AnimationLoadingFromSpriteSheets
 {
@@ -47,6 +49,12 @@ namespace zzz_TestScripts.AnimationLoadingFromSpriteSheets
 
         #endregion
 
+        #region New Variables
+
+        [SerializeField] private AnimationDataScriptable animationDataScriptable;
+
+        #endregion
+
         private void Start()
         {
             // spriteSheets = new List<SpriteSheetInfo>();
@@ -54,60 +62,62 @@ namespace zzz_TestScripts.AnimationLoadingFromSpriteSheets
 
         private void LateUpdate()
         {
-            if (spriteSheets.Count > 0 && spriteSheets[currentSpriteSheetIndex].sprites.Length > 0)
-            {
-                spriteRenderer.sprite = spriteSheets[currentSpriteSheetIndex].sprites[currentSpriteIndex];
-            }
+            // if (spriteSheets.Count > 0 && spriteSheets[currentSpriteSheetIndex].sprites.Length > 0)
+            // {
+            //     spriteRenderer.sprite = spriteSheets[currentSpriteSheetIndex].sprites[currentSpriteIndex];
+            // }
+            
+            
         }
 
-        public void AddSpriteSheet(SpriteSheetInfo spriteSheetInfo)
-        {
-            spriteSheets.Add(new SpriteSheetInfo { name = spriteSheetInfo.name, sprites = spriteSheetInfo.sprites });
-        }
-
-        public void ChangeSpriteSheet(string spriteSheetName)
-        {
-            int index = spriteSheets.FindIndex(sheet => sheet.name == spriteSheetName);
-            if (index != -1)
-            {
-                CurrentSpriteSheetIndex = index;
-            }
-            else
-            {
-                Debug.LogWarning($"SpriteSheet '{spriteSheetName}' not found.");
-            }
-        }
-
-        public void ChangeSpriteSheet(int index)
-        {
-            CurrentSpriteSheetIndex = index;
-        }
-
-        #region Test
-
-        [ContextMenu("ToggleSpriteSheet")]
-        public void ToggleSpriteSheet()
-        {
-            if(spriteSheets.Count <= 1) return;
-            currentSpriteSheetIndex = (currentSpriteSheetIndex + 1) % spriteSheets.Count;
-        }
-
-        // [ContextMenu("LoadFromFile")]
-        // private void LoadSpriteSheetFromFile()
+        // public void AddSpriteSheet(SpriteSheetInfo spriteSheetInfo)
         // {
-        //     var filePath = "Assets/Sprites/Characters/Puny-Characters/Orc-Peon-Cyan.png";
-        //     var spriteSheetLoader = new SpriteSheetLoader();
-        //     var spriteSheetInfo = spriteSheetLoader.LoadFromFile(filePath);
-        //     if (spriteSheetInfo.sprites.Length <= 0)
-        //     {
-        //         Debug.LogError($"Sprite sheet has no sprites {spriteSheetInfo.name}");
-        //         return;
-        //     }
-        //     
-        //     AddSpriteSheet(spriteSheetInfo);
-        //     ChangeSpriteSheet(spriteSheets.Count - 1);
+        //     spriteSheets.Add(new SpriteSheetInfo { name = spriteSheetInfo.name, sprites = spriteSheetInfo.sprites });
         // }
-
-        #endregion
+        //
+        // public void ChangeSpriteSheet(string spriteSheetName)
+        // {
+        //     int index = spriteSheets.FindIndex(sheet => sheet.name == spriteSheetName);
+        //     if (index != -1)
+        //     {
+        //         CurrentSpriteSheetIndex = index;
+        //     }
+        //     else
+        //     {
+        //         Debug.LogWarning($"SpriteSheet '{spriteSheetName}' not found.");
+        //     }
+        // }
+        //
+        // public void ChangeSpriteSheet(int index)
+        // {
+        //     CurrentSpriteSheetIndex = index;
+        // }
+        //
+        // #region Test
+        //
+        // [ContextMenu("ToggleSpriteSheet")]
+        // public void ToggleSpriteSheet()
+        // {
+        //     if(spriteSheets.Count <= 1) return;
+        //     currentSpriteSheetIndex = (currentSpriteSheetIndex + 1) % spriteSheets.Count;
+        // }
+        //
+        // // [ContextMenu("LoadFromFile")]
+        // // private void LoadSpriteSheetFromFile()
+        // // {
+        // //     var filePath = "Assets/Sprites/Characters/Puny-Characters/Orc-Peon-Cyan.png";
+        // //     var spriteSheetLoader = new SpriteSheetLoader();
+        // //     var spriteSheetInfo = spriteSheetLoader.LoadFromFile(filePath);
+        // //     if (spriteSheetInfo.sprites.Length <= 0)
+        // //     {
+        // //         Debug.LogError($"Sprite sheet has no sprites {spriteSheetInfo.name}");
+        // //         return;
+        // //     }
+        // //     
+        // //     AddSpriteSheet(spriteSheetInfo);
+        // //     ChangeSpriteSheet(spriteSheets.Count - 1);
+        // // }
+        //
+        // #endregion
     }
 }

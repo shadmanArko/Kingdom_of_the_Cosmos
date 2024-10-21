@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace zzz_TestScripts.AnimationSystemTest
 {
@@ -6,7 +8,8 @@ namespace zzz_TestScripts.AnimationSystemTest
     public class AnimationData
     {
         public string stateName;
-        public string clipPath;
+        public string folderPath;
+        public List<Sprite> animationSprites;
         public float speed;
     }
 }

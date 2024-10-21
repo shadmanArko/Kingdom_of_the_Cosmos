@@ -28,6 +28,17 @@ namespace Player
         {
             movement = direction.normalized;
             rb.velocity = movement * moveSpeed;
+            
+            if(rb.velocity.magnitude > 0)
+                playerAnimationController.PlayAnimation("run");
+            else
+            {
+                var stateInfo = playerAnimationController.animator.GetCurrentAnimatorStateInfo(0);
+                if (stateInfo.length == 0 || stateInfo.normalizedTime >= 1.0f)
+                {
+                    playerAnimationController.PlayAnimation("idle");
+                }
+            }
         }
 
         public void Attack(Vector2 direction)

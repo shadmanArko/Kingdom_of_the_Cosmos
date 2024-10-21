@@ -31,13 +31,13 @@ public class AnimationStateSetter
         public void SetupAnimationStates(string jsonFilePath)
         {
             var jsonData = JsonDataReader.LoadFromJson<AnimationDatabase>(jsonFilePath);
-            var animationDataList = jsonData.AnimationDatas;
+            var animationDataList = jsonData.animationDatas;
 
             var states = _baseController.layers[0].stateMachine.states;
 
             foreach (var animationData in animationDataList)
             {
-                var clip = Resources.Load<AnimationClip>(animationData.clipPath);
+                var clip = Resources.Load<AnimationClip>(animationData.folderPath);
                 if (clip == null)
                 {
                     Debug.LogError($"Animation clip is null: {animationData.stateName}");

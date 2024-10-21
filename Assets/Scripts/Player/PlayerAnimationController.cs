@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using zzz_TestScripts.AnimationLoadingFromSpriteSheets;
 using zzz_TestScripts.AnimationSystemTest;
@@ -12,7 +10,7 @@ namespace Player
         [SerializeField] public Animator animator;
         
         [SerializeField] private AnimationDataScriptable animationDataScriptable;
-        [SerializeField] private List<Sprite> sprites;
+        [SerializeField] private AnimationData animationData;
         
         #region Current Sprite Index
 
@@ -22,11 +20,11 @@ namespace Player
             get => currentSpriteIndex;
             set
             {
-                if (sprites.Count > 0)
+                if (animationData.animationSprites.Count > 0)
                 {
-                    currentSpriteIndex = value % sprites.Count;
+                    currentSpriteIndex = value % animationData.animationSprites.Count;
                     if (currentSpriteIndex < 0)
-                        currentSpriteIndex += sprites.Count;
+                        currentSpriteIndex += animationData.animationSprites.Count;
                 }
                 else
                 {
@@ -45,9 +43,9 @@ namespace Player
         
         private void LateUpdate()
         {
-            if (sprites.Count > 0)
+            if (animationData.animationSprites.Count > 0)
             {
-                spriteRend.sprite = sprites[currentSpriteIndex];
+                spriteRend.sprite = animationData.animationSprites[currentSpriteIndex];
             }
             
             
@@ -75,16 +73,17 @@ namespace Player
 
         private void LoadSpriteBasedOnCurrentAnimation(string currentStateName)
         {
+            if(animationData.stateName == currentStateName) return;
             if (animationDataScriptable.animationDatabases.Count <= 0)
             {
                 Debug.LogError("Fatal Error: Scriptable Object has no data in it");
                 return;
             }
 
-            foreach (var animationData in animationDataScriptable.animationDatabases[0].animationDatas)
+            foreach (var data in animationDataScriptable.animationDatabases[0].animationDatas)
             {
-                if(animationData.stateName != currentStateName) continue;
-                sprites = animationData.animationSprites;
+                if(data.stateName != currentStateName) continue;
+                animationData = data;
                 CurrentSpriteIndex = 0;
                 return;
             }

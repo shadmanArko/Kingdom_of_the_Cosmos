@@ -28,20 +28,5 @@ public class EnemyBehavior : MonoBehaviour
         transform.position += initialDirection * 0.1f;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            // Enemy touched the player, return it to the pool
-            if (spawner != null)
-            {
-                spawner.ReleaseEnemy(gameObject);
-            }
-            else
-            {
-                Debug.LogWarning("EnemySpawner not set. Destroying enemy instead.");
-                Destroy(gameObject);
-            }
-        }
-    }
+    
 }

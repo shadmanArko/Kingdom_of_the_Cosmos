@@ -1,187 +1,182 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using Unity.Collections;
-using Unity.Jobs;
-using Unity.Mathematics;
-using Unity.Burst;
+using System.Collections.Generic;
+using ModestTree.Util;
 
 public class EnemyManager : MonoBehaviour
 {
-    [Header("Movement Settings")]
+    public static Action<int> EnemyCountUpdated;
+    [Header("References")]
+    public Transform playerTransform;
+    public EnemySpawner spawner;
+    public ComputeShader enemyComputeShader;
+
+    [Header("Settings")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float obstacleAvoidanceRadius = 1f;
     [SerializeField] private float neighborAvoidanceRadius = 0.5f;
-    
-    [Header("References")]
-    public Transform playerTransform;
-    
+    [SerializeField] private float collisionDistance = 1f;
+    [SerializeField] private float checkInterval = 0.1f;
+    [SerializeField] private float stucknessThreshold = 2f;
+
     private List<GameObject> activeEnemies = new List<GameObject>();
-    private NativeArray<float3> currentPositions;
-    private NativeArray<float3> newPositions;
-    private NativeArray<float3> obstaclePositions;
+    private ComputeBuffer enemyBuffer;
+    private ComputeBuffer obstacleBuffer;
+    private int kernelIndex;
+    private float timeSinceLastCheck;
+
+    private struct EnemyData
+    {
+        public Vector2 position;
+        public Vector2 velocity;
+        public float stuckness;
+    }
 
     private void Start()
     {
-        InitializeObstacles();
-    }
-
-    private void InitializeObstacles()
-    {
-        GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
-        obstaclePositions = new NativeArray<float3>(obstacles.Length, Allocator.Persistent);
-        
-        for (int i = 0; i < obstacles.Length; i++)
+        if (enemyComputeShader != null)
         {
-            obstaclePositions[i] = obstacles[i].transform.position;
+            kernelIndex = enemyComputeShader.FindKernel("CSMain");
         }
-    }
-
-    public void AddEnemy(GameObject enemy)
-    {
-        activeEnemies.Add(enemy);
-    }
-
-    public void RemoveEnemy(GameObject enemy)
-    {
-        activeEnemies.Remove(enemy);
+        InitializeObstacles();
     }
 
     private void Update()
     {
         if (activeEnemies.Count == 0) return;
 
+        timeSinceLastCheck += Time.deltaTime;
+
+        if (timeSinceLastCheck >= checkInterval)
+        {
+            CheckEnemyCollisions();
+            timeSinceLastCheck = 0f;
+        }
+
         UpdateEnemyPositions();
     }
 
     private void UpdateEnemyPositions()
     {
-        int enemyCount = activeEnemies.Count;
+        if (enemyBuffer == null || obstacleBuffer == null) return;
 
-        // Resize arrays if necessary
-        if (currentPositions.Length != enemyCount)
+        // Update enemy positions in the buffer
+        EnemyData[] enemyDataArray = new EnemyData[activeEnemies.Count];
+        for (int i = 0; i < activeEnemies.Count; i++)
         {
-            if (currentPositions.IsCreated) currentPositions.Dispose();
-            if (newPositions.IsCreated) newPositions.Dispose();
-
-            currentPositions = new NativeArray<float3>(enemyCount, Allocator.Persistent);
-            newPositions = new NativeArray<float3>(enemyCount, Allocator.Persistent);
+            Vector3 position = activeEnemies[i].transform.position;
+            enemyDataArray[i] = new EnemyData
+            {
+                position = new Vector2(position.x, position.y),
+                velocity = Vector2.zero,
+                stuckness = 0 // Initialize stuckness
+            };
         }
+        enemyBuffer.SetData(enemyDataArray);
 
-        // Update current positions
-        for (int i = 0; i < enemyCount; i++)
+        // Set compute shader parameters
+        enemyComputeShader.SetBuffer(kernelIndex, "enemyBuffer", enemyBuffer);
+        enemyComputeShader.SetBuffer(kernelIndex, "obstacleBuffer", obstacleBuffer);
+        enemyComputeShader.SetVector("playerPosition", playerTransform.position);
+        enemyComputeShader.SetFloat("deltaTime", Time.deltaTime);
+        enemyComputeShader.SetFloat("moveSpeed", moveSpeed);
+        enemyComputeShader.SetFloat("obstacleAvoidanceRadius", obstacleAvoidanceRadius);
+        enemyComputeShader.SetFloat("neighborAvoidanceRadius", neighborAvoidanceRadius);
+        enemyComputeShader.SetInt("enemyCount", activeEnemies.Count);
+        enemyComputeShader.SetInt("obstacleCount", obstacleBuffer.count);
+        enemyComputeShader.SetFloat("stucknessThreshold", stucknessThreshold);
+
+        // Dispatch the compute shader
+        int threadGroups = Mathf.CeilToInt(activeEnemies.Count / 256f);
+        enemyComputeShader.Dispatch(kernelIndex, threadGroups, 1, 1);
+
+        // Get results back and update enemy positions
+        enemyBuffer.GetData(enemyDataArray);
+        for (int i = 0; i < activeEnemies.Count; i++)
         {
-            currentPositions[i] = activeEnemies[i].transform.position;
-        }
-
-        // Create and schedule the job
-        var job = new EnemyMovementJob
-        {
-            playerPosition = playerTransform.position,
-            deltaTime = Time.deltaTime,
-            moveSpeed = moveSpeed,
-            obstacleRadius = obstacleAvoidanceRadius,
-            neighborRadius = neighborAvoidanceRadius,
-            obstaclePositions = obstaclePositions,
-            currentPositions = currentPositions,
-            newPositions = newPositions
-        };
-
-        JobHandle handle = job.Schedule(enemyCount, 64);
-        handle.Complete();
-
-        // Update enemy positions
-        for (int i = 0; i < enemyCount; i++)
-        {
-            activeEnemies[i].transform.position = newPositions[i];
+            activeEnemies[i].transform.position = new Vector3(enemyDataArray[i].position.x, enemyDataArray[i].position.y, 0);
         }
     }
 
-    [BurstCompile]
-    private struct EnemyMovementJob : IJobParallelFor
+    private void CheckEnemyCollisions()
     {
-        [ReadOnly] public float3 playerPosition;
-        [ReadOnly] public float deltaTime;
-        [ReadOnly] public float moveSpeed;
-        [ReadOnly] public float obstacleRadius;
-        [ReadOnly] public float neighborRadius;
-        [ReadOnly] public NativeArray<float3> obstaclePositions;
-        [ReadOnly] public NativeArray<float3> currentPositions;
-        [WriteOnly] public NativeArray<float3> newPositions;
+        Vector2 playerPosition = playerTransform.position;
+        float sqrCollisionDistance = collisionDistance * collisionDistance;
 
-        public void Execute(int index)
+        for (int i = activeEnemies.Count - 1; i >= 0; i--)
         {
-            float3 currentPos = currentPositions[index];
-            float3 dirToPlayer = playerPosition - currentPos;
-            float distToPlayer = math.length(dirToPlayer);
-            
-            float3 normalizedDirToPlayer = distToPlayer > float.Epsilon 
-                ? dirToPlayer / distToPlayer 
-                : new float3(0, 1, 0);
-            
-            float3 avoidanceForce = float3.zero;
-            for (int i = 0; i < obstaclePositions.Length; i++)
+            Vector2 enemyPosition = activeEnemies[i].transform.position;
+            if ((playerPosition - enemyPosition).sqrMagnitude <= sqrCollisionDistance)
             {
-                float3 toObstacle = currentPos - obstaclePositions[i];
-                float distance = math.length(toObstacle);
+                // Collision detected, return enemy to pool
+                GameObject enemy = activeEnemies[i];
+                activeEnemies.RemoveAt(i);
                 
-                if (distance > float.Epsilon && distance < obstacleRadius)
+                if (spawner != null)
                 {
-                    avoidanceForce += toObstacle / (distance * distance);
+                    spawner.ReleaseEnemy(enemy);
+                }
+                else
+                {
+                    Debug.LogWarning("EnemySpawner not set. Destroying enemy instead.");
+                    Destroy(enemy);
                 }
             }
-            
-            float avoidanceMagnitude = math.length(avoidanceForce);
-            if (avoidanceMagnitude > float.Epsilon)
-            {
-                avoidanceForce /= avoidanceMagnitude;
-            }
-            
-            float3 separationForce = float3.zero;
-            int neighborCount = 0;
-            
-            for (int i = 0; i < currentPositions.Length; i++)
-            {
-                if (i == index) continue;
-                
-                float3 toNeighbor = currentPos - currentPositions[i];
-                float distance = math.length(toNeighbor);
-                
-                if (distance > float.Epsilon && distance < neighborRadius)
-                {
-                    separationForce += toNeighbor / (distance * distance);
-                    neighborCount++;
-                }
-            }
-            
-            if (neighborCount > 0)
-            {
-                float separationMagnitude = math.length(separationForce);
-                if (separationMagnitude > float.Epsilon)
-                {
-                    separationForce /= separationMagnitude;
-                }
-            }
-            
-            float3 finalDirection = normalizedDirToPlayer + avoidanceForce * 1.5f + separationForce;
-            float finalMagnitude = math.length(finalDirection);
-            
-            if (finalMagnitude > float.Epsilon)
-            {
-                finalDirection /= finalMagnitude;
-            }
-            else
-            {
-                finalDirection = new float3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f), 0);
-            }
-            
-            newPositions[index] = currentPos + finalDirection * moveSpeed * deltaTime;
         }
+    }
+
+    private void InitializeObstacles()
+    {
+        GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+        Vector2[] obstaclePositions = new Vector2[obstacles.Length];
+        for (int i = 0; i < obstacles.Length; i++)
+        {
+            obstaclePositions[i] = obstacles[i].transform.position;
+        }
+
+        obstacleBuffer = new ComputeBuffer(obstaclePositions.Length, sizeof(float) * 2);
+        obstacleBuffer.SetData(obstaclePositions);
+    }
+
+    public void AddEnemy(GameObject enemy)
+    {
+        activeEnemies.Add(enemy);
+        UpdateBuffers();
+    }
+
+    public void RemoveEnemy(GameObject enemy)
+    {
+        activeEnemies.Remove(enemy);
+        UpdateBuffers();
+    }
+
+    private void UpdateBuffers()
+    {
+        if (enemyBuffer != null)
+        {
+            enemyBuffer.Release();
+        }
+        
+        if (activeEnemies.Count > 0)
+        {
+            enemyBuffer = new ComputeBuffer(activeEnemies.Count, sizeof(float) * 5); // 2 for position, 2 for velocity, 1 for stuckness
+        }
+        else
+        {
+            enemyBuffer = null;
+        }
+        EnemyCountUpdated?.Invoke(activeEnemies.Count);
     }
 
     private void OnDestroy()
     {
-        if (currentPositions.IsCreated) currentPositions.Dispose();
-        if (newPositions.IsCreated) newPositions.Dispose();
-        if (obstaclePositions.IsCreated) obstaclePositions.Dispose();
+        if (enemyBuffer != null)
+        {
+            enemyBuffer.Release();
+        }
+        if (obstacleBuffer != null)
+        {
+            obstacleBuffer.Release();
+        }
     }
 }

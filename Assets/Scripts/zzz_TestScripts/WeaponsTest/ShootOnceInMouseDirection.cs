@@ -2,10 +2,11 @@ using System.Threading.Tasks;
 using DBMS.RunningData;
 using ObjectPoolScripts;
 using Player;
+using TestScripts.WeaponsTest;
 using UnityEngine;
 using Zenject;
 
-namespace TestScripts.WeaponsTest
+namespace zzz_TestScripts.WeaponsTest
 {
     public class ShootOnceInMouseDirection : AttackBase
     {

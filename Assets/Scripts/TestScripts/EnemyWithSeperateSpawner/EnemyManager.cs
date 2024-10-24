@@ -30,6 +30,7 @@ public class EnemyManager : MonoBehaviour
         public Vector2 position;
         public Vector2 velocity;
         public float stuckness;
+        public float health;
     }
 
     private void Start()

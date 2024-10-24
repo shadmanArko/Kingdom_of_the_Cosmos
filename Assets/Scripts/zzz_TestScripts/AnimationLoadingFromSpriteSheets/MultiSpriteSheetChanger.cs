@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Models;
 using UnityEngine;
-using zzz_TestScripts.AnimationSystemTest;
+using UnityEngine.UI;
 
 namespace zzz_TestScripts.AnimationLoadingFromSpriteSheets
 {
@@ -10,6 +9,8 @@ namespace zzz_TestScripts.AnimationLoadingFromSpriteSheets
     {
         public SpriteRenderer spriteRenderer;
         public List<SpriteSheetInfo> spriteSheets;
+
+        private Button _button;
 
         #region Current Sprite Sheet Index
 

@@ -5,7 +5,6 @@ struct Enemy
     float2 position;
     float2 velocity;
     float stuckness;
-    float health;
 };
 
 RWStructuredBuffer<Enemy> enemyBuffer;

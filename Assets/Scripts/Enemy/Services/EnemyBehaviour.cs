@@ -4,7 +4,7 @@ using UnityEngine.Pool;
 public class EnemyBehavior : MonoBehaviour
 {
     private IObjectPool<GameObject> pool;
-    private EnemySpawner spawner;
+    private MeleeEnemyPool _pool;
     private Vector3 initialDirection;
 
     public void SetPool(IObjectPool<GameObject> objectPool)
@@ -12,9 +12,9 @@ public class EnemyBehavior : MonoBehaviour
         pool = objectPool;
     }
 
-    public void SetSpawner(EnemySpawner enemySpawner)
+    public void SetSpawner(MeleeEnemyPool meleeEnemyPool)
     {
-        spawner = enemySpawner;
+        _pool = meleeEnemyPool;
     }
 
     public void SetInitialDirection(Vector3 direction)

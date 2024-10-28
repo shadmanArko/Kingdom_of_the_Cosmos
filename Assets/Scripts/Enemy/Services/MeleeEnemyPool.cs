@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Pool;
 
-public class EnemySpawner : MonoBehaviour
+public class MeleeEnemyPool : MonoBehaviour
 {
     [Header("Spawn Settings")]
     [SerializeField] private GameObject enemyPrefab;
@@ -25,8 +25,8 @@ public class EnemySpawner : MonoBehaviour
             actionOnGet: ActivateEnemy,
             actionOnRelease: DeactivateEnemy,
             actionOnDestroy: DestroyEnemy,
-            defaultCapacity: enemiesPerWave,
-            maxSize: enemiesPerWave * 3
+            defaultCapacity: enemiesPerWave * 10,
+            maxSize: enemiesPerWave * 100
         );
 
         nextWaveTime = Time.time + timeBetweenWaves;

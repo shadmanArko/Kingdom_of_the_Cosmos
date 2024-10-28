@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TestPlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     private Rigidbody2D rb;
-    [SerializeField] private EnemySpawner spawner;
+    [FormerlySerializedAs("spawner")] [SerializeField] private MeleeEnemyPool pool;
 
     void Start()
     {

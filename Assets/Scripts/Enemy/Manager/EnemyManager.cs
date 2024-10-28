@@ -2,13 +2,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 using ModestTree.Util;
+using UnityEngine.Serialization;
 
 public partial class EnemyManager : MonoBehaviour
 {
     public static Action<int> EnemyCountUpdated;
     [Header("References")]
     public Transform playerTransform;
-    public EnemySpawner spawner;
+    [FormerlySerializedAs("spawner")] public MeleeEnemyPool pool;
     public ComputeShader enemyComputeShader;
 
     [Header("Settings")]
@@ -62,7 +63,10 @@ public partial class EnemyManager : MonoBehaviour
             {
                 position = new Vector2(position.x, position.y),
                 velocity = Vector2.zero,
-                stuckness = 0 // Initialize stuckness
+                stuckness = 0, // Initialize stuckness
+                damage = 10,
+                health = 100,
+                isAlive = 1
             };
         }
         enemyBuffer.SetData(enemyDataArray);
@@ -105,9 +109,9 @@ public partial class EnemyManager : MonoBehaviour
                 GameObject enemy = activeEnemies[i];
                 activeEnemies.RemoveAt(i);
                 
-                if (spawner != null)
+                if (pool != null)
                 {
-                    spawner.ReleaseEnemy(enemy);
+                    pool.ReleaseEnemy(enemy);
                 }
                 else
                 {
@@ -152,7 +156,7 @@ public partial class EnemyManager : MonoBehaviour
         
         if (activeEnemies.Count > 0)
         {
-            enemyBuffer = new ComputeBuffer(activeEnemies.Count, sizeof(float) * 5); // 2 for position, 2 for velocity, 1 for stuckness
+            enemyBuffer = new ComputeBuffer(activeEnemies.Count, 32); // 2 for position, 2 for velocity, 1 for stuckness
         }
         else
         {

@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using ModestTree.Util;
 
-public class EnemyManager : MonoBehaviour
+public partial class EnemyManager : MonoBehaviour
 {
     public static Action<int> EnemyCountUpdated;
     [Header("References")]
@@ -24,14 +24,6 @@ public class EnemyManager : MonoBehaviour
     private ComputeBuffer obstacleBuffer;
     private int kernelIndex;
     private float timeSinceLastCheck;
-
-    private struct EnemyData
-    {
-        public Vector2 position;
-        public Vector2 velocity;
-        public float stuckness;
-        public float health;
-    }
 
     private void Start()
     {

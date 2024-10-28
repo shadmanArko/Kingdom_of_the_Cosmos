@@ -5,7 +5,9 @@ struct Enemy
     float2 position;
     float2 velocity;
     float stuckness;
+    float damage;
     float health;
+    int isAlive;
 };
 
 RWStructuredBuffer<Enemy> enemyBuffer;
@@ -28,6 +30,14 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         return;
 
     Enemy enemy = enemyBuffer[index];
+
+    // Skip dead enemies
+    if (enemy.health <= 0)
+    {
+        enemy.isAlive = 0; // Mark as dead
+        enemyBuffer[index] = enemy;
+        return;
+    }
 
     float2 dirToPlayer = playerPosition - enemy.position;
     float distToPlayer = length(dirToPlayer);
@@ -89,6 +99,12 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float stucknessMultiplier = 1 - enemy.stuckness;
     float speed = max(moveSpeed * 0.5f, moveSpeed * finalMagnitude) * stucknessMultiplier;
     enemy.position += finalDirection * speed * deltaTime;
+
+    // Mark as dead if health <= 0
+    if (enemy.health <= 0)
+    {
+        enemy.isAlive = 0;
+    }
 
     enemyBuffer[index] = enemy;
 }

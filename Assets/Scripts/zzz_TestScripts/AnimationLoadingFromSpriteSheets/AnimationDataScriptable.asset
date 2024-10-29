@@ -34,4 +34,12 @@ MonoBehaviour:
       - {fileID: 362187716, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       - {fileID: 1241838891, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       speed: 0
+    - stateName: dash
+      folderPath: 
+      animationSprites:
+      - {fileID: -608277689, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -868339984, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: 162197762, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -311670487, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      speed: 1
   - animationDatas: []

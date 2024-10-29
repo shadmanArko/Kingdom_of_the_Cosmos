@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using Player;
+using UnityEngine;
 using UnityEngine.Pool;
+using Zenject;
 
 public class MeleeEnemyPool : MonoBehaviour
 {
@@ -10,16 +13,34 @@ public class MeleeEnemyPool : MonoBehaviour
     [SerializeField] private float timeBetweenWaves = 5f;
     [SerializeField] private float spawnRadius = 10f;
     [SerializeField] private float forwardSpawnBias = 0.7f; // 0 to 1, higher values spawn more enemies in front
+    
+    [Inject]
+    [SerializeField] private  PlayerController playerController;
+    
+    // [Inject]
+    // private EnemyManager _enemyManager;
 
-    [Header("References")]
-    [SerializeField] private Transform playerTransform;
-    [SerializeField] private EnemyManager enemyManager;
-
+    private Transform playerTransform;
     private ObjectPool<GameObject> enemyPool;
-    private float nextWaveTime;
+    public List<GameObject> activeEnemies = new List<GameObject>();
+    public static float nextWaveTime;
+    
+    // [Inject]
+    // public void Initialize(EnemyManager enemyManager)
+    // {
+    //     // _enemyManager = enemyManager;
+    //     Debug.Log("EnemyManager injected: " + (_enemyManager != null));
+    // }
 
     private void Start()
     {
+        playerTransform = playerController.gameObject.transform;
+        // if (_enemyManager == null)
+        // {
+        //     Debug.LogError("EnemyManager not injected!");
+        //     return;
+        // }
+
         enemyPool = new ObjectPool<GameObject>(
             createFunc: CreateEnemy,
             actionOnGet: ActivateEnemy,
@@ -38,17 +59,18 @@ public class MeleeEnemyPool : MonoBehaviour
         {
             SpawnWave();
             nextWaveTime = Time.time + timeBetweenWaves;
-        }
+        }    
     }
 
-    private void SpawnWave()
+    public void SpawnWave()
     {
         for (int i = 0; i < enemiesPerWave; i++)
         {
             GameObject enemy = enemyPool.Get();
             enemy.transform.SetParent(transform);
             PositionEnemy(enemy);
-            enemyManager.AddEnemy(enemy);
+            activeEnemies.Add(enemy);
+             // _enemyManager.AddEnemy(enemy);
         }
 
         enemiesPerWave += increaseEnemiesPerWave;
@@ -68,16 +90,12 @@ public class MeleeEnemyPool : MonoBehaviour
 
         enemy.transform.position = spawnPosition;
 
-        // Set initial movement direction towards the player
-        Vector3 directionToPlayer = (playerTransform.position - spawnPosition).normalized;
-        enemy.GetComponent<EnemyBehavior>().SetInitialDirection(directionToPlayer);
+        
     }
 
     private GameObject CreateEnemy()
     {
         GameObject enemy = Instantiate(enemyPrefab);
-        enemy.GetComponent<EnemyBehavior>().SetPool(enemyPool);
-        enemy.GetComponent<EnemyBehavior>().SetSpawner(this);
         return enemy;
     }
 
@@ -98,7 +116,10 @@ public class MeleeEnemyPool : MonoBehaviour
 
     public void ReleaseEnemy(GameObject enemy)
     {
-        enemyManager.RemoveEnemy(enemy);
+        if (activeEnemies.Contains(enemy))
+        {
+            activeEnemies.Remove(enemy);
+        }
         enemyPool.Release(enemy);
     }
 }

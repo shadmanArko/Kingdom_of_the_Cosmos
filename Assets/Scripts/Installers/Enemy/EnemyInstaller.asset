@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57932612ad6b13b42a764fd01c7f86e2, type: 3}
+  m_Name: EnemyInstaller
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 3740269002705187921, guid: 3356eeb35c0801c47a850f9144339ce0, type: 3}
+  enemyComputeShader: {fileID: 7200000, guid: 85e1cb728b113fa43951232d108c1651, type: 3}
+  meleeEnemyPool: {fileID: 2383170108146576834, guid: ce2f75a13d11b724e89fe3dcb00831e1, type: 3}
+  spawnSettings:
+    enemiesPerWave: 10
+    increaseEnemiesPerWave: 3
+    timeBetweenWaves: 5
+    spawnRadius: 10
+    forwardSpawnBias: 0.7

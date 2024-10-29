@@ -66,7 +66,7 @@ namespace Player
 
         public void PlayAnimation(string state)
         {
-            Debug.Log($"Playing {state} animation");
+            // Debug.Log($"Playing {state} animation");
             LoadSpriteBasedOnCurrentAnimation(state);
             animator.Play(state);
         }

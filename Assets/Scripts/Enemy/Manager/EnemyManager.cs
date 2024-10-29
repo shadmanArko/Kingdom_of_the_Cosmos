@@ -1,50 +1,71 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
-using ModestTree.Util;
-using UnityEngine.Serialization;
+using Player;
+using Zenject;
 
-public partial class EnemyManager : MonoBehaviour
+public class EnemyManager : IInitializable, ITickable, IDisposable
 {
     public static Action<int> EnemyCountUpdated;
-    [Header("References")]
-    public Transform playerTransform;
-    [FormerlySerializedAs("spawner")] public MeleeEnemyPool pool;
-    public ComputeShader enemyComputeShader;
+   
 
-    [Header("Settings")]
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float obstacleAvoidanceRadius = 1f;
-    [SerializeField] private float neighborAvoidanceRadius = 0.5f;
-    [SerializeField] private float collisionDistance = 1f;
-    [SerializeField] private float checkInterval = 0.1f;
-    [SerializeField] private float stucknessThreshold = 2f;
+    private readonly PlayerController _playerController;
+    private readonly ComputeShader _enemyComputeShader;
+    private readonly MeleeEnemyPool _pool;
 
-    private List<GameObject> activeEnemies = new List<GameObject>();
-    private ComputeBuffer enemyBuffer;
-    private ComputeBuffer obstacleBuffer;
-    private int kernelIndex;
-    private float timeSinceLastCheck;
+    private Transform _playerTransform;
+    private List<GameObject> _activeEnemies = new List<GameObject>();
+    private ComputeBuffer _computeBuffer;
+    private ComputeBuffer _obstacleBuffer;
+    private int _kernelIndex;
+    private float _timeSinceLastCheck;
 
-    private void Start()
+    public float moveSpeed = 5f;
+    public float obstacleAvoidanceRadius = 1f;
+    public float neighborAvoidanceRadius = 0.5f;
+    public float collisionDistance = 1f;
+    public float checkInterval = 0.1f;
+    public float stucknessThreshold = 2f;
+    
+
+    public EnemyManager(PlayerController playerController,
+        ComputeShader enemyComputeShader,
+        MeleeEnemyPool meleeEnemyPool)
     {
-        if (enemyComputeShader != null)
+        _playerController = playerController;
+        _enemyComputeShader = enemyComputeShader;
+        _pool = meleeEnemyPool;
+        Debug.Log("Enemy Manager constructor Started.");
+
+    }
+
+    public void Initialize()
+    {
+        _playerTransform = _playerController.gameObject.transform;
+        Debug.Log("Enemy Manager Started.");
+        if (_enemyComputeShader != null)
         {
-            kernelIndex = enemyComputeShader.FindKernel("CSMain");
+            _kernelIndex = _enemyComputeShader.FindKernel("CSMain");
         }
         InitializeObstacles();
     }
 
-    private void Update()
+    public void Tick()
     {
-        if (activeEnemies.Count == 0) return;
+        _activeEnemies = _pool.activeEnemies;
+        if (_activeEnemies.Count > 0)
+        {
+            UpdateBuffers();
+        }
+        
+        if (_activeEnemies.Count == 0) return;
 
-        timeSinceLastCheck += Time.deltaTime;
+        _timeSinceLastCheck += Time.deltaTime;
 
-        if (timeSinceLastCheck >= checkInterval)
+        if (_timeSinceLastCheck >= checkInterval)
         {
             CheckEnemyCollisions();
-            timeSinceLastCheck = 0f;
+            _timeSinceLastCheck = 0f;
         }
 
         UpdateEnemyPositions();
@@ -52,13 +73,13 @@ public partial class EnemyManager : MonoBehaviour
 
     private void UpdateEnemyPositions()
     {
-        if (enemyBuffer == null || obstacleBuffer == null) return;
+        if (_computeBuffer == null || _obstacleBuffer == null || _activeEnemies.Count <= 0) return;
 
         // Update enemy positions in the buffer
-        EnemyData[] enemyDataArray = new EnemyData[activeEnemies.Count];
-        for (int i = 0; i < activeEnemies.Count; i++)
+        EnemyData[] enemyDataArray = new EnemyData[_activeEnemies.Count];
+        for (int i = 0; i < _activeEnemies.Count; i++)
         {
-            Vector3 position = activeEnemies[i].transform.position;
+            Vector3 position = _activeEnemies[i].transform.position;
             enemyDataArray[i] = new EnemyData
             {
                 position = new Vector2(position.x, position.y),
@@ -69,55 +90,55 @@ public partial class EnemyManager : MonoBehaviour
                 isAlive = 1
             };
         }
-        enemyBuffer.SetData(enemyDataArray);
+        _computeBuffer.SetData(enemyDataArray);
 
         // Set compute shader parameters
-        enemyComputeShader.SetBuffer(kernelIndex, "enemyBuffer", enemyBuffer);
-        enemyComputeShader.SetBuffer(kernelIndex, "obstacleBuffer", obstacleBuffer);
-        enemyComputeShader.SetVector("playerPosition", playerTransform.position);
-        enemyComputeShader.SetFloat("deltaTime", Time.deltaTime);
-        enemyComputeShader.SetFloat("moveSpeed", moveSpeed);
-        enemyComputeShader.SetFloat("obstacleAvoidanceRadius", obstacleAvoidanceRadius);
-        enemyComputeShader.SetFloat("neighborAvoidanceRadius", neighborAvoidanceRadius);
-        enemyComputeShader.SetInt("enemyCount", activeEnemies.Count);
-        enemyComputeShader.SetInt("obstacleCount", obstacleBuffer.count);
-        enemyComputeShader.SetFloat("stucknessThreshold", stucknessThreshold);
+        _enemyComputeShader.SetBuffer(_kernelIndex, "enemyBuffer", _computeBuffer);
+        _enemyComputeShader.SetBuffer(_kernelIndex, "obstacleBuffer", _obstacleBuffer);
+        _enemyComputeShader.SetVector("playerPosition", _playerTransform.position);
+        _enemyComputeShader.SetFloat("deltaTime", Time.deltaTime);
+        _enemyComputeShader.SetFloat("moveSpeed", moveSpeed);
+        _enemyComputeShader.SetFloat("obstacleAvoidanceRadius", obstacleAvoidanceRadius);
+        _enemyComputeShader.SetFloat("neighborAvoidanceRadius", neighborAvoidanceRadius);
+        _enemyComputeShader.SetInt("enemyCount", _activeEnemies.Count);
+        _enemyComputeShader.SetInt("obstacleCount", _obstacleBuffer.count);
+        _enemyComputeShader.SetFloat("stucknessThreshold", stucknessThreshold);
 
         // Dispatch the compute shader
-        int threadGroups = Mathf.CeilToInt(activeEnemies.Count / 256f);
-        enemyComputeShader.Dispatch(kernelIndex, threadGroups, 1, 1);
+        int threadGroups = Mathf.CeilToInt(_activeEnemies.Count / 256f);
+        _enemyComputeShader.Dispatch(_kernelIndex, threadGroups, 1, 1);
 
         // Get results back and update enemy positions
-        enemyBuffer.GetData(enemyDataArray);
-        for (int i = 0; i < activeEnemies.Count; i++)
+        _computeBuffer.GetData(enemyDataArray);
+        for (int i = 0; i < _activeEnemies.Count; i++)
         {
-            activeEnemies[i].transform.position = new Vector3(enemyDataArray[i].position.x, enemyDataArray[i].position.y, 0);
+            _activeEnemies[i].transform.position = new Vector3(enemyDataArray[i].position.x, enemyDataArray[i].position.y, 0);
         }
     }
 
     private void CheckEnemyCollisions()
     {
-        Vector2 playerPosition = playerTransform.position;
+        Vector2 playerPosition = _playerTransform.position;
         float sqrCollisionDistance = collisionDistance * collisionDistance;
 
-        for (int i = activeEnemies.Count - 1; i >= 0; i--)
+        for (int i = _activeEnemies.Count - 1; i >= 0; i--)
         {
-            Vector2 enemyPosition = activeEnemies[i].transform.position;
+            Vector2 enemyPosition = _activeEnemies[i].transform.position;
             if ((playerPosition - enemyPosition).sqrMagnitude <= sqrCollisionDistance)
             {
                 // Collision detected, return enemy to pool
-                GameObject enemy = activeEnemies[i];
-                activeEnemies.RemoveAt(i);
+                GameObject enemy = _activeEnemies[i];
+                _activeEnemies.RemoveAt(i);
                 
-                if (pool != null)
+                if (_pool != null)
                 {
-                    pool.ReleaseEnemy(enemy);
+                    _pool.ReleaseEnemy(enemy);
                 }
-                else
-                {
-                    Debug.LogWarning("EnemySpawner not set. Destroying enemy instead.");
-                    Destroy(enemy);
-                }
+                // else
+                // {
+                //     Debug.LogWarning("EnemySpawner not set. Destroying enemy instead.");
+                //     Destroy(enemy);
+                // }
             }
         }
     }
@@ -131,49 +152,61 @@ public partial class EnemyManager : MonoBehaviour
             obstaclePositions[i] = obstacles[i].transform.position;
         }
 
-        obstacleBuffer = new ComputeBuffer(obstaclePositions.Length, sizeof(float) * 2);
-        obstacleBuffer.SetData(obstaclePositions);
+        _obstacleBuffer = new ComputeBuffer(obstaclePositions.Length, sizeof(float) * 2);
+        _obstacleBuffer.SetData(obstaclePositions);
     }
 
     public void AddEnemy(GameObject enemy)
     {
-        activeEnemies.Add(enemy);
+        _activeEnemies.Add(enemy);
         UpdateBuffers();
     }
 
     public void RemoveEnemy(GameObject enemy)
     {
-        activeEnemies.Remove(enemy);
+        _activeEnemies.Remove(enemy);
         UpdateBuffers();
     }
 
     private void UpdateBuffers()
     {
-        if (enemyBuffer != null)
+        if (_computeBuffer != null)
         {
-            enemyBuffer.Release();
+            _computeBuffer.Release();
         }
         
-        if (activeEnemies.Count > 0)
+        if (_activeEnemies.Count > 0)
         {
-            enemyBuffer = new ComputeBuffer(activeEnemies.Count, 32); // 2 for position, 2 for velocity, 1 for stuckness
+            _computeBuffer = new ComputeBuffer(_activeEnemies.Count, 32); // 2 for position, 2 for velocity, 1 for stuckness
         }
         else
         {
-            enemyBuffer = null;
+            _computeBuffer = null;
         }
-        EnemyCountUpdated?.Invoke(activeEnemies.Count);
+        EnemyCountUpdated?.Invoke(_activeEnemies.Count);
     }
 
     private void OnDestroy()
     {
-        if (enemyBuffer != null)
+        if (_computeBuffer != null)
         {
-            enemyBuffer.Release();
+            _computeBuffer.Release();
         }
-        if (obstacleBuffer != null)
+        if (_obstacleBuffer != null)
         {
-            obstacleBuffer.Release();
+            _obstacleBuffer.Release();
+        }
+    }
+
+    public void Dispose()
+    {
+        if (_computeBuffer != null)
+        {
+            _computeBuffer.Release();
+        }
+        if (_obstacleBuffer != null)
+        {
+            _obstacleBuffer.Release();
         }
     }
 }

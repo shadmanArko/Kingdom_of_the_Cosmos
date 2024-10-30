@@ -22,7 +22,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
 
     public float moveSpeed = 5f;
     public float obstacleAvoidanceRadius = 1f;
-    public float neighborAvoidanceRadius = 0.5f;
+    public float neighborAvoidanceRadius = 1f;
     public float collisionDistance = 1f;
     public float checkInterval = 0.1f;
     public float stucknessThreshold = 2f;

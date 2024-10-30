@@ -15,6 +15,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 3740269002705187921, guid: 3356eeb35c0801c47a850f9144339ce0, type: 3}
   enemyComputeShader: {fileID: 7200000, guid: 85e1cb728b113fa43951232d108c1651, type: 3}
   meleeEnemyPool: {fileID: 2383170108146576834, guid: 3ff22cc9f14189940b21e8a73c395cd2, type: 3}
+  gameStatUI: {fileID: 1694760451738670377, guid: 9141774e66ada8749882dde7b7e05dd0, type: 3}
   spawnSettings:
     enemiesPerWave: 10
     increaseEnemiesPerWave: 3

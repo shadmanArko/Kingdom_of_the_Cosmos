@@ -20,6 +20,8 @@ public class WeaponInstaller : ScriptableObjectInstaller<WeaponInstaller>
         Container.DeclareSignal<MouseMovementSignal>();
         Container.DeclareSignal<ReloadSignal>();
         Container.DeclareSignal<SwitchControlledWeaponSignal>();
+        Container.DeclareSignal<StartDashSignal>();
+        Container.DeclareSignal<StopDashSignal>();
         
         Container.Bind<WeaponManager>().AsSingle().NonLazy();
         Container.Bind<WeaponDataLoader>().AsSingle().NonLazy();

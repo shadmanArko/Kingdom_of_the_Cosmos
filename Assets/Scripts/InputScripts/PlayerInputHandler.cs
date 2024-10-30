@@ -20,7 +20,6 @@ namespace InputScripts
 
         private RunningDataScriptable _runningDataScriptable;
         private ScreenShakeManager _screenShakeManager;
-        private AbilityPoolManager _abilityPoolManager;
 
         private PlayerController _playerController;
         
@@ -51,7 +50,6 @@ namespace InputScripts
         {
             _screenShakeManager = screenShakeManager;
             _camera = cam;
-            _abilityPoolManager = abilityPoolManager;
             _runningDataScriptable = runningDataScriptable;
             _playerController = playerController;
         }
@@ -61,6 +59,8 @@ namespace InputScripts
             _inputControls.PlayerControl.MeleeAttack.performed += _ => AttackInput();
             _inputControls.PlayerControl.Reload.performed += _ => Reload();
             _inputControls.PlayerControl.SwitchWeapon.performed += _ => SwitchWeapon();
+            _inputControls.PlayerControl.Dash.performed += _ => StartDash();
+            _inputControls.PlayerControl.Dash.canceled += _ => StopDash();
         }
 
         #region Enable and Disable
@@ -119,6 +119,17 @@ namespace InputScripts
             _signalBus.Fire<SwitchControlledWeaponSignal>();
         }
 
+        private void StartDash()
+        {
+            _signalBus.Fire<StartDashSignal>();
+            Debug.Log("Dash started");
+        }
+        
+        private void StopDash()
+        {
+            _signalBus.Fire<StopDashSignal>();
+            Debug.Log("Dash ended");
+        }
 
         #region Utilities
 

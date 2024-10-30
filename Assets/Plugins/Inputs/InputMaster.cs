@@ -46,15 +46,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Look"",
-                    ""type"": ""Value"",
-                    ""id"": ""8eb46d56-7c92-40c7-92b7-8ee36da57b8c"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""MousePosition"",
                     ""type"": ""Value"",
                     ""id"": ""b49054d6-9616-4883-b0a4-921a605c4fb2"",
@@ -76,6 +67,15 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""name"": ""SwitchWeapon"",
                     ""type"": ""Button"",
                     ""id"": ""3478b161-8b61-4346-a84a-a819d9bddd79"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""72456d69-86de-4711-ad60-c9a5e5abd9ea"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -151,17 +151,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""d658cb97-b36f-4ba3-b572-e229dfeb6624"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""7255ab9a-4454-4b4f-8997-e76bccb50f6c"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
@@ -190,6 +179,17 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KeyboardAndMouse"",
                     ""action"": ""SwitchWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d154b636-eb13-45ef-90fc-cd7443d87236"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardAndMouse"",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -241,10 +241,10 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_PlayerControl = asset.FindActionMap("PlayerControl", throwIfNotFound: true);
         m_PlayerControl_MeleeAttack = m_PlayerControl.FindAction("MeleeAttack", throwIfNotFound: true);
         m_PlayerControl_Movement = m_PlayerControl.FindAction("Movement", throwIfNotFound: true);
-        m_PlayerControl_Look = m_PlayerControl.FindAction("Look", throwIfNotFound: true);
         m_PlayerControl_MousePosition = m_PlayerControl.FindAction("MousePosition", throwIfNotFound: true);
         m_PlayerControl_Reload = m_PlayerControl.FindAction("Reload", throwIfNotFound: true);
         m_PlayerControl_SwitchWeapon = m_PlayerControl.FindAction("SwitchWeapon", throwIfNotFound: true);
+        m_PlayerControl_Dash = m_PlayerControl.FindAction("Dash", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -308,20 +308,20 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private List<IPlayerControlActions> m_PlayerControlActionsCallbackInterfaces = new List<IPlayerControlActions>();
     private readonly InputAction m_PlayerControl_MeleeAttack;
     private readonly InputAction m_PlayerControl_Movement;
-    private readonly InputAction m_PlayerControl_Look;
     private readonly InputAction m_PlayerControl_MousePosition;
     private readonly InputAction m_PlayerControl_Reload;
     private readonly InputAction m_PlayerControl_SwitchWeapon;
+    private readonly InputAction m_PlayerControl_Dash;
     public struct PlayerControlActions
     {
         private @InputMaster m_Wrapper;
         public PlayerControlActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @MeleeAttack => m_Wrapper.m_PlayerControl_MeleeAttack;
         public InputAction @Movement => m_Wrapper.m_PlayerControl_Movement;
-        public InputAction @Look => m_Wrapper.m_PlayerControl_Look;
         public InputAction @MousePosition => m_Wrapper.m_PlayerControl_MousePosition;
         public InputAction @Reload => m_Wrapper.m_PlayerControl_Reload;
         public InputAction @SwitchWeapon => m_Wrapper.m_PlayerControl_SwitchWeapon;
+        public InputAction @Dash => m_Wrapper.m_PlayerControl_Dash;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -337,9 +337,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
-            @Look.started += instance.OnLook;
-            @Look.performed += instance.OnLook;
-            @Look.canceled += instance.OnLook;
             @MousePosition.started += instance.OnMousePosition;
             @MousePosition.performed += instance.OnMousePosition;
             @MousePosition.canceled += instance.OnMousePosition;
@@ -349,6 +346,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @SwitchWeapon.started += instance.OnSwitchWeapon;
             @SwitchWeapon.performed += instance.OnSwitchWeapon;
             @SwitchWeapon.canceled += instance.OnSwitchWeapon;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
         }
 
         private void UnregisterCallbacks(IPlayerControlActions instance)
@@ -359,9 +359,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
-            @Look.started -= instance.OnLook;
-            @Look.performed -= instance.OnLook;
-            @Look.canceled -= instance.OnLook;
             @MousePosition.started -= instance.OnMousePosition;
             @MousePosition.performed -= instance.OnMousePosition;
             @MousePosition.canceled -= instance.OnMousePosition;
@@ -371,6 +368,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @SwitchWeapon.started -= instance.OnSwitchWeapon;
             @SwitchWeapon.performed -= instance.OnSwitchWeapon;
             @SwitchWeapon.canceled -= instance.OnSwitchWeapon;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
         }
 
         public void RemoveCallbacks(IPlayerControlActions instance)
@@ -419,9 +419,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     {
         void OnMeleeAttack(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
-        void OnLook(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnSwitchWeapon(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
 }

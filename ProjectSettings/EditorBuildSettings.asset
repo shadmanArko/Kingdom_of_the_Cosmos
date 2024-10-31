@@ -11,10 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Battle Scene/Battle Scene.unity
     guid: 92af2fb50793bce41940001a60ea59d6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test Scenes/objectpool enemy test.unity
     guid: 301fa74b11c54dd4faa1d38a6d213076
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test Scenes/UniRxUI.unity
     guid: 79c88769867d92f4397bb6e06e20928e
   m_configObjects:

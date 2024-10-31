@@ -24,9 +24,7 @@ namespace Player
         
         [SerializeField] private float dashSpeed = 25f;
         [SerializeField] private float dashDuration;
-        [SerializeField] private float dashTimeRemaining;
         
-        [SerializeField] private float dashCooldown;
         [SerializeField] private float dashCooldownDuration;
 
         #endregion
@@ -59,12 +57,9 @@ namespace Player
             speed = moveSpeed;
             
             dashDuration = 0.8f;
-            dashTimeRemaining = 0f;
 
             dashCooldownDuration = 2f;
             totalDashCount = 2;
-            dashCooldown = dashCooldownDuration;
-            dashTimeRemaining = dashDuration;
         }
 
         #region Subscribe and Unsubscribe
@@ -82,12 +77,7 @@ namespace Player
         }
 
         #endregion
-
-        private void FixedUpdate()
-        {
-            CheckDashValidity();
-        }
-
+        
         public void Move(Vector2 direction)
         {
             if(!canMove) return;
@@ -130,32 +120,14 @@ namespace Player
 
         #region Dash
         
-        private void CheckDashValidity()
-        {
-            if (isDashing)
-            {
-                // if (dashTimeRemaining <= 0)
-                // {
-                //     StopDash();
-                // }
-                // else
-                // {
-                //     dashTimeRemaining -= Time.fixedDeltaTime;
-                // }
-            }
-            
-            canDash = dashCount > 0;
-        }
-
         private void StartDash()
         {
-            if(!canDash) return;
+            if(dashCount <= 0) return;
             Debug.Log("Start Dash called");
             speed = dashSpeed;
             _canAttack = false;
             canDash = false;
             isDashing = true;
-            dashTimeRemaining = dashDuration;
             StartDashCountdown();
         }
 
@@ -166,9 +138,6 @@ namespace Player
             speed = moveSpeed;
             _canAttack = true;
             isDashing = false;
-            // canDash = false;
-            dashTimeRemaining = 0;
-            dashCooldown = dashCooldownDuration;
         }
 
         private async void StartDashCountdown()

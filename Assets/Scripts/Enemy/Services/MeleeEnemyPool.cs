@@ -12,7 +12,6 @@ public class MeleeEnemyPool : MonoBehaviour
     [SerializeField] private int increaseEnemiesPerWave = 3;
     [SerializeField] private float timeBetweenWaves = 5f;
     [SerializeField] private float spawnRadius = 10f;
-    [SerializeField] private float forwardSpawnBias = 0.7f; // 0 to 1, higher values spawn more enemies in front
     
     [Inject]
     [SerializeField] private  PlayerController playerController;

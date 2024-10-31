@@ -41,7 +41,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
 
     public void Initialize()
     {
-        _playerTransform = _playerController.gameObject.transform;
+        _playerTransform = _playerController.transform;
         Debug.Log("Enemy Manager Started.");
         if (_enemyComputeShader != null)
         {

@@ -23,6 +23,16 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1a46df3779bae4f4097d6113bb736e7e
+    m_Address: Assets/Scripts/zzz_TestScripts/AnimationLoadingFromSpriteSheets/MeleeEnemyAnimationDataScriptable.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84568e0282e4e0440a9395d9481680a9
+    m_Address: Assets/Art/2D/Sprites/CharacterSprites/Mage-Cyan.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 92d5f191873c84048abcf7e1a3adf259, type: 2}
   m_SchemaSet:

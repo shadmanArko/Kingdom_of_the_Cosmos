@@ -1,6 +1,6 @@
-using System;
+using System.Threading.Tasks;
 using Cinemachine;
-using InputScripts;
+using Unity.Mathematics;
 using UnityEngine;
 using Zenject;
 using zzz_TestScripts.Signals.BattleSceneSignals;
@@ -16,12 +16,15 @@ namespace Player
 
         #region Dash Variables
 
+        [SerializeField] private int dashCount;
+        [SerializeField] private int totalDashCount;
+        
         [SerializeField] private bool isDashing;
         [SerializeField] private bool canDash;
-        [SerializeField] private float dashDuration;
-        [SerializeField] private float dashTimeRemaining;
+        
         [SerializeField] private float dashSpeed = 25f;
-        [SerializeField] private float dashCooldown;
+        [SerializeField] private float dashDuration;
+        
         [SerializeField] private float dashCooldownDuration;
 
         #endregion
@@ -36,7 +39,6 @@ namespace Player
         
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private PlayerAnimationController playerAnimationController;
-        // [SerializeField] private PlayerInputHandler playerInputHandler;
 
         [Inject]
         private void InitializeDiReference(CinemachineVirtualCamera cineMachineVirtualCamera, SignalBus signalBus)
@@ -55,11 +57,9 @@ namespace Player
             speed = moveSpeed;
             
             dashDuration = 0.8f;
-            dashTimeRemaining = 0f;
 
             dashCooldownDuration = 2f;
-            dashCooldown = dashCooldownDuration;
-            dashTimeRemaining = dashDuration;
+            totalDashCount = 2;
         }
 
         #region Subscribe and Unsubscribe
@@ -77,12 +77,7 @@ namespace Player
         }
 
         #endregion
-
-        private void FixedUpdate()
-        {
-            CheckDashValidity();
-        }
-
+        
         public void Move(Vector2 direction)
         {
             if(!canMove) return;
@@ -125,46 +120,39 @@ namespace Player
 
         #region Dash
         
-        private void CheckDashValidity()
-        {
-            if (isDashing)
-            {
-                if (dashTimeRemaining <= 0)
-                {
-                    StopDash();
-                }
-                else
-                {
-                    dashTimeRemaining -= Time.fixedDeltaTime;
-                }
-            }
-            
-            dashCooldown -= Time.fixedDeltaTime;
-            dashCooldown = Mathf.Clamp(dashCooldown, 0f, dashCooldownDuration);
-            canDash = dashCooldown <= 0;
-        }
-
         private void StartDash()
         {
-            if(!canDash) return;
+            if(dashCount <= 0) return;
             Debug.Log("Start Dash called");
             speed = dashSpeed;
             _canAttack = false;
             canDash = false;
             isDashing = true;
-            dashTimeRemaining = dashDuration;
-            dashCooldown = 0f;
+            StartDashCountdown();
         }
 
         private void StopDash()
         {
+            if(!isDashing) return;
             Debug.Log("Stop Dash called");
             speed = moveSpeed;
             _canAttack = true;
             isDashing = false;
-            canDash = false;
-            dashTimeRemaining = 0;
-            dashCooldown = dashCooldownDuration;
+        }
+
+        private async void StartDashCountdown()
+        {
+            await Task.Delay(Mathf.CeilToInt(dashDuration * 1000));
+            StopDash();
+            StartDashCooldown();
+        }
+
+        private async void StartDashCooldown()
+        {
+            dashCount -= 1;
+            await Task.Delay(Mathf.CeilToInt(dashCooldownDuration * 1000));
+            dashCount += 1;
+            dashCount = math.clamp(dashCount, 0, totalDashCount);
         }
 
         #endregion

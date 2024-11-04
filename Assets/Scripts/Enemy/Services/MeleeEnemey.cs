@@ -6,8 +6,19 @@ using UnityEngine.Pool;
 public class MeleeEnemy : MonoBehaviour
 {
     [SerializeField] private PlayerAnimationController _animationController;
+    private MeleeAttacker _meleeAttackerStats;
     private void Start()
     {
         _animationController.PlayAnimation("run");
+    }
+
+    public void SetMeleeAttackerStat(MeleeAttacker meleeAttacker)
+    {
+        _meleeAttackerStats = meleeAttacker;
+        transform.position = new Vector3(_meleeAttackerStats.Position.x, _meleeAttackerStats.Position.y, 0);
+    }
+    public MeleeAttacker GetMeleeAttackerStat()
+    {
+        return _meleeAttackerStats;
     }
 }

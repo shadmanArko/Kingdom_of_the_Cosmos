@@ -11,7 +11,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
 
     private readonly PlayerController _playerController;
     private readonly ComputeShader _enemyComputeShader;
-    private readonly MeleeEnemyPool _pool;
+    private readonly MeleeEnemyPool _meleeEnemyPool;
 
     private Transform _playerTransform;
     private List<GameObject> _activeEnemies = new List<GameObject>();
@@ -19,6 +19,8 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     private ComputeBuffer _obstacleBuffer;
     private int _kernelIndex;
     private float _timeSinceLastCheck;
+    private float enemySpawningInterval = 1f;
+    private float nextEnemySpawnTime;
 
     public float moveSpeed = 5f;
     public float obstacleAvoidanceRadius = 1f;
@@ -30,11 +32,11 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
 
     public EnemyManager(PlayerController playerController,
         ComputeShader enemyComputeShader,
-        MeleeEnemyPool meleeEnemyPool)
+        MeleeEnemyPool meleeEnemyMeleeEnemyPool)
     {
         _playerController = playerController;
         _enemyComputeShader = enemyComputeShader;
-        _pool = meleeEnemyPool;
+        _meleeEnemyPool = meleeEnemyMeleeEnemyPool;
         Debug.Log("Enemy Manager constructor Started.");
 
     }
@@ -42,6 +44,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     public void Initialize()
     {
         _playerTransform = _playerController.transform;
+        nextEnemySpawnTime = enemySpawningInterval + Time.time;
         Debug.Log("Enemy Manager Started.");
         if (_enemyComputeShader != null)
         {
@@ -50,9 +53,20 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         InitializeObstacles();
     }
 
+    private void CreateEnemyFromMeleeEnemyPool()
+    {
+        var meleeAttacker = new MeleeAttacker()
+        {
+            Damage = 15,
+            Health = 100,
+            IsAlive = 1
+        };
+        _meleeEnemyPool.CreateMeleeEnemy(meleeAttacker);
+    }
     public void Tick()
     {
-        _activeEnemies = _pool.activeEnemies;
+        HandleEnemySpawning();
+        _activeEnemies = _meleeEnemyPool.activeEnemies;
         if (_activeEnemies.Count > 0)
         {
             UpdateBuffers();
@@ -71,6 +85,17 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         UpdateEnemyPositions();
     }
 
+    private void HandleEnemySpawning()
+    {
+        if (nextEnemySpawnTime < Time.time )
+        {
+            CreateEnemyFromMeleeEnemyPool();
+            nextEnemySpawnTime = Time.time + enemySpawningInterval;
+        }
+
+        
+    }
+
     private void UpdateEnemyPositions()
     {
         if (_computeBuffer == null || _obstacleBuffer == null || _activeEnemies.Count <= 0) return;
@@ -80,14 +105,15 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         for (int i = 0; i < _activeEnemies.Count; i++)
         {
             Vector3 position = _activeEnemies[i].transform.position;
+            var enemyStat = _activeEnemies[i].GetComponent<MeleeEnemy>().GetMeleeAttackerStat();
             enemyDataArray[i] = new EnemyData
             {
-                position = new Vector2(position.x, position.y),
-                velocity = Vector2.zero,
-                stuckness = 0, // Initialize stuckness
-                damage = 10,
-                health = 100,
-                isAlive = 1
+                position = enemyStat.Position,
+                velocity = enemyStat.Velocity,
+                stuckness = enemyStat.Stuckness, // Initialize stuckness
+                damage = enemyStat.Damage,
+                health = enemyStat.Health,
+                isAlive = enemyStat.IsAlive
             };
         }
         _computeBuffer.SetData(enemyDataArray);
@@ -112,7 +138,18 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         _computeBuffer.GetData(enemyDataArray);
         for (int i = 0; i < _activeEnemies.Count; i++)
         {
-            _activeEnemies[i].transform.position = new Vector3(enemyDataArray[i].position.x, enemyDataArray[i].position.y, 0);
+            // _activeEnemies[i].transform.position = new Vector3(enemyDataArray[i].position.x, enemyDataArray[i].position.y, 0);
+            var enemyData = enemyDataArray[i];
+            var enemyStat = new MeleeAttacker()
+            {
+                Position = enemyData.position,
+                Velocity = enemyData.velocity,
+                Health = enemyData.health,
+                Damage = enemyData.damage,
+                Stuckness = enemyData.stuckness,
+                IsAlive = enemyData.isAlive
+            };
+            _activeEnemies[i].GetComponent<MeleeEnemy>().SetMeleeAttackerStat(enemyStat);
         }
     }
 
@@ -130,9 +167,9 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
                 GameObject enemy = _activeEnemies[i];
                 _activeEnemies.RemoveAt(i);
                 
-                if (_pool != null)
+                if (_meleeEnemyPool != null)
                 {
-                    _pool.ReleaseEnemy(enemy);
+                    _meleeEnemyPool.ReleaseEnemy(enemy);
                 }
                 // else
                 // {

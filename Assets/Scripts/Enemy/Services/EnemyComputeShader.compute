@@ -7,6 +7,7 @@ struct Enemy
     float stuckness;
     float damage;
     float health;
+    float distanceToPlayer;
     int isAlive;
 };
 
@@ -41,6 +42,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 
     float2 dirToPlayer = playerPosition - enemy.position;
     float distToPlayer = length(dirToPlayer);
+    enemy.distanceToPlayer = abs(dirToPlayer);
     
     float2 normalizedDirToPlayer = distToPlayer > 0.001f 
         ? dirToPlayer / distToPlayer 

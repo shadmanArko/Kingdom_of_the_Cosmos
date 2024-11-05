@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Player;
+using Unity.Mathematics;
 using Zenject;
 
 public class EnemyManager : IInitializable, ITickable, IDisposable
@@ -22,7 +23,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     private float enemySpawningInterval = 1f;
     private float nextEnemySpawnTime;
 
-    public float moveSpeed = 5f;
+    public float moveSpeed = 4f;
     public float obstacleAvoidanceRadius = 1f;
     public float neighborAvoidanceRadius = 1f;
     public float collisionDistance = 1f;
@@ -59,7 +60,8 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         {
             Damage = 15,
             Health = 100,
-            IsAlive = 1
+            IsAlive = 1,
+            DistanceToPlayer = 9999f
         };
         _meleeEnemyPool.CreateMeleeEnemy(meleeAttacker);
     }
@@ -78,11 +80,24 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
 
         if (_timeSinceLastCheck >= checkInterval)
         {
-            CheckEnemyCollisions();
+            // CheckEnemyCollisions();
             _timeSinceLastCheck = 0f;
         }
 
         UpdateEnemyPositions();
+        if (Input.GetMouseButtonDown(0))
+        {
+            for (int i = 0; i < _activeEnemies.Count; i++)
+            {
+                var enemy = _activeEnemies[i];
+                var enemyStat = enemy.GetComponent<MeleeEnemy>().GetMeleeAttackerStat();
+                if (enemyStat.DistanceToPlayer < 2f)
+                {
+                    _meleeEnemyPool.ReleaseEnemy(enemy);
+                }
+            }
+
+        }
     }
 
     private void HandleEnemySpawning()
@@ -140,16 +155,14 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         {
             // _activeEnemies[i].transform.position = new Vector3(enemyDataArray[i].position.x, enemyDataArray[i].position.y, 0);
             var enemyData = enemyDataArray[i];
-            var enemyStat = new MeleeAttacker()
+            var enemyStat = new MeleeAttacker();
+            enemyStat.ApplyComputeData(enemyData);
+            var enemy = _activeEnemies[i].GetComponent<MeleeEnemy>();
+            enemy.SetMeleeAttackerStat(enemyStat);
+            if (enemyStat.DistanceToPlayer < 0.01f)
             {
-                Position = enemyData.position,
-                Velocity = enemyData.velocity,
-                Health = enemyData.health,
-                Damage = enemyData.damage,
-                Stuckness = enemyData.stuckness,
-                IsAlive = enemyData.isAlive
-            };
-            _activeEnemies[i].GetComponent<MeleeEnemy>().SetMeleeAttackerStat(enemyStat);
+                enemy.HandleAttack(_playerController);
+            }
         }
     }
 
@@ -214,7 +227,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         
         if (_activeEnemies.Count > 0)
         {
-            _computeBuffer = new ComputeBuffer(_activeEnemies.Count, 32); // 2 for position, 2 for velocity, 1 for stuckness
+            _computeBuffer = new ComputeBuffer(_activeEnemies.Count, 36); // 2 for position, 2 for velocity, 1 for stuckness
         }
         else
         {

@@ -21,4 +21,8 @@ public class MeleeEnemy : MonoBehaviour
     {
         return _meleeAttackerStats;
     }
+    public void HandleAttack(PlayerController playerController)
+    {
+        Debug.Log($"{gameObject.name} Damaged Player from distance {_meleeAttackerStats.DistanceToPlayer}");
+    }
 }

@@ -7,6 +7,7 @@ public abstract class EnemyBase
     public float Health { get; set; }
     public float Stuckness { get; set; }
     public float Damage { get; set; }
+    public float DistanceToPlayer { get; set; }
     public int IsAlive { get; set; }
 
     // Method to apply common data from compute shader
@@ -16,6 +17,7 @@ public abstract class EnemyBase
         Velocity = data.velocity;
         Stuckness = data.stuckness;
         Damage = data.damage;
+        DistanceToPlayer = data.distanceToPlayer;
         Health = data.health;
         IsAlive = data.isAlive;
     }

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using Player;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Pool;
 using Zenject;
+using Random = UnityEngine.Random;
 
 public class MeleeEnemyPool : MonoBehaviour
 {
@@ -54,25 +56,34 @@ public class MeleeEnemyPool : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time >= nextWaveTime)
-        {
-            SpawnWave();
-            nextWaveTime = Time.time + timeBetweenWaves;
-        }    
+        // if (Time.time >= nextWaveTime)
+        // {
+        //     SpawnWave();
+        //     nextWaveTime = Time.time + timeBetweenWaves;
+        // }    
     }
-
+    
     public void SpawnWave()
     {
         for (int i = 0; i < enemiesPerWave; i++)
         {
-            GameObject enemy = enemyPool.Get();
-            enemy.transform.SetParent(transform);
-            PositionEnemy(enemy);
-            activeEnemies.Add(enemy);
-             // _enemyManager.AddEnemy(enemy);
+            // SpawnEnemy();
+            // _enemyManager.AddEnemy(enemy);
         }
 
         enemiesPerWave += increaseEnemiesPerWave;
+    }
+
+    public GameObject CreateMeleeEnemy(MeleeAttacker meleeAttacker)
+    {
+        GameObject enemy = enemyPool.Get();
+        enemy.transform.SetParent(transform);
+        PositionEnemy(enemy);
+        activeEnemies.Add(enemy);
+        var position = enemy.transform.position;
+        meleeAttacker.Position = new float2(position.x, position.y);
+        enemy.GetComponent<MeleeEnemy>().SetMeleeAttackerStat(meleeAttacker);
+        return enemy;
     }
 
     private void PositionEnemy(GameObject enemy)

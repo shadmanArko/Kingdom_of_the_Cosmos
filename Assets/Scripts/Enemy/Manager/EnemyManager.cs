@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Player;
+using Unity.Mathematics;
 using Zenject;
 
 public class EnemyManager : IInitializable, ITickable, IDisposable
@@ -11,7 +12,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
 
     private readonly PlayerController _playerController;
     private readonly ComputeShader _enemyComputeShader;
-    private readonly MeleeEnemyPool _pool;
+    private readonly MeleeEnemyPool _meleeEnemyPool;
 
     private Transform _playerTransform;
     private List<GameObject> _activeEnemies = new List<GameObject>();
@@ -19,8 +20,10 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     private ComputeBuffer _obstacleBuffer;
     private int _kernelIndex;
     private float _timeSinceLastCheck;
+    private float enemySpawningInterval = 1f;
+    private float nextEnemySpawnTime;
 
-    public float moveSpeed = 5f;
+    public float moveSpeed = 4f;
     public float obstacleAvoidanceRadius = 1f;
     public float neighborAvoidanceRadius = 1f;
     public float collisionDistance = 1f;
@@ -30,11 +33,11 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
 
     public EnemyManager(PlayerController playerController,
         ComputeShader enemyComputeShader,
-        MeleeEnemyPool meleeEnemyPool)
+        MeleeEnemyPool meleeEnemyMeleeEnemyPool)
     {
         _playerController = playerController;
         _enemyComputeShader = enemyComputeShader;
-        _pool = meleeEnemyPool;
+        _meleeEnemyPool = meleeEnemyMeleeEnemyPool;
         Debug.Log("Enemy Manager constructor Started.");
 
     }
@@ -42,6 +45,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     public void Initialize()
     {
         _playerTransform = _playerController.transform;
+        nextEnemySpawnTime = enemySpawningInterval + Time.time;
         Debug.Log("Enemy Manager Started.");
         if (_enemyComputeShader != null)
         {
@@ -50,9 +54,21 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         InitializeObstacles();
     }
 
+    private void CreateEnemyFromMeleeEnemyPool()
+    {
+        var meleeAttacker = new MeleeAttacker()
+        {
+            Damage = 15,
+            Health = 100,
+            IsAlive = 1,
+            DistanceToPlayer = 9999f
+        };
+        _meleeEnemyPool.CreateMeleeEnemy(meleeAttacker);
+    }
     public void Tick()
     {
-        _activeEnemies = _pool.activeEnemies;
+        HandleEnemySpawning();
+        _activeEnemies = _meleeEnemyPool.activeEnemies;
         if (_activeEnemies.Count > 0)
         {
             UpdateBuffers();
@@ -64,11 +80,35 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
 
         if (_timeSinceLastCheck >= checkInterval)
         {
-            CheckEnemyCollisions();
+            // CheckEnemyCollisions();
             _timeSinceLastCheck = 0f;
         }
 
         UpdateEnemyPositions();
+        if (Input.GetMouseButtonDown(0))
+        {
+            for (int i = 0; i < _activeEnemies.Count; i++)
+            {
+                var enemy = _activeEnemies[i];
+                var enemyStat = enemy.GetComponent<MeleeEnemy>().GetMeleeAttackerStat();
+                if (enemyStat.DistanceToPlayer < 2f)
+                {
+                    _meleeEnemyPool.ReleaseEnemy(enemy);
+                }
+            }
+
+        }
+    }
+
+    private void HandleEnemySpawning()
+    {
+        if (nextEnemySpawnTime < Time.time )
+        {
+            CreateEnemyFromMeleeEnemyPool();
+            nextEnemySpawnTime = Time.time + enemySpawningInterval;
+        }
+
+        
     }
 
     private void UpdateEnemyPositions()
@@ -80,14 +120,15 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         for (int i = 0; i < _activeEnemies.Count; i++)
         {
             Vector3 position = _activeEnemies[i].transform.position;
+            var enemyStat = _activeEnemies[i].GetComponent<MeleeEnemy>().GetMeleeAttackerStat();
             enemyDataArray[i] = new EnemyData
             {
-                position = new Vector2(position.x, position.y),
-                velocity = Vector2.zero,
-                stuckness = 0, // Initialize stuckness
-                damage = 10,
-                health = 100,
-                isAlive = 1
+                position = enemyStat.Position,
+                velocity = enemyStat.Velocity,
+                stuckness = enemyStat.Stuckness, // Initialize stuckness
+                damage = enemyStat.Damage,
+                health = enemyStat.Health,
+                isAlive = enemyStat.IsAlive
             };
         }
         _computeBuffer.SetData(enemyDataArray);
@@ -112,7 +153,16 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         _computeBuffer.GetData(enemyDataArray);
         for (int i = 0; i < _activeEnemies.Count; i++)
         {
-            _activeEnemies[i].transform.position = new Vector3(enemyDataArray[i].position.x, enemyDataArray[i].position.y, 0);
+            // _activeEnemies[i].transform.position = new Vector3(enemyDataArray[i].position.x, enemyDataArray[i].position.y, 0);
+            var enemyData = enemyDataArray[i];
+            var enemyStat = new MeleeAttacker();
+            enemyStat.ApplyComputeData(enemyData);
+            var enemy = _activeEnemies[i].GetComponent<MeleeEnemy>();
+            enemy.SetMeleeAttackerStat(enemyStat);
+            if (enemyStat.DistanceToPlayer < 0.01f)
+            {
+                enemy.HandleAttack(_playerController);
+            }
         }
     }
 
@@ -130,9 +180,9 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
                 GameObject enemy = _activeEnemies[i];
                 _activeEnemies.RemoveAt(i);
                 
-                if (_pool != null)
+                if (_meleeEnemyPool != null)
                 {
-                    _pool.ReleaseEnemy(enemy);
+                    _meleeEnemyPool.ReleaseEnemy(enemy);
                 }
                 // else
                 // {
@@ -177,7 +227,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         
         if (_activeEnemies.Count > 0)
         {
-            _computeBuffer = new ComputeBuffer(_activeEnemies.Count, 32); // 2 for position, 2 for velocity, 1 for stuckness
+            _computeBuffer = new ComputeBuffer(_activeEnemies.Count, 36); // 2 for position, 2 for velocity, 1 for stuckness
         }
         else
         {

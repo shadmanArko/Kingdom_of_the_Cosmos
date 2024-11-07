@@ -11,6 +11,7 @@ using zzz_TestScripts.Signals.BattleSceneSignals;
 public class WeaponInstaller : ScriptableObjectInstaller<WeaponInstaller>
 {
     [FormerlySerializedAs("weaponDataScriptable")] [SerializeField] private WeaponDatabaseScriptable weaponDatabaseScriptable;
+    [SerializeField] private RicochetWeaponSystem.RicochetSystem _ricochetSystem;
     public override void InstallBindings()
     {
         SignalBusInstaller.Install(Container);
@@ -22,9 +23,14 @@ public class WeaponInstaller : ScriptableObjectInstaller<WeaponInstaller>
         Container.DeclareSignal<SwitchControlledWeaponSignal>();
         Container.DeclareSignal<StartDashSignal>();
         Container.DeclareSignal<StopDashSignal>();
+        Container.DeclareSignal<WeaponThrowStartSignal>();
+        Container.DeclareSignal<WeaponThrowStopSignal>();
         
         Container.Bind<WeaponManager>().AsSingle().NonLazy();
         Container.Bind<WeaponDataLoader>().AsSingle().NonLazy();
+
+        Container.Bind<RicochetWeaponSystem.RicochetSystem>().FromComponentInNewPrefab(_ricochetSystem).AsSingle()
+            .NonLazy();
         
         
         Container.Bind<WeaponDatabaseScriptable>().FromScriptableObject(weaponDatabaseScriptable).AsSingle().NonLazy();

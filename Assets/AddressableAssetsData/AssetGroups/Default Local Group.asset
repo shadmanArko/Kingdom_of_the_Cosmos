@@ -28,8 +28,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 84568e0282e4e0440a9395d9481680a9
-    m_Address: Assets/Art/2D/Sprites/CharacterSprites/Mage-Cyan.png
+  - m_GUID: 3596c9fd20e932e4a836e3ee29221211
+    m_Address: Assets/Art/2D/Sprites/CharacterSprites/Orc-Soldier-Cyan.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

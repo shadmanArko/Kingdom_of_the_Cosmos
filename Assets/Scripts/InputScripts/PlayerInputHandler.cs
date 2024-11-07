@@ -61,8 +61,10 @@ namespace InputScripts
             _inputControls.PlayerControl.SwitchWeapon.performed += _ => SwitchWeapon();
             _inputControls.PlayerControl.Dash.performed += _ => StartDash();
             _inputControls.PlayerControl.Dash.canceled += _ => StopDash();
+            _inputControls.PlayerControl.WeaponThrow.performed += _ => StartThrowWeapon();
+            _inputControls.PlayerControl.WeaponThrow.canceled += _ => StopThrowWeapon();
         }
-
+        
         #region Enable and Disable
 
         private void OnEnable()
@@ -80,6 +82,8 @@ namespace InputScripts
             _inputControls.Disable();
             _mousePositionAction.Disable();
             _lastMousePosition = _mousePositionAction.ReadValue<Vector2>();
+            
+            _signalBus.Unsubscribe<MouseMovementSignal>(UpdateMouseMovement);
         }
 
         #endregion
@@ -131,14 +135,7 @@ namespace InputScripts
             Debug.Log("Dash ended");
         }
 
-        #region Utilities
-
-        private Vector3 ReadPreviousMousePosition()
-        {
-            var mousePosition = Mouse.current.position.ReadValue();
-            var worldPosition = _camera!.ScreenToWorldPoint(mousePosition);
-            return worldPosition;
-        }
+        #region Update Mouse Position
 
         private Vector3 _lastMousePosition;
         private bool _mouseMoved;
@@ -152,18 +149,32 @@ namespace InputScripts
             _lastMousePosition = mousePos;
             var mouseWorldPosition =
                 _camera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, _camera.nearClipPlane));
-            var direction = (_playerController.gameObject.transform.position - mouseWorldPosition).normalized;
+            var direction = (_playerController.gameObject.transform.position - mouseWorldPosition).normalized * -1;
+            Debug.Log($"mouse direction: {direction}");
             _signalBus.Fire(new MouseMovementSignal(direction));
-            // Debug.Log($"Mouse position move signal fired {mousePos}");
+        }
+        
+        private void UpdateMouseMovement(MouseMovementSignal mouseMovementSignal)
+        {
+            _runningDataScriptable.attackDirection = mouseMovementSignal.MousePos;
         }
 
         #endregion
 
-        private void UpdateMouseMovement(MouseMovementSignal mouseMovementSignal)
+        #region Weapon Throw
+
+        private void StartThrowWeapon()
         {
-            _runningDataScriptable.attackDirection = mouseMovementSignal.MousePos;
-            // Debug.Log("Mouse Pos updated to running data scriptable");
+            Debug.Log("Firing weapon throw START signal");
+            _signalBus.Fire<WeaponThrowStartSignal>();
         }
+        private void StopThrowWeapon()
+        {
+            _signalBus.Fire<WeaponThrowStopSignal>();
+            Debug.Log("Firing weapon throw STOP signal");
+        }
+
+        #endregion
         
     }
 }

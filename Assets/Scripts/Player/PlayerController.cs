@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Cinemachine;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 using zzz_TestScripts.Signals.BattleSceneSignals;
 
@@ -109,10 +110,10 @@ namespace Player
 
         #region Attack
 
-        private bool _canAttack;
+        [SerializeField] private bool canAttack;
         public void Attack(Vector2 direction)
         {
-            if(!_canAttack) return;
+            if(!canAttack) return;
             playerAnimationController.PlayAnimation("attack");
         }
 
@@ -122,11 +123,11 @@ namespace Player
         
         private void StartDash()
         {
+            if(!canDash) return;
             if(dashCount <= 0) return;
             Debug.Log("Start Dash called");
             speed = dashSpeed;
-            _canAttack = false;
-            canDash = false;
+            canAttack = false;
             isDashing = true;
             StartDashCountdown();
         }
@@ -136,7 +137,7 @@ namespace Player
             if(!isDashing) return;
             Debug.Log("Stop Dash called");
             speed = moveSpeed;
-            _canAttack = true;
+            canAttack = true;
             isDashing = false;
         }
 

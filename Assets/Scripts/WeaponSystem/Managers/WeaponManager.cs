@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DBMS.JsonToScriptable;
+using DBMS.RunningData;
 using DBMS.WeaponsData;
+using NUnit.Framework;
+using Player;
+using RicochetWeaponSystem;
 using UnityEngine;
 using WeaponSystem.AutomaticWeapon;
 using WeaponSystem.Models;
@@ -15,7 +19,9 @@ namespace WeaponSystem.Managers
     {
         private SignalBus _signalBus;
         private WeaponDatabaseScriptable _weaponDatabaseScriptable;
+        private RunningDataScriptable _runningDataScriptable;
         private WeaponDataLoader _weaponDataLoader;
+        private PlayerController _playerController;
 
         private List<IWeapon> _controlledWeapons = new();
         private List<IWeapon> automaticWeapons = new();
@@ -23,12 +29,18 @@ namespace WeaponSystem.Managers
         private IWeapon activeControlledWeapon;
         private int currentControlledIndex = 0;
 
+        // private RayCastSystem _rayCastSystem;
+        private RicochetWeaponSystem.RicochetSystem _ricochetSystem;
+        
         [Inject]
-        public WeaponManager(SignalBus signalBus, WeaponDatabaseScriptable weaponDatabaseScriptable, WeaponDataLoader weaponDataLoader)
+        public WeaponManager(SignalBus signalBus, WeaponDatabaseScriptable weaponDatabaseScriptable, WeaponDataLoader weaponDataLoader, RunningDataScriptable runningDataScriptable, PlayerController playerController, RicochetWeaponSystem.RicochetSystem ricochetSystem)
         {
             _signalBus = signalBus;
             _weaponDatabaseScriptable = weaponDatabaseScriptable;
+            _runningDataScriptable = runningDataScriptable;
             _weaponDataLoader = weaponDataLoader;
+            _playerController = playerController;
+            _ricochetSystem = ricochetSystem;
             SubscribeToActions();
             Start();
         }
@@ -37,6 +49,16 @@ namespace WeaponSystem.Managers
         {
             _signalBus.Subscribe<ReloadSignal>(Reload);
             _signalBus.Subscribe<SwitchControlledWeaponSignal>(HandleControlledWeaponSwitch);
+            _signalBus.Subscribe<WeaponThrowStartSignal>(StartWeaponThrow);
+            _signalBus.Subscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+        }
+
+        private void UnsubscribeToActions()
+        {
+            _signalBus.Unsubscribe<ReloadSignal>(Reload);
+            _signalBus.Unsubscribe<SwitchControlledWeaponSignal>(HandleControlledWeaponSwitch);
+            _signalBus.Unsubscribe<WeaponThrowStartSignal>(StartWeaponThrow);
+            _signalBus.Unsubscribe<WeaponThrowStopSignal>(StopWeaponThrow);
         }
 
         private void Start()
@@ -47,6 +69,16 @@ namespace WeaponSystem.Managers
             NewTestControlledWeapon();
             
             _signalBus!.Subscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
+            // _rayCastSystem = new RayCastSystem
+            // {
+            //     enemyLayer = 0,
+            //     maxDistance = 100f,
+            //     maxBounces = 3,
+            //     debugRayDuration = 10f,
+            //     normalRayColor = Color.red,
+            //     ricochetRayColor = Color.green,
+            //     showDebugRays = true
+            // };
         }
 
         public void AddNewWeapon(WeaponData weaponData)
@@ -103,8 +135,7 @@ namespace WeaponSystem.Managers
                 weaponToUpgrade.UpgradeWeapon(newDamage, newCooldown);
             }
         }
-
-
+        
         private void HandleControlledWeaponSwitch()
         {
             activeControlledWeapon.Deactivate(_signalBus);
@@ -150,6 +181,32 @@ namespace WeaponSystem.Managers
             
             _controlledWeapons[^1].Deactivate(_signalBus);
             Debug.Log("Unsubscribe melee weapon");
+        }
+
+        [SerializeField] private List<DummyEnemy> enemies;
+        private void StartWeaponThrow()
+        {
+            var mouseDirection = _runningDataScriptable.attackDirection;
+            List<RicochetHitInfo> hits = _ricochetSystem.CalculateRicochetPath(_playerController.transform.position, mouseDirection);
+            Debug.Log("Casting Ray");
+            Debug.Log($"Hit count: {hits.Count}");
+            foreach (var hit in hits)
+            {
+                if (!hit.HitDummyEnemy.IsShielded)
+                {
+                    //TODO: Apply Damage
+                    Debug.Log("Targeting non-shielded enemy");
+                }
+                else
+                {
+                    Debug.Log("RICOCHET");
+                }
+            }
+        }
+
+        private void StopWeaponThrow()
+        {
+            
         }
 
         #endregion

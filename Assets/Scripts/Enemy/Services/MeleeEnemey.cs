@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Player;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -7,6 +8,7 @@ public class MeleeEnemy : MonoBehaviour
 {
     [SerializeField] private PlayerAnimationController _animationController;
     private MeleeAttacker _meleeAttackerStats;
+    private bool _attacking = false;
     private void Start()
     {
         _animationController.PlayAnimation("run");
@@ -21,8 +23,14 @@ public class MeleeEnemy : MonoBehaviour
     {
         return _meleeAttackerStats;
     }
-    public void HandleAttack(PlayerController playerController)
+    public async void HandleAttack(PlayerController playerController)
     {
+        if (_attacking) return;
+        _attacking = true;
         Debug.Log($"{gameObject.name} Damaged Player from distance {_meleeAttackerStats.DistanceToPlayer}");
+        _animationController.PlayAnimation("attack");
+        await Task.Delay((1000));
+        _attacking = false;
+        _animationController.PlayAnimation("run");
     }
 }

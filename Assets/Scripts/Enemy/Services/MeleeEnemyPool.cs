@@ -126,10 +126,22 @@ public class MeleeEnemyPool : MonoBehaviour
 
     public void ReleaseEnemy(GameObject enemy)
     {
+        RemoveFromActiveEnemies(enemy);
+        enemyPool.Release(enemy);
+    }
+
+    public void RemoveFromActiveEnemies(GameObject enemy)
+    {
         if (activeEnemies.Contains(enemy))
         {
             activeEnemies.Remove(enemy);
         }
-        enemyPool.Release(enemy);
+    }
+    public void AddToActiveEnemies(GameObject enemy)
+    {
+        if (!activeEnemies.Contains(enemy))
+        {
+            activeEnemies.Add(enemy);
+        }
     }
 }

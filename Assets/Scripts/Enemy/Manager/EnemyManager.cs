@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Player;
+using Signals.BattleSceneSignals;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using Zenject;
+using IInitializable = Zenject.IInitializable;
 
 public class EnemyManager : IInitializable, ITickable, IDisposable
 {
@@ -13,6 +17,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     private readonly PlayerController _playerController;
     private readonly ComputeShader _enemyComputeShader;
     private readonly MeleeEnemyPool _meleeEnemyPool;
+    private readonly SignalBus _signalBus;
 
     private Transform _playerTransform;
     private List<GameObject> _activeEnemies = new List<GameObject>();
@@ -33,12 +38,14 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
 
     public EnemyManager(PlayerController playerController,
         ComputeShader enemyComputeShader,
-        MeleeEnemyPool meleeEnemyMeleeEnemyPool)
+        MeleeEnemyPool meleeEnemyMeleeEnemyPool,
+        SignalBus signalBus)
     {
         _playerController = playerController;
         _enemyComputeShader = enemyComputeShader;
         _meleeEnemyPool = meleeEnemyMeleeEnemyPool;
-        Debug.Log("Enemy Manager constructor Started.");
+        _signalBus = signalBus;
+        Debug.Log($"Enemy Manager constructor Started. signal bus found {_signalBus!= null}");
 
     }
 
@@ -46,6 +53,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     {
         _playerTransform = _playerController.transform;
         nextEnemySpawnTime = enemySpawningInterval + Time.time;
+        _signalBus.Subscribe<MeleeAttackSignal>(OnMeleeAttack);
         Debug.Log("Enemy Manager Started.");
         if (_enemyComputeShader != null)
         {
@@ -53,6 +61,8 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         }
         InitializeObstacles();
     }
+
+    
 
     private void CreateEnemyFromMeleeEnemyPool()
     {
@@ -67,6 +77,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     }
     public void Tick()
     {
+        HandleKnockBack();
         HandleEnemySpawning();
         _activeEnemies = _meleeEnemyPool.activeEnemies;
         if (_activeEnemies.Count > 0)
@@ -75,31 +86,163 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         }
         
         if (_activeEnemies.Count == 0) return;
-
+        
+        UpdateEnemyPositions();
         _timeSinceLastCheck += Time.deltaTime;
-
         if (_timeSinceLastCheck >= checkInterval)
         {
             // CheckEnemyCollisions();
             _timeSinceLastCheck = 0f;
         }
+    }
+    private List<KnockbackData> _enemiesBeingKnockedBack = new List<KnockbackData>();
 
-        UpdateEnemyPositions();
-        if (Input.GetMouseButtonDown(0))
+    
+
+    private void OnMeleeAttack()
+    {
+        var playerPos = _playerController.transform.position;
+        var knockBackStrength = 10;
+        var enemiesWithinArea = GetAllEnemiesWithinAttackArea(playerPos, new Vector2(playerPos.x+5f, playerPos.y+2.5f), new Vector2(playerPos.x+5f, playerPos.y-2.5f));
+    
+        foreach (var enemy in enemiesWithinArea)
         {
-            for (int i = 0; i < _activeEnemies.Count; i++)
-            {
-                var enemy = _activeEnemies[i];
-                var enemyStat = enemy.GetComponent<MeleeEnemy>().GetMeleeAttackerStat();
-                if (enemyStat.DistanceToPlayer < 2f)
-                {
-                    _meleeEnemyPool.ReleaseEnemy(enemy);
-                }
-            }
-
+            StartKnockback(enemy.gameObject, playerPos, knockBackStrength);
         }
     }
 
+    #region KnockBack
+    private class KnockbackData
+    {
+        public GameObject Enemy;
+        public Vector3 Direction;
+        public float KnockbackStrength;
+        public float ElapsedTime;
+        public float Duration;
+        public float StunDuration;
+    }
+    private void StartKnockback(GameObject enemy, Vector3 playerPos, float knockBackStrength)
+    {
+        var enemyTransform = enemy.transform;
+        var direction = (enemyTransform.position - playerPos).normalized;
+        
+        _meleeEnemyPool.RemoveFromActiveEnemies(enemy);
+        
+        _enemiesBeingKnockedBack.Add(new KnockbackData
+        {
+            Enemy = enemy,
+            Direction = direction,
+            KnockbackStrength = knockBackStrength,
+            ElapsedTime = 0f,
+            Duration = 0.2f, // Knockback duration
+            StunDuration = 0.2f // Knockback duration
+        });
+    }
+
+    private void HandleKnockBack()
+    {
+        for (int i = _enemiesBeingKnockedBack.Count - 1; i >= 0; i--)
+        {
+            var knockback = _enemiesBeingKnockedBack[i];
+            knockback.ElapsedTime += Time.deltaTime;
+
+            if (knockback.ElapsedTime >= knockback.Duration)
+            {
+                // Knockback complete, add back to active enemies
+               
+                //wait for stun amount
+                if (knockback.ElapsedTime >= knockback.Duration + knockback.StunDuration)
+                {
+                    
+                    var meleeEnemy = knockback.Enemy.GetComponent<MeleeEnemy>();
+                    var attackerStat = meleeEnemy.GetMeleeAttackerStat();
+                    attackerStat.Velocity = 0;
+                    var position = meleeEnemy.transform.position;
+                    attackerStat.Position = new Vector2(position.x, position.y);
+                    meleeEnemy.SetMeleeAttackerStat(attackerStat);
+                    _meleeEnemyPool.AddToActiveEnemies(knockback.Enemy);
+                    _enemiesBeingKnockedBack.RemoveAt(i);}
+            }
+            else
+            {
+                // Continue knockback
+                var enemyTransform = knockback.Enemy.transform;
+                var enemyPos = enemyTransform.position;
+                enemyPos += knockback.Direction * knockback.KnockbackStrength * Time.deltaTime;
+                enemyTransform.position = enemyPos;
+            }
+        }
+    }
+
+    #endregion
+
+    private IEnumerator KnockBackEnemy(GameObject enemy, Vector3 playerPos, float knockBackStrength)
+    {
+        var enemyTransform = enemy.transform;
+        var direction = (enemyTransform.position - playerPos).normalized;
+        float knockBackDuration = 0.2f; // Adjust this value to control knockback duration
+        float elapsedTime = 0f;
+
+        // Remove from active enemies at start of knockback
+        _meleeEnemyPool.RemoveFromActiveEnemies(enemy);
+
+        // Perform knockback over time
+        while (elapsedTime < knockBackDuration)
+        {
+            var enemyPos = enemyTransform.position;
+            enemyPos += direction * knockBackStrength * Time.deltaTime;
+            enemyTransform.position = enemyPos;
+        
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Add back to active enemies after knockback is complete
+        _meleeEnemyPool.AddToActiveEnemies(enemy);
+    }
+
+    private List<MeleeEnemy> GetAllEnemiesWithinAttackArea( Vector2 point1, Vector2 point2, Vector2 point3)
+    {
+        List<MeleeEnemy> enemiesWithinArea = new List<MeleeEnemy>();
+        for (int i = 0; i < _activeEnemies.Count; i++)
+        {
+            var enemy = _activeEnemies[i];
+            var meleeEnemy = enemy.GetComponent<MeleeEnemy>();
+            var enemyStat = meleeEnemy.GetMeleeAttackerStat();
+            if (IsPointInTriangle(enemyStat.Position, point1, point2, point3))
+            {
+                enemiesWithinArea.Add(meleeEnemy);
+                Debug.Log($"Found Enemy Within Area for point:{enemyStat.Position}, triPoint1: { point1}, triPoint2: {point2}, triPoint3: {point3},");
+            }
+        }
+
+        return enemiesWithinArea;
+    }
+    bool IsPointInTriangle(Vector2 point, Vector2 point1, Vector2 point2, Vector2 point3)
+    {
+        // Calculate the vectors from the point to each vertex
+        Vector2 v0 = point3 - point1;
+        Vector2 v1 = point2 - point1;
+        Vector2 v2 = point - point1;
+
+        // Calculate the cross products
+        float cross00 = v0.x * v1.y - v0.y * v1.x;
+        float cross01 = v0.x * v2.y - v0.y * v2.x;
+        float cross11 = v1.x * v1.y - v1.y * v1.x;
+
+        // Calculate the barycentric coordinates
+        float denom = cross00;
+        if (Mathf.Abs(denom) < 0.00001f)
+            return false; // Avoid division by zero
+
+        float u = cross01 / denom;
+        float v = (v1.x * v2.y - v1.y * v2.x) / denom;
+
+        // Check if the point is inside the triangle
+        return (u >= 0) && (v >= 0) && (u + v <= 1);
+    }
+
+    
     private void HandleEnemySpawning()
     {
         if (nextEnemySpawnTime < Time.time )
@@ -178,12 +321,13 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
             {
                 // Collision detected, return enemy to pool
                 GameObject enemy = _activeEnemies[i];
-                _activeEnemies.RemoveAt(i);
-                
-                if (_meleeEnemyPool != null)
-                {
-                    _meleeEnemyPool.ReleaseEnemy(enemy);
-                }
+                // _activeEnemies.RemoveAt(i);
+                enemy.GetComponent<MeleeEnemy>().HandleAttack(_playerController);
+                // if (_meleeEnemyPool != null)
+                // {
+                //     _meleeEnemyPool.ReleaseEnemy(enemy);
+                //     
+                // }
                 // else
                 // {
                 //     Debug.LogWarning("EnemySpawner not set. Destroying enemy instead.");
@@ -217,7 +361,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         _activeEnemies.Remove(enemy);
         UpdateBuffers();
     }
-
+    
     private void UpdateBuffers()
     {
         if (_computeBuffer != null)

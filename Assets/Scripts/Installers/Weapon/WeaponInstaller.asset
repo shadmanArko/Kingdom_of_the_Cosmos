@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: WeaponInstaller
   m_EditorClassIdentifier: 
   weaponDatabaseScriptable: {fileID: 11400000, guid: e5d2f64ff9a54d04ba4bd2bee7596a97, type: 2}
+  _ricochetSystem: {fileID: 5244060017338846078, guid: 58111c381ff5736418c7037696febe68, type: 3}

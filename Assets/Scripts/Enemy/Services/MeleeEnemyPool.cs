@@ -82,7 +82,11 @@ public class MeleeEnemyPool : MonoBehaviour
         activeEnemies.Add(enemy);
         var position = enemy.transform.position;
         meleeAttacker.Position = new float2(position.x, position.y);
-        enemy.GetComponent<MeleeEnemy>().SetMeleeAttackerStat(meleeAttacker);
+        var enemyData = new EnemyData();
+        enemyData.position = position;
+        enemyData.distanceToPlayer = 9999f;
+        enemyData.isAlive = 1;
+        enemy.GetComponent<BaseEnemy>().SetStat(enemyData);
         return enemy;
     }
 

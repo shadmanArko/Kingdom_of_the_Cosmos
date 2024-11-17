@@ -98,6 +98,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a457e5417939478b8e89133fff7dbdf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Position:
+    x: 0
+    y: 0
+  Velocity:
+    x: 0
+    y: 0
+  Health: 0
+  Stuckness: 0
+  Damage: 0
+  DistanceToPlayer: 9999
+  IsAlive: 1
   _animationController: {fileID: 3873786948047536699}
 --- !u!1 &4419399628978288382
 GameObject:

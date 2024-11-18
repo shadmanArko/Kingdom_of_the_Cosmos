@@ -150,7 +150,7 @@ namespace InputScripts
             var mouseWorldPosition =
                 _camera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, _camera.nearClipPlane));
             var direction = (_playerController.gameObject.transform.position - mouseWorldPosition).normalized * -1;
-            Debug.Log($"mouse direction: {direction}");
+            // Debug.Log($"mouse direction: {direction}");
             _signalBus.Fire(new MouseMovementSignal(direction));
         }
         

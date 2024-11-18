@@ -21,7 +21,7 @@ public class MeleeEnemy : BaseEnemy
         // base.Move(targetPosition);
         transform.position = targetPosition;
         var currentPosition = transform.position;
-        Debug.Log($"Moved from {previousPos} to {currentPosition}");
+        // Debug.Log($"Moved from {previousPos} to {currentPosition}");
     }
 
     public override async void Attack(PlayerController target)

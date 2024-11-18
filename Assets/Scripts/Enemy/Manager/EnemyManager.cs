@@ -279,7 +279,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
             // _activeEnemies[i].transform.position = new Vector3(enemyDataArray[i].position.x, enemyDataArray[i].position.y, 0);
             var enemyData = enemyDataArray[i];
             var enemy = _activeEnemies[i];
-            Debug.Log($"Sending move data from {enemy.transform.position} to {enemyData.position}");
+            // Debug.Log($"Sending move data from {enemy.transform.position} to {enemyData.position}");
             enemy.SetStat(enemyData);
             enemy.Move(new Vector2(enemyData.position.x, enemyData.position.y));
             // _activeEnemies[i].GetComponent<MeleeEnemy>().SetMeleeAttackerStat(enemyStat);

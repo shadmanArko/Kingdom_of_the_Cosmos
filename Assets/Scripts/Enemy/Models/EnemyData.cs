@@ -4,7 +4,6 @@ public struct EnemyData
 {
     public Vector2 position;
     public Vector2 velocity;
-    public float health;
     public float stuckness;
     public float damage;
     public float distanceToPlayer;

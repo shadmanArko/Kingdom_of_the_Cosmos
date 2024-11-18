@@ -74,18 +74,18 @@ public class MeleeEnemyPool : MonoBehaviour
         enemiesPerWave += increaseEnemiesPerWave;
     }
 
-    public BaseEnemy CreateMeleeEnemy(MeleeAttacker meleeAttacker)
+    public BaseEnemy CreateMeleeEnemy()
     {
         BaseEnemy enemy = enemyPool.Get();
         enemy.transform.SetParent(transform);
         PositionEnemy(enemy);
         activeEnemies.Add(enemy);
-        
-        
         var position = enemy.transform.position;
-        meleeAttacker.Position = new float2(position.x, position.y);
+        
         var enemyData = new EnemyData();
         enemyData.position = position;
+        enemyData.damage = 15;
+        enemyData.stuckness = 1;
         enemyData.distanceToPlayer = 9999f;
         enemyData.isAlive = 1;
         enemy.GetComponent<BaseEnemy>().SetStat(enemyData);

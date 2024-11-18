@@ -17,12 +17,7 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
 
     protected virtual void Start()
     {
-        IsAlive = true;
         Health = 100;
-        Stuckness = 1;
-        Damage = 15;
-        DistanceToPlayer = 999f;
-        
     }
 
     public virtual void Move(Vector2 targetPosition)
@@ -36,7 +31,6 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
         Stuckness = data.stuckness;
         Damage = data.damage;
         DistanceToPlayer = data.distanceToPlayer;
-        Health = data.health;
         IsAlive = data.isAlive == 1;
     }
     public abstract void Attack(PlayerController target);
@@ -50,6 +44,7 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
         {
             Die();
         }
+        Debug.Log($"Took Damage {amount}, health {Health} is alive: {IsAlive}");
     }
     protected virtual void Die()
     {

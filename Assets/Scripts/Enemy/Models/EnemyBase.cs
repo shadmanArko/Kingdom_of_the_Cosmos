@@ -18,7 +18,6 @@ public abstract class EnemyBase
         Stuckness = data.stuckness;
         Damage = data.damage;
         DistanceToPlayer = data.distanceToPlayer;
-        Health = data.health;
         IsAlive = data.isAlive;
     }
 

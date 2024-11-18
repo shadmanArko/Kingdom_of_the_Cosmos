@@ -1,22 +1,36 @@
-﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Player;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Pool;
 
-public class MeleeEnemy : BaseEnemy
+public class MeleeShieldedEnemy : BaseEnemy
 {
     [SerializeField] private PlayerAnimationController _animationController;
     private bool _attacking = false;
+    private float _shieldHealth = 20;
 
     protected override void Start()
     {
         base.Start();
         _animationController.PlayAnimation("run");
     }
-    
-    
+
+    public override void TakeDamage(float amount)
+    {
+        if (_shieldHealth > 0)
+        {
+            _shieldHealth -= amount;
+            Debug.Log($"Took shield Damage {amount}");
+
+        }
+        else
+        {
+            base.TakeDamage(amount);
+        }
+        
+    }
+
     public override async void Attack(PlayerController target)
     {
         if (_attacking) return;

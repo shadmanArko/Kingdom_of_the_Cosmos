@@ -20,7 +20,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     private readonly SignalBus _signalBus;
 
     private Transform _playerTransform;
-    private List<GameObject> _activeEnemies = new List<GameObject>();
+    private List<BaseEnemy> _activeEnemies = new List<BaseEnemy>();
     private ComputeBuffer _computeBuffer;
     private ComputeBuffer _obstacleBuffer;
     private int _kernelIndex;
@@ -112,21 +112,21 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     
         foreach (var enemy in enemiesWithinArea)
         {
-            StartKnockback(enemy.gameObject, playerPos, knockBackStrength);
+            StartKnockback(enemy, playerPos, knockBackStrength);
         }
     }
 
     #region KnockBack
     private class KnockbackData
     {
-        public GameObject Enemy;
+        public BaseEnemy Enemy;
         public Vector3 Direction;
         public float KnockbackStrength;
         public float ElapsedTime;
         public float Duration;
         public float StunDuration;
     }
-    private void StartKnockback(GameObject enemy, Vector3 playerPos, float knockBackStrength)
+    private void StartKnockback(BaseEnemy enemy, Vector3 playerPos, float knockBackStrength)
     {
         var enemyTransform = enemy.transform;
         var direction = (enemyTransform.position - playerPos).normalized;
@@ -159,7 +159,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
                 if (knockback.ElapsedTime >= knockback.Duration + knockback.StunDuration)
                 {
                     
-                    var meleeEnemy = knockback.Enemy.GetComponent<BaseEnemy>();
+                    var meleeEnemy = knockback.Enemy;
                     meleeEnemy.Velocity = 0;
                     var position = meleeEnemy.transform.position;
                     meleeEnemy.Position = new Vector2(position.x, position.y);
@@ -179,31 +179,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     }
 
     #endregion
-
-    private IEnumerator KnockBackEnemy(GameObject enemy, Vector3 playerPos, float knockBackStrength)
-    {
-        var enemyTransform = enemy.transform;
-        var direction = (enemyTransform.position - playerPos).normalized;
-        float knockBackDuration = 0.2f; // Adjust this value to control knockback duration
-        float elapsedTime = 0f;
-
-        // Remove from active enemies at start of knockback
-        _meleeEnemyPool.RemoveFromActiveEnemies(enemy);
-
-        // Perform knockback over time
-        while (elapsedTime < knockBackDuration)
-        {
-            var enemyPos = enemyTransform.position;
-            enemyPos += direction * knockBackStrength * Time.deltaTime;
-            enemyTransform.position = enemyPos;
-        
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // Add back to active enemies after knockback is complete
-        _meleeEnemyPool.AddToActiveEnemies(enemy);
-    }
+    
 
     private List<BaseEnemy> GetAllEnemiesWithinAttackArea( Vector2 point1, Vector2 point2, Vector2 point3)
     {
@@ -266,16 +242,16 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         for (int i = 0; i < _activeEnemies.Count; i++)
         {
             Vector3 position = _activeEnemies[i].transform.position;
-            var enemyStat = _activeEnemies[i].GetComponent<BaseEnemy>();
+            var enemy = _activeEnemies[i];
             
             enemyDataArray[i] = new EnemyData
             {
-                position = enemyStat.Position,
-                velocity = enemyStat.Velocity,
-                stuckness = enemyStat.Stuckness, // Initialize stuckness
-                damage = enemyStat.Damage,
-                health = enemyStat.Health,
-                isAlive = enemyStat.IsAlive ? 1: 0
+                position = position,
+                velocity = enemy.Velocity,
+                stuckness = enemy.Stuckness, // Initialize stuckness
+                damage = enemy.Damage,
+                health = enemy.Health,
+                isAlive = enemy.IsAlive ? 1: 0
             };
         }
         _computeBuffer.SetData(enemyDataArray);
@@ -302,14 +278,12 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         {
             // _activeEnemies[i].transform.position = new Vector3(enemyDataArray[i].position.x, enemyDataArray[i].position.y, 0);
             var enemyData = enemyDataArray[i];
-            var enemyStat = new MeleeAttacker();
-            enemyStat.ApplyComputeData(enemyData);
-            var enemy = _activeEnemies[i].GetComponent<BaseEnemy>();
+            var enemy = _activeEnemies[i];
             Debug.Log($"Sending move data from {enemy.transform.position} to {enemyData.position}");
             enemy.SetStat(enemyData);
             enemy.Move(new Vector2(enemyData.position.x, enemyData.position.y));
             // _activeEnemies[i].GetComponent<MeleeEnemy>().SetMeleeAttackerStat(enemyStat);
-            if (enemyStat.DistanceToPlayer < 0.01f)
+            if (enemy.DistanceToPlayer < 0.01f)
             {
                 enemy.Attack(_playerController);
             }
@@ -327,9 +301,9 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
             if ((playerPosition - enemyPosition).sqrMagnitude <= sqrCollisionDistance)
             {
                 // Collision detected, return enemy to pool
-                GameObject enemy = _activeEnemies[i];
+                BaseEnemy enemy = _activeEnemies[i];
                 // _activeEnemies.RemoveAt(i);
-                enemy.GetComponent<MeleeEnemy>().Attack(_playerController);
+                enemy.Attack(_playerController);
                 // if (_meleeEnemyPool != null)
                 // {
                 //     _meleeEnemyPool.ReleaseEnemy(enemy);
@@ -357,17 +331,9 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         _obstacleBuffer.SetData(obstaclePositions);
     }
 
-    public void AddEnemy(GameObject enemy)
-    {
-        _activeEnemies.Add(enemy);
-        UpdateBuffers();
-    }
+   
 
-    public void RemoveEnemy(GameObject enemy)
-    {
-        _activeEnemies.Remove(enemy);
-        UpdateBuffers();
-    }
+    
     
     private void UpdateBuffers()
     {

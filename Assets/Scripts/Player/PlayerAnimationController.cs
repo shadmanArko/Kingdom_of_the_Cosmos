@@ -66,6 +66,7 @@ namespace Player
 
         public void PlayAnimation(string state)
         {
+            if (animator == null) return;
             LoadSpriteBasedOnCurrentAnimation(state);
             animator.Play(state);
         }

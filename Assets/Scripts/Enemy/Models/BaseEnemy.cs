@@ -1,18 +1,30 @@
-﻿using Player;
+﻿using System;
+using Player;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class BaseEnemy: MonoBehaviour, IEnemy 
 {
     [Header("Basic Enemy Stats")]
-    [SerializeField] public float2 Position;
-    [SerializeField] public float2 Velocity;
-    [SerializeField] public float Health;
-    [SerializeField] public float Stuckness;
-    [SerializeField] public float Damage;
-    [SerializeField] public float DistanceToPlayer;
-    [SerializeField] public bool IsAlive;
-    
+    public float2 Position;
+    public float2 Velocity;
+    public float Health;
+    public float Stuckness;
+    public float Damage;
+    public float DistanceToPlayer;
+    public bool IsAlive;
+
+    protected virtual void Start()
+    {
+        IsAlive = true;
+        Health = 100;
+        Stuckness = 1;
+        Damage = 15;
+        DistanceToPlayer = 999f;
+        
+    }
+
     public virtual void Move(Vector2 targetPosition)
     {
         transform.position = targetPosition;

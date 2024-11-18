@@ -102,11 +102,11 @@ MonoBehaviour:
     x: 0
     y: 0
   Velocity:
-    x: 0
-    y: 0
-  Health: 0
-  Stuckness: 0
-  Damage: 0
+    x: 1
+    y: 1
+  Health: 100
+  Stuckness: 1
+  Damage: 20
   DistanceToPlayer: 9999
   IsAlive: 1
   _animationController: {fileID: 3873786948047536699}

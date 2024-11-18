@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 public class MeleeEnemyPool : MonoBehaviour
 {
     [Header("Spawn Settings")]
-    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private BaseEnemy enemyPrefab;
     [SerializeField] private int enemiesPerWave = 10;
     [SerializeField] private int increaseEnemiesPerWave = 3;
     [SerializeField] private float timeBetweenWaves = 5f;
@@ -22,8 +22,8 @@ public class MeleeEnemyPool : MonoBehaviour
     // private EnemyManager _enemyManager;
 
     private Transform playerTransform;
-    private ObjectPool<GameObject> enemyPool;
-    public List<GameObject> activeEnemies = new List<GameObject>();
+    private ObjectPool<BaseEnemy> enemyPool;
+    public List<BaseEnemy> activeEnemies = new List<BaseEnemy>();
     public static float nextWaveTime;
     
     // [Inject]
@@ -42,7 +42,7 @@ public class MeleeEnemyPool : MonoBehaviour
         //     return;
         // }
 
-        enemyPool = new ObjectPool<GameObject>(
+        enemyPool = new ObjectPool<BaseEnemy>(
             createFunc: CreateEnemy,
             actionOnGet: ActivateEnemy,
             actionOnRelease: DeactivateEnemy,
@@ -74,12 +74,14 @@ public class MeleeEnemyPool : MonoBehaviour
         enemiesPerWave += increaseEnemiesPerWave;
     }
 
-    public GameObject CreateMeleeEnemy(MeleeAttacker meleeAttacker)
+    public BaseEnemy CreateMeleeEnemy(MeleeAttacker meleeAttacker)
     {
-        GameObject enemy = enemyPool.Get();
+        BaseEnemy enemy = enemyPool.Get();
         enemy.transform.SetParent(transform);
         PositionEnemy(enemy);
         activeEnemies.Add(enemy);
+        
+        
         var position = enemy.transform.position;
         meleeAttacker.Position = new float2(position.x, position.y);
         var enemyData = new EnemyData();
@@ -90,7 +92,7 @@ public class MeleeEnemyPool : MonoBehaviour
         return enemy;
     }
 
-    private void PositionEnemy(GameObject enemy)
+    private void PositionEnemy(BaseEnemy enemy)
     {
         // Generate a random angle around a circle
         float angle = Random.Range(0f, 2f * Mathf.PI);
@@ -107,41 +109,41 @@ public class MeleeEnemyPool : MonoBehaviour
         
     }
 
-    private GameObject CreateEnemy()
+    private BaseEnemy CreateEnemy()
     {
-        GameObject enemy = Instantiate(enemyPrefab);
+        BaseEnemy enemy = Instantiate(enemyPrefab);
         return enemy;
     }
 
-    private void ActivateEnemy(GameObject enemy)
+    private void ActivateEnemy(BaseEnemy enemy)
     {
-        enemy.SetActive(true);
+        enemy.gameObject.SetActive(true);
     }
 
-    private void DeactivateEnemy(GameObject enemy)
+    private void DeactivateEnemy(BaseEnemy enemy)
     {
-        enemy.SetActive(false);
+        enemy.gameObject.SetActive(false);
     }
 
-    private void DestroyEnemy(GameObject enemy)
+    private void DestroyEnemy(BaseEnemy enemy)
     {
         Destroy(enemy);
     }
 
-    public void ReleaseEnemy(GameObject enemy)
+    public void ReleaseEnemy(BaseEnemy enemy)
     {
         RemoveFromActiveEnemies(enemy);
         enemyPool.Release(enemy);
     }
 
-    public void RemoveFromActiveEnemies(GameObject enemy)
+    public void RemoveFromActiveEnemies(BaseEnemy enemy)
     {
         if (activeEnemies.Contains(enemy))
         {
             activeEnemies.Remove(enemy);
         }
     }
-    public void AddToActiveEnemies(GameObject enemy)
+    public void AddToActiveEnemies(BaseEnemy enemy)
     {
         if (!activeEnemies.Contains(enemy))
         {

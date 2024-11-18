@@ -97,10 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dac4d941f639f06419cf80c4d9b5ecee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 3740269002705187921, guid: 3356eeb35c0801c47a850f9144339ce0, type: 3}
+  enemyPrefab: {fileID: -400333419959758724, guid: 3356eeb35c0801c47a850f9144339ce0, type: 3}
   enemiesPerWave: 10
   increaseEnemiesPerWave: 3
   timeBetweenWaves: 5
   spawnRadius: 10
-  forwardSpawnBias: 0.7
   playerController: {fileID: 0}
+  activeEnemies: []

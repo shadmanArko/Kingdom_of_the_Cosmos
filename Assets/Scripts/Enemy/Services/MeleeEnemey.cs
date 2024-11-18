@@ -9,21 +9,12 @@ public class MeleeEnemy : BaseEnemy
 {
     [SerializeField] private PlayerAnimationController _animationController;
     private bool _attacking = false;
-    private void Start()
+
+    protected override void Start()
     {
+        base.Start();
         _animationController.PlayAnimation("run");
     }
-
-    // public void SetMeleeAttackerStat(MeleeAttacker meleeAttacker)
-    // {
-    //     _meleeAttackerStats = meleeAttacker;
-    //     transform.position = new Vector3(_meleeAttackerStats.Position.x, _meleeAttackerStats.Position.y, 0);
-    // }
-    // public MeleeAttacker GetMeleeAttackerStat()
-    // {
-    //     return _meleeAttackerStats;
-    // }
-
     public override void Move(Vector2 targetPosition)
     {
         var previousPos = transform.position;

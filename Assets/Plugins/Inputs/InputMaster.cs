@@ -195,7 +195,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""d154b636-eb13-45ef-90fc-cd7443d87236"",
                     ""path"": ""<Keyboard>/space"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": ""Hold(duration=0.2,pressPoint=0.3)"",
                     ""processors"": """",
                     ""groups"": ""KeyboardAndMouse"",
                     ""action"": ""Dash"",

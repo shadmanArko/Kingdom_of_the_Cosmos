@@ -49,20 +49,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  dashDirection: {x: 0, y: 0}
   dashCount: 2
   totalDashCount: 2
   isDashing: 0
   canDash: 0
-  dashSpeed: 20
-  dashDuration: 0.8
-  dashTimeRemaining: 0
-  dashCooldown: 0
+  lungeDashSpeed: 20
+  rollDashSpeed: 10
+  lungeDashDuration: 0.4
+  rollDashDuration: 0.6
+  isLungeDashing: 0
+  isRollDashing: 0
   dashCooldownDuration: 2
   moveSpeed: 5
   movement: {x: 0, y: 0}
   canMove: 0
   rb: {fileID: 3878785499377661370}
   playerAnimationController: {fileID: 2120594961658747589}
+  canAttack: 0
 --- !u!50 &3878785499377661370
 Rigidbody2D:
   serializedVersion: 4

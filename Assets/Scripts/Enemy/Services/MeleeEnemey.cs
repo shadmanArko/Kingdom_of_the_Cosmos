@@ -15,8 +15,15 @@ public class MeleeEnemy : BaseEnemy
         base.Start();
         _animationController.PlayAnimation("run");
     }
-    
-    
+    public override void Move(Vector2 targetPosition)
+    {
+        var previousPos = transform.position;
+        // base.Move(targetPosition);
+        transform.position = targetPosition;
+        var currentPosition = transform.position;
+        // Debug.Log($"Moved from {previousPos} to {currentPosition}");
+    }
+
     public override async void Attack(PlayerController target)
     {
         if (_attacking) return;

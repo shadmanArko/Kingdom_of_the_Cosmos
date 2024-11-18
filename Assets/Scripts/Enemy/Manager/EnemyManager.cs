@@ -66,7 +66,14 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
 
     private void CreateEnemyFromMeleeEnemyPool()
     {
-        _meleeEnemyPool.CreateMeleeEnemy();
+        var meleeAttacker = new MeleeAttacker()
+        {
+            Damage = 15,
+            Health = 100,
+            IsAlive = 1,
+            DistanceToPlayer = 9999f
+        };
+        _meleeEnemyPool.CreateMeleeEnemy(meleeAttacker);
     }
     public void Tick()
     {
@@ -101,18 +108,11 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     {
         var playerPos = _playerController.transform.position;
         var knockBackStrength = 10;
-        var damageValue = 10;
         var enemiesWithinArea = GetAllEnemiesWithinAttackArea(playerPos, new Vector2(playerPos.x+5f, playerPos.y+2.5f), new Vector2(playerPos.x+5f, playerPos.y-2.5f));
     
         foreach (var enemy in enemiesWithinArea)
         {
-            enemy.TakeDamage(damageValue);
-            if (!enemy.IsAlive)
-            {
-                _meleeEnemyPool.ReleaseEnemy(enemy);
-            }else{
-                StartKnockback(enemy, playerPos, knockBackStrength);
-            }
+            StartKnockback(enemy, playerPos, knockBackStrength);
         }
     }
 
@@ -250,11 +250,10 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
                 velocity = enemy.Velocity,
                 stuckness = enemy.Stuckness, // Initialize stuckness
                 damage = enemy.Damage,
+                health = enemy.Health,
                 isAlive = enemy.IsAlive ? 1: 0
             };
-            // Debug.Log($"Sending health data  {enemy.Health}");
         }
-
         _computeBuffer.SetData(enemyDataArray);
 
         // Set compute shader parameters
@@ -280,7 +279,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
             // _activeEnemies[i].transform.position = new Vector3(enemyDataArray[i].position.x, enemyDataArray[i].position.y, 0);
             var enemyData = enemyDataArray[i];
             var enemy = _activeEnemies[i];
-            // Debug.Log($"Receiving health data  {enemy.Health}");
+            // Debug.Log($"Sending move data from {enemy.transform.position} to {enemyData.position}");
             enemy.SetStat(enemyData);
             enemy.Move(new Vector2(enemyData.position.x, enemyData.position.y));
             // _activeEnemies[i].GetComponent<MeleeEnemy>().SetMeleeAttackerStat(enemyStat);
@@ -345,7 +344,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         
         if (_activeEnemies.Count > 0)
         {
-            _computeBuffer = new ComputeBuffer(_activeEnemies.Count, 32); // 2 for position, 2 for velocity, 1 for stuckness
+            _computeBuffer = new ComputeBuffer(_activeEnemies.Count, 36); // 2 for position, 2 for velocity, 1 for stuckness
         }
         else
         {
@@ -353,7 +352,19 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         }
         EnemyCountUpdated?.Invoke(_activeEnemies.Count);
     }
-    
+
+    private void OnDestroy()
+    {
+        if (_computeBuffer != null)
+        {
+            _computeBuffer.Release();
+        }
+        if (_obstacleBuffer != null)
+        {
+            _obstacleBuffer.Release();
+        }
+    }
+
     public void Dispose()
     {
         if (_computeBuffer != null)

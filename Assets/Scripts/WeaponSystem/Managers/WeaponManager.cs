@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DBMS.JsonToScriptable;
 using DBMS.RunningData;
 using DBMS.WeaponsData;
-using NUnit.Framework;
 using Player;
 using RicochetWeaponSystem;
 using UnityEngine;
@@ -63,22 +61,10 @@ namespace WeaponSystem.Managers
 
         private void Start()
         {
-            Debug.Log($"signal bus is null {_signalBus == null}");
-            // Assume you load data from JSON here
             LoadWeaponDataFromJson();
             NewTestControlledWeapon();
             
             _signalBus!.Subscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
-            // _rayCastSystem = new RayCastSystem
-            // {
-            //     enemyLayer = 0,
-            //     maxDistance = 100f,
-            //     maxBounces = 3,
-            //     debugRayDuration = 10f,
-            //     normalRayColor = Color.red,
-            //     ricochetRayColor = Color.green,
-            //     showDebugRays = true
-            // };
         }
 
         public void AddNewWeapon(WeaponData weaponData)

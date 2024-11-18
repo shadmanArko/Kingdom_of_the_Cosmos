@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Cinemachine;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 using zzz_TestScripts.Signals.BattleSceneSignals;
 using Vector2 = UnityEngine.Vector2;
@@ -18,6 +17,8 @@ namespace Player
 
         #region Dash Variables
 
+        [SerializeField] private Vector2 dashDirection;
+        
         [SerializeField] private int dashCount;
         [SerializeField] private int totalDashCount;
         
@@ -26,7 +27,12 @@ namespace Player
         
         [SerializeField] private float lungeDashSpeed = 20f;
         [SerializeField] private float rollDashSpeed = 10f;
-        [SerializeField] private float dashDuration;
+        
+        [SerializeField] private float lungeDashDuration = 0.4f;
+        [SerializeField] private float rollDashDuration = 0.4f;
+        
+        [SerializeField] private bool isLungeDashing;
+        [SerializeField] private bool isRollDashing;
         
         [SerializeField] private float dashCooldownDuration;
 
@@ -58,8 +64,6 @@ namespace Player
             isDashing = false;
             canDash = true;
             speed = moveSpeed;
-            
-            dashDuration = 0.8f;
 
             dashCooldownDuration = 2f;
             totalDashCount = 2;
@@ -70,6 +74,7 @@ namespace Player
         private void SubscribeToActions()
         {
             _signalBus.Subscribe<StartDashSignal>(StartDash);
+            _signalBus.Subscribe<StopDashSignal>(() => { });
         }
         
         private void UnsubscribeToActions()
@@ -92,15 +97,22 @@ namespace Player
             else
             {
                 Debug.Log("Dashing...");
-                // movement = direction.normalized;
-                // movement = movement == Vector2.zero ? Vector2.right : movement;
-                // _dashDirection = _dashDirection == Vector2.zero ? movement.normalized : _dashDirection;
-                _dashDirection = isRollDashing ? direction.normalized : _dashDirection;
-                rb.velocity = _dashDirection * speed;
+                dashDirection = isRollDashing ? direction.normalized : dashDirection;
+                rb.velocity = dashDirection * speed;
             }
-            
-            if(rb.velocity.magnitude > 0)
-                playerAnimationController.PlayAnimation( isDashing ? "dash" : "run");
+
+            if (rb.velocity.magnitude > 0)
+            {
+                if (isDashing)
+                {
+                    if (isLungeDashing)
+                        playerAnimationController.PlayAnimation( "dash");
+                    else if (isRollDashing)
+                        playerAnimationController.PlayAnimation( "roll");
+                }
+                else
+                    playerAnimationController.PlayAnimation( "run");
+            }
             else
             {
                 var stateInfo = playerAnimationController.animator.GetCurrentAnimatorStateInfo(0);
@@ -134,22 +146,15 @@ namespace Player
             
             LungeDash();
         }
-
-        private Vector2 _dashDirection;
-        [SerializeField] private float lungeDashTime = 0.4f;
-        [SerializeField] private float rollDashTime = 0.4f;
-        
-        [SerializeField] private bool isLungeDashing;
-        [SerializeField] private bool isRollDashing;
         
         private async void LungeDash()
         {
             isDashing = true;
-            _dashDirection = movement.normalized;
+            dashDirection = movement.normalized;
             isLungeDashing = true;
             speed = lungeDashSpeed;
-            Debug.Log($"Lunge Dashing direction: {_dashDirection}");
-            await Task.Delay(Mathf.CeilToInt(lungeDashTime * 1000));
+            Debug.Log($"Lunge Dashing direction: {dashDirection}");
+            await Task.Delay(Mathf.CeilToInt(lungeDashDuration * 1000));
             isLungeDashing = false;
             
             RollDash();
@@ -157,11 +162,11 @@ namespace Player
 
         private async void RollDash()
         {
-            _dashDirection = movement.normalized;
+            dashDirection = movement.normalized;
             isRollDashing = true;
             speed = rollDashSpeed;
-            Debug.Log($"Roll Dashing direction: {_dashDirection}");
-            await Task.Delay(Mathf.CeilToInt(rollDashTime * 1000));
+            Debug.Log($"Roll Dashing direction: {dashDirection}");
+            await Task.Delay(Mathf.CeilToInt(rollDashDuration * 1000));
             isRollDashing = false;
             
             StopDash();

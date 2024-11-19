@@ -66,7 +66,7 @@ namespace Player
 
         public void PlayAnimation(string state)
         {
-            if (animator == null) return;
+            if (animator == null || !animator.isActiveAndEnabled) return;
             LoadSpriteBasedOnCurrentAnimation(state);
             animator.Play(state);
         }

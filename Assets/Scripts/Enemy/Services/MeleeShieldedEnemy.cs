@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Player;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MeleeShieldedEnemy : BaseEnemy
 {
     [SerializeField] private PlayerAnimationController _animationController;
     private bool _attacking = false;
-    private float _shieldHealth = 20;
+    [FormerlySerializedAs("_shieldHealth")] public float shieldHealth = 20;
 
     protected override void Start()
     {
@@ -18,9 +19,9 @@ public class MeleeShieldedEnemy : BaseEnemy
 
     public override void TakeDamage(float amount)
     {
-        if (_shieldHealth > 0)
+        if (shieldHealth > 0)
         {
-            _shieldHealth -= amount;
+            shieldHealth -= amount;
             Debug.Log($"Took shield Damage {amount}");
 
         }

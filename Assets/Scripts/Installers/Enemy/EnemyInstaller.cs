@@ -9,6 +9,7 @@ public class EnemyInstaller : ScriptableObjectInstaller<EnemyInstaller>
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private ComputeShader enemyComputeShader;
     [SerializeField] private MeleeEnemyPool meleeEnemyPool;
+    [SerializeField] private MeleeShieldedEnemyPool meleeShieldedEnemyPool;
     [SerializeField] private GameStatUI gameStatUI;
 
     public override void InstallBindings()
@@ -17,6 +18,7 @@ public class EnemyInstaller : ScriptableObjectInstaller<EnemyInstaller>
         Container.BindInstance(enemyPrefab);
         
         Container.Bind<MeleeEnemyPool>().FromComponentInNewPrefab(meleeEnemyPool).AsSingle().NonLazy();
+        Container.Bind<MeleeShieldedEnemyPool>().FromComponentInNewPrefab(meleeShieldedEnemyPool).AsSingle().NonLazy();
         Container.Bind<GameStatUI>().FromComponentInNewPrefab(gameStatUI).AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<EnemyManager>().AsSingle();
     }

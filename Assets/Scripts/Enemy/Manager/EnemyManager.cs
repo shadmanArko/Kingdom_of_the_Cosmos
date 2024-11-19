@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Player;
 using Signals.BattleSceneSignals;
 using Unity.Mathematics;
@@ -17,6 +18,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     private readonly PlayerController _playerController;
     private readonly ComputeShader _enemyComputeShader;
     private readonly MeleeEnemyPool _meleeEnemyPool;
+    private readonly MeleeShieldedEnemyPool _meleeShieldedEnemyPool;
     private readonly SignalBus _signalBus;
 
     private Transform _playerTransform;
@@ -30,7 +32,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     private EnemyData[] enemyDataArray;
     public float moveSpeed = 4f;
     public float obstacleAvoidanceRadius = 1f;
-    public float neighborAvoidanceRadius = 1f;
+    public float neighborAvoidanceRadius = 1.2f;
     public float collisionDistance = 1f;
     public float checkInterval = 0.1f;
     public float stucknessThreshold = 2f;
@@ -39,11 +41,13 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     public EnemyManager(PlayerController playerController,
         ComputeShader enemyComputeShader,
         MeleeEnemyPool meleeEnemyMeleeEnemyPool,
+        MeleeShieldedEnemyPool meleeShieldedEnemyPool,
         SignalBus signalBus)
     {
         _playerController = playerController;
         _enemyComputeShader = enemyComputeShader;
         _meleeEnemyPool = meleeEnemyMeleeEnemyPool;
+        _meleeShieldedEnemyPool = meleeShieldedEnemyPool;
         _signalBus = signalBus;
         Debug.Log($"Enemy Manager constructor Started. signal bus found {_signalBus!= null}");
 
@@ -68,11 +72,15 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     {
         _meleeEnemyPool.CreateMeleeEnemy();
     }
+    private void CreateEnemyFromMeleeShieldedEnemyPool()
+    {
+        _meleeShieldedEnemyPool.CreateMeleeEnemy();
+    }
     public void Tick()
     {
         HandleKnockBack();
         HandleEnemySpawning();
-        _activeEnemies = _meleeEnemyPool.activeEnemies;
+        _activeEnemies = _meleeEnemyPool.activeEnemies.Concat(_meleeShieldedEnemyPool.activeEnemies).ToList();
         if (_activeEnemies.Count > 0)
         {
             UpdateBuffers();
@@ -109,12 +117,24 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
             enemy.TakeDamage(damageValue);
             if (!enemy.IsAlive)
             {
-                _meleeEnemyPool.ReleaseEnemy(enemy);
+                ReleaseEnemy(enemy);
             }else{
                 StartKnockback(enemy, playerPos, knockBackStrength);
             }
         }
     }
+
+    private void ReleaseEnemy(BaseEnemy enemy)
+    {
+        if (enemy.GetComponent<MeleeShieldedEnemy>())
+        {
+            _meleeShieldedEnemyPool.ReleaseEnemy(enemy);
+        }if (enemy.GetComponent<MeleeEnemy>())
+        {
+            _meleeEnemyPool.ReleaseEnemy(enemy);
+        }
+    }
+
 
     #region KnockBack
     private class KnockbackData
@@ -131,7 +151,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         var enemyTransform = enemy.transform;
         var direction = (enemyTransform.position - playerPos).normalized;
         
-        _meleeEnemyPool.RemoveFromActiveEnemies(enemy);
+        RemoveFromActiveEnemies(enemy);
         
         _enemiesBeingKnockedBack.Add(new KnockbackData
         {
@@ -142,6 +162,31 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
             Duration = 0.2f, // Knockback duration
             StunDuration = 0.2f // Knockback duration
         });
+    }
+
+    private void RemoveFromActiveEnemies(BaseEnemy enemy)
+    {
+        if (enemy.GetComponent<MeleeShieldedEnemy>())
+        {
+            _meleeShieldedEnemyPool.RemoveFromActiveEnemies(enemy);
+        }
+
+        if (enemy.GetComponent<MeleeEnemy>())
+        {
+            _meleeEnemyPool.RemoveFromActiveEnemies(enemy);
+        }
+    }
+    private void AddToActiveEnemies(BaseEnemy enemy)
+    {
+        if (enemy.GetComponent<MeleeShieldedEnemy>())
+        {
+            _meleeShieldedEnemyPool.AddToActiveEnemies(enemy);
+        }
+
+        if (enemy.GetComponent<MeleeEnemy>())
+        {
+            _meleeEnemyPool.AddToActiveEnemies(enemy);
+        }
     }
 
     private void HandleKnockBack()
@@ -164,7 +209,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
                     var position = meleeEnemy.transform.position;
                     meleeEnemy.Position = new Vector2(position.x, position.y);
                     // meleeEnemy.SetMeleeAttackerStat(attackerStat);
-                    _meleeEnemyPool.AddToActiveEnemies(knockback.Enemy);
+                    AddToActiveEnemies(knockback.Enemy);
                     _enemiesBeingKnockedBack.RemoveAt(i);}
             }
             else
@@ -221,12 +266,22 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         return (u >= 0) && (v >= 0) && (u + v <= 1);
     }
 
-    
+    private int _numberOfMeleeEnemies = 10;
+    private int _countOfMeleeEnemies;
     private void HandleEnemySpawning()
     {
+        
         if (nextEnemySpawnTime < Time.time )
         {
-            CreateEnemyFromMeleeEnemyPool();
+            if (_countOfMeleeEnemies >= _numberOfMeleeEnemies)
+            {
+                CreateEnemyFromMeleeShieldedEnemyPool();
+            }
+            else
+            {
+                _countOfMeleeEnemies++;
+                CreateEnemyFromMeleeEnemyPool();
+            }
             nextEnemySpawnTime = Time.time + enemySpawningInterval;
         }
 

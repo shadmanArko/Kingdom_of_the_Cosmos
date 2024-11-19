@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3706586112130876116}
   - component: {fileID: 7340529913710074306}
-  - component: {fileID: 2383170108146576834}
+  - component: {fileID: 7581579931838258487}
   m_Layer: 0
-  m_Name: MeleeEnemyPool
+  m_Name: ShieldedMeleeEnemyPool
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2383170108146576834
+--- !u!114 &7581579931838258487
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,10 +94,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8517899687962030858}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dac4d941f639f06419cf80c4d9b5ecee, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f68f9fe9efb4f2eba8259c472bbf208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: -400333419959758724, guid: 3356eeb35c0801c47a850f9144339ce0, type: 3}
+  enemyPrefab: {fileID: 7384028251061610236, guid: 98bf1d4a3a75f41479147c8400bd4ddf, type: 3}
   enemiesPerWave: 10
   increaseEnemiesPerWave: 3
   timeBetweenWaves: 5

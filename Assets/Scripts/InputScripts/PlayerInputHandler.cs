@@ -1,9 +1,7 @@
 using DBMS.RunningData;
-using ObjectPool;
 using ObjectPoolScripts;
 using Player;
 using Signals.BattleSceneSignals;
-using TestScripts.WeaponsTest;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities;
@@ -33,6 +31,12 @@ namespace InputScripts
         private Vector2 _moveInput;
 
         private InputAction _mousePositionAction;
+
+        #region Player Settings
+
+        [SerializeField] private bool isAutoAttacking;
+
+        #endregion
 
         #region Initializers
 
@@ -112,7 +116,7 @@ namespace InputScripts
             _playerController.Attack(Vector2.zero);
             _screenShakeManager.ShakeScreen();
         }
-
+        
         private void Reload()
         {
             _signalBus.Fire<ReloadSignal>();
@@ -175,6 +179,5 @@ namespace InputScripts
         }
 
         #endregion
-        
     }
 }

@@ -45,6 +45,13 @@ namespace Player
         [SerializeField] private bool canMove;
 
         #endregion
+
+        #region Attack Variables
+
+        [SerializeField] private float autoAttackInterval;
+        [SerializeField] private float autoAttackTimer;
+
+        #endregion
         
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private PlayerAnimationController playerAnimationController;
@@ -130,6 +137,19 @@ namespace Player
         {
             if(!canAttack) return;
             playerAnimationController.PlayAnimation("attack");
+        }
+
+        public void AutoAttack()
+        {
+            if (autoAttackTimer <= 0)
+            {
+                Attack(Vector2.down);
+                autoAttackTimer = autoAttackInterval;
+            }
+            else
+            {
+                autoAttackTimer -= Time.fixedDeltaTime;
+            }
         }
 
         #endregion

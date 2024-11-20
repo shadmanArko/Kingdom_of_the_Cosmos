@@ -24,8 +24,8 @@ namespace WeaponSystem.Managers
         private List<IWeapon> _controlledWeapons = new();
         private List<IWeapon> automaticWeapons = new();
 
-        private IWeapon activeControlledWeapon;
-        private int currentControlledIndex = 0;
+        private IWeapon _activeControlledWeapon;
+        private int _currentControlledIndex;
 
         // private RayCastSystem _rayCastSystem;
         private RicochetWeaponSystem.RicochetSystem _ricochetSystem;
@@ -49,6 +49,7 @@ namespace WeaponSystem.Managers
             _signalBus.Subscribe<SwitchControlledWeaponSignal>(HandleControlledWeaponSwitch);
             _signalBus.Subscribe<WeaponThrowStartSignal>(StartWeaponThrow);
             _signalBus.Subscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+            _signalBus.Subscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
         }
 
         private void UnsubscribeToActions()
@@ -57,14 +58,15 @@ namespace WeaponSystem.Managers
             _signalBus.Unsubscribe<SwitchControlledWeaponSignal>(HandleControlledWeaponSwitch);
             _signalBus.Unsubscribe<WeaponThrowStartSignal>(StartWeaponThrow);
             _signalBus.Unsubscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+            _signalBus.Unsubscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
         }
 
         private void Start()
         {
             LoadWeaponDataFromJson();
             NewTestControlledWeapon();
-            
-            _signalBus!.Subscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
+
+            _currentControlledIndex = 0;
         }
 
         public void AddNewWeapon(WeaponData weaponData)
@@ -77,10 +79,10 @@ namespace WeaponSystem.Managers
                 _controlledWeapons.Add(newWeapon);
 
                 // If no controlled weapon is active, activate the new one
-                if (activeControlledWeapon == null)
+                if (_activeControlledWeapon == null)
                 {
-                    activeControlledWeapon = newWeapon;
-                    activeControlledWeapon.Activate(_signalBus);
+                    _activeControlledWeapon = newWeapon;
+                    _activeControlledWeapon.Activate(_signalBus);
                 }
             }
             else if (weaponData.type == "Automatic")
@@ -124,10 +126,10 @@ namespace WeaponSystem.Managers
         
         private void HandleControlledWeaponSwitch()
         {
-            activeControlledWeapon.Deactivate(_signalBus);
-            currentControlledIndex = (currentControlledIndex + 1) % _controlledWeapons.Count;
-            activeControlledWeapon = _controlledWeapons[currentControlledIndex];
-            activeControlledWeapon.Activate(_signalBus);
+            _activeControlledWeapon.Deactivate(_signalBus);
+            _currentControlledIndex = (_currentControlledIndex + 1) % _controlledWeapons.Count;
+            _activeControlledWeapon = _controlledWeapons[_currentControlledIndex];
+            _activeControlledWeapon.Activate(_signalBus);
         }
 
         private void OnAutomaticWeaponTrigger(AutomaticWeaponTriggerSignal signal)
@@ -196,5 +198,6 @@ namespace WeaponSystem.Managers
         }
 
         #endregion
+        
     }
 }

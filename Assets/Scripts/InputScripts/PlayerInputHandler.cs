@@ -114,7 +114,7 @@ namespace InputScripts
             _signalBus.Fire<MeleeAttackSignal>();
             
             _playerController.Attack(Vector2.zero);
-            _screenShakeManager.ShakeScreen();
+            // _screenShakeManager.ShakeScreen();
         }
         
         private void Reload()

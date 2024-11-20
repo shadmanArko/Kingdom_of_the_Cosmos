@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using GameData;
 using Player;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.Serialization;
 using Zenject;
 using Random = UnityEngine.Random;
 
@@ -16,7 +18,8 @@ public class MeleeEnemyPool : MonoBehaviour
     [SerializeField] private float spawnRadius = 10f;
     
     [Inject]
-    [SerializeField] private  PlayerController playerController;
+    [SerializeField] private PlayerController playerController;
+    
     
     // [Inject]
     // private EnemyManager _enemyManager;
@@ -36,12 +39,7 @@ public class MeleeEnemyPool : MonoBehaviour
     private void Start()
     {
         playerTransform = playerController.gameObject.transform;
-        // if (_enemyManager == null)
-        // {
-        //     Debug.LogError("EnemyManager not injected!");
-        //     return;
-        // }
-
+        
         enemyPool = new ObjectPool<BaseEnemy>(
             createFunc: CreateEnemy,
             actionOnGet: ActivateEnemy,
@@ -74,21 +72,17 @@ public class MeleeEnemyPool : MonoBehaviour
         enemiesPerWave += increaseEnemiesPerWave;
     }
 
-    public BaseEnemy CreateMeleeEnemy()
+    public BaseEnemy CreateMeleeEnemy(MeleeEnemyData meleeEnemyData)
     {
         BaseEnemy enemy = enemyPool.Get();
         enemy.transform.SetParent(transform);
         PositionEnemy(enemy);
         activeEnemies.Add(enemy);
-        var position = enemy.transform.position;
         
-        var enemyData = new EnemyData();
-        enemyData.position = position;
-        enemyData.damage = 15;
-        enemyData.stuckness = 1;
-        enemyData.distanceToPlayer = 9999f;
-        enemyData.isAlive = 1;
-        enemy.GetComponent<BaseEnemy>().SetStat(enemyData);
+        var shieldedEnemy = enemy.GetComponent<MeleeEnemy>();
+        shieldedEnemy.MaxHealth = meleeEnemyData.Health;
+        shieldedEnemy.Damage = meleeEnemyData.Damage;
+        enemy.Initialize();
         return enemy;
     }
 

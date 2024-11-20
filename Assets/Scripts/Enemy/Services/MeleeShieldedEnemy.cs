@@ -4,26 +4,41 @@ using System.Threading.Tasks;
 using Player;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class MeleeShieldedEnemy : BaseEnemy
 {
     [SerializeField] private PlayerAnimationController _animationController;
+    [SerializeField] private Slider _shieldSlider;
     private bool _attacking = false;
-    [FormerlySerializedAs("_shieldHealth")] public float shieldHealth = 20;
-
+    public float maxShieldHealth;
+    private float _shieldHealth;
+    
     protected override void Start()
     {
         base.Start();
         _animationController.PlayAnimation("run");
     }
 
+    public override void Initialize()
+    {
+        base.Initialize();
+        _shieldHealth = maxShieldHealth;
+        _shieldSlider.gameObject.SetActive(true);
+        _shieldSlider.value = 1;
+    }
+
     public override void TakeDamage(float amount)
     {
-        if (shieldHealth > 0)
+        if (_shieldHealth > 0)
         {
-            shieldHealth -= amount;
+            _shieldHealth -= amount;
+            _shieldSlider.value = 1 - (maxShieldHealth - _shieldHealth) / maxShieldHealth;
             Debug.Log($"Took shield Damage {amount}");
-
+            if (_shieldHealth<=0)
+            {
+                _shieldSlider.gameObject.SetActive(false);
+            }
         }
         else
         {

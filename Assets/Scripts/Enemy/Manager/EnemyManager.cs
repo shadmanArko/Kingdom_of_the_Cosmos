@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GameData;
 using Player;
 using Signals.BattleSceneSignals;
 using Unity.Mathematics;
@@ -36,18 +37,21 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     public float collisionDistance = 1f;
     public float checkInterval = 0.1f;
     public float stucknessThreshold = 2f;
-    
+    private GameDataScriptable _gameDataScriptable;
+    private Enemies _enemies;
 
     public EnemyManager(PlayerController playerController,
         ComputeShader enemyComputeShader,
         MeleeEnemyPool meleeEnemyMeleeEnemyPool,
         MeleeShieldedEnemyPool meleeShieldedEnemyPool,
+        GameDataScriptable gameDataScriptable,
         SignalBus signalBus)
     {
         _playerController = playerController;
         _enemyComputeShader = enemyComputeShader;
         _meleeEnemyPool = meleeEnemyMeleeEnemyPool;
         _meleeShieldedEnemyPool = meleeShieldedEnemyPool;
+        _gameDataScriptable = gameDataScriptable;
         _signalBus = signalBus;
         Debug.Log($"Enemy Manager constructor Started. signal bus found {_signalBus!= null}");
 
@@ -57,6 +61,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     {
         _playerTransform = _playerController.transform;
         nextEnemySpawnTime = enemySpawningInterval + Time.time;
+        _enemies = _gameDataScriptable.gameData.enemies;
         _signalBus.Subscribe<MeleeAttackSignal>(OnMeleeAttack);
         Debug.Log("Enemy Manager Started.");
         if (_enemyComputeShader != null)
@@ -70,11 +75,13 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
 
     private void CreateEnemyFromMeleeEnemyPool()
     {
-        _meleeEnemyPool.CreateMeleeEnemy();
+        var meleeEnemyData = _enemies.MeleeEnemyDatas.FirstOrDefault(data => data.Id == "1");
+        _meleeEnemyPool.CreateMeleeEnemy(meleeEnemyData);
     }
     private void CreateEnemyFromMeleeShieldedEnemyPool()
     {
-        _meleeShieldedEnemyPool.CreateMeleeEnemy();
+        var meleeShieldedEnemyData = _enemies.MeleeShieldedEnemyDatas.FirstOrDefault(data => data.Id == "1");
+        _meleeShieldedEnemyPool.CreateMeleeEnemy(meleeShieldedEnemyData);
     }
     public void Tick()
     {

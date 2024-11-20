@@ -149,7 +149,7 @@ namespace InputScripts
             var mousePos = _mousePositionAction.ReadValue<Vector2>();
             var distance = Vector3.Distance(mousePos, _lastMousePosition);
 
-            if (!(distance > _movementThreshold)) return;
+            // if (!(distance > _movementThreshold)) return;
             _lastMousePosition = mousePos;
             var mouseWorldPosition =
                 _camera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, _camera.nearClipPlane));

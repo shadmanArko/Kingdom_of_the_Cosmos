@@ -74,23 +74,18 @@ public class MeleeShieldedEnemyPool : MonoBehaviour
         enemiesPerWave += increaseEnemiesPerWave;
     }
 
-    public BaseEnemy CreateMeleeEnemy()
+    public BaseEnemy CreateMeleeEnemy(MeleeShieldedEnemyData meleeShieldedEnemyData)
     {
         BaseEnemy enemy = enemyPool.Get();
         enemy.transform.SetParent(transform);
         PositionEnemy(enemy);
         activeEnemies.Add(enemy);
-        var position = enemy.transform.position;
         
-        var enemyData = new EnemyData();
-        enemyData.position = position;
-        enemyData.damage = 15;
-        enemyData.stuckness = 1;
-        enemyData.distanceToPlayer = 9999f;
-        enemyData.isAlive = 1;
-        
-        enemy.SetStat(enemyData);
-        enemy.GetComponent<MeleeShieldedEnemy>().shieldHealth = 20;
+        var shieldedEnemy = enemy.GetComponent<MeleeShieldedEnemy>();
+        shieldedEnemy.maxShieldHealth = meleeShieldedEnemyData.ShieldHealth;
+        shieldedEnemy.MaxHealth = meleeShieldedEnemyData.Health;
+        shieldedEnemy.Damage = meleeShieldedEnemyData.Damage;
+        enemy.Initialize();
         return enemy;
     }
 

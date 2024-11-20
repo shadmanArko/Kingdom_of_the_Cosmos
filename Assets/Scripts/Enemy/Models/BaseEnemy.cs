@@ -3,6 +3,7 @@ using Player;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public abstract class BaseEnemy: MonoBehaviour, IEnemy 
@@ -10,24 +11,32 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
     [Header("Basic Enemy Stats")]
     public float2 Position;
     public float2 Velocity;
-    public float Health;
+    public float MaxHealth;
     public float Stuckness;
     public float Damage;
     public float DistanceToPlayer;
     public bool IsAlive;
-    protected float maxHealth;
+    protected float health;
     [SerializeField] protected Slider HealthSlider;
 
     protected virtual void Start()
     {
-        Health = 100;
-        maxHealth = 100;
+        
     }
 
     public virtual void Move(Vector2 targetPosition)
     {
         transform.position = targetPosition;
     }
+    public virtual void Initialize()
+    {
+        health = MaxHealth;
+        IsAlive = true;
+        DistanceToPlayer = 999f;
+        Stuckness = 1;
+
+    }
+
     public virtual void SetStat(EnemyData data)
     {
         Position = data.position;
@@ -43,13 +52,13 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
     public virtual void TakeDamage(float amount)
     {
         if (!IsAlive) return;
-        Health -= amount;
-        if (Health <= 0)
+        health -= amount;
+        if (health <= 0)
         {
             Die();
         }
-        HealthSlider.value = 1 - (maxHealth - Health)/maxHealth;
-        Debug.Log($"Took Damage {amount}, health {Health} is alive: {IsAlive}");
+        HealthSlider.value = 1 - (MaxHealth - health)/MaxHealth;
+        Debug.Log($"Took Damage {amount}, health {MaxHealth} is alive: {IsAlive}");
     }
     protected virtual void Die()
     {

@@ -9,5 +9,6 @@ namespace GameData
     {
         public List<Champion> champions;
         public List<Weapon> weapons;
+        public Enemies enemies;
     }
 }

@@ -74,5 +74,86 @@
       "durability": 80.0,
       "weaponType": "Axe"
     }
-  ]
+  ],
+  "enemies": {
+    "MeleeEnemyDatas": [
+      {
+        "Id": 1,
+        "MovementSpeed": 3.5,
+        "Health": 30.0,
+        "Damage": 10.0,
+        "AttackCooldown": 2.0
+      },
+      {
+        "Id": 2,
+        "MovementSpeed": 2.8,
+        "Health": 120.0,
+        "Damage": 8.0,
+        "AttackCooldown": 1.5
+      },
+      {
+        "Id": 3,
+        "MovementSpeed": 4.2,
+        "Health": 80.0,
+        "Damage": 12.0,
+        "AttackCooldown": 1.8
+      },
+      {
+        "Id": 4,
+        "MovementSpeed": 3.0,
+        "Health": 90.0,
+        "Damage": 15.0,
+        "AttackCooldown": 2.5
+      },
+      {
+        "Id": 5,
+        "MovementSpeed": 3.7,
+        "Health": 110.0,
+        "Damage": 9.0,
+        "AttackCooldown": 2.2
+      }
+    ],
+    "MeleeShieldedEnemyDatas": [
+      {
+        "Id": 1,
+        "ShieldHealth": 20.0,
+        "MovementSpeed": 2.5,
+        "Health": 30.0,
+        "Damage": 15.0,
+        "AttackCooldown": 2.5
+      },
+      {
+        "Id": 2,
+        "ShieldHealth": 30.0,
+        "MovementSpeed": 3.0,
+        "Health": 100.0,
+        "Damage": 10.0,
+        "AttackCooldown": 2.0
+      },
+      {
+        "Id": 3,
+        "ShieldHealth": 70.0,
+        "MovementSpeed": 2.2,
+        "Health": 140.0,
+        "Damage": 20.0,
+        "AttackCooldown": 3.0
+      },
+      {
+        "Id": 4,
+        "ShieldHealth": 40.0,
+        "MovementSpeed": 3.8,
+        "Health": 90.0,
+        "Damage": 12.0,
+        "AttackCooldown": 1.8
+      },
+      {
+        "Id": 5,
+        "ShieldHealth": 60.0,
+        "MovementSpeed": 2.9,
+        "Health": 130.0,
+        "Damage": 18.0,
+        "AttackCooldown": 2.7
+      }
+    ]
+  }
 }

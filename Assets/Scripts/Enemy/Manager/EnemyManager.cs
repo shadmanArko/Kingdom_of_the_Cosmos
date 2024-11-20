@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DBMS.RunningData;
 using GameData;
 using Player;
 using Signals.BattleSceneSignals;
@@ -38,6 +39,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     public float checkInterval = 0.1f;
     public float stucknessThreshold = 2f;
     private GameDataScriptable _gameDataScriptable;
+    private RunningDataScriptable _runningDataScriptable;
     private Enemies _enemies;
 
     public EnemyManager(PlayerController playerController,
@@ -45,6 +47,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         MeleeEnemyPool meleeEnemyMeleeEnemyPool,
         MeleeShieldedEnemyPool meleeShieldedEnemyPool,
         GameDataScriptable gameDataScriptable,
+        RunningDataScriptable runningDataScriptable,
         SignalBus signalBus)
     {
         _playerController = playerController;
@@ -52,6 +55,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         _meleeEnemyPool = meleeEnemyMeleeEnemyPool;
         _meleeShieldedEnemyPool = meleeShieldedEnemyPool;
         _gameDataScriptable = gameDataScriptable;
+        _runningDataScriptable = runningDataScriptable;
         _signalBus = signalBus;
         Debug.Log($"Enemy Manager constructor Started. signal bus found {_signalBus!= null}");
 
@@ -117,7 +121,11 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         var playerPos = _playerController.transform.position;
         var knockBackStrength = 10;
         var damageValue = 10;
-        var enemiesWithinArea = GetAllEnemiesWithinAttackArea(playerPos, new Vector2(playerPos.x+5f, playerPos.y+2.5f), new Vector2(playerPos.x+5f, playerPos.y-2.5f));
+        var p0 = _runningDataScriptable.attackAngle[0];
+        var p1 = _runningDataScriptable.attackAngle[1];
+        var p2 =  _runningDataScriptable.attackAngle[2];
+        Debug.Log($"player pos:{playerPos}, p0: {p0}, p1: {p1}, p2: {p2},");
+        var enemiesWithinArea = GetAllEnemiesWithinAttackArea(p0, p1, p2);
     
         foreach (var enemy in enemiesWithinArea)
         {
@@ -256,20 +264,19 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         Vector2 v1 = point2 - point1;
         Vector2 v2 = point - point1;
 
-        // Calculate the cross products
-        float cross00 = v0.x * v1.y - v0.y * v1.x;
-        float cross01 = v0.x * v2.y - v0.y * v2.x;
-        float cross11 = v1.x * v1.y - v1.y * v1.x;
+        // Calculate dot products
+        float dot00 = Vector2.Dot(v0, v0);
+        float dot01 = Vector2.Dot(v0, v1);
+        float dot02 = Vector2.Dot(v0, v2);
+        float dot11 = Vector2.Dot(v1, v1);
+        float dot12 = Vector2.Dot(v1, v2);
 
-        // Calculate the barycentric coordinates
-        float denom = cross00;
-        if (Mathf.Abs(denom) < 0.00001f)
-            return false; // Avoid division by zero
+        // Calculate barycentric coordinates
+        float invDenom = 1.0f / (dot00 * dot11 - dot01 * dot01);
+        float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+        float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
 
-        float u = cross01 / denom;
-        float v = (v1.x * v2.y - v1.y * v2.x) / denom;
-
-        // Check if the point is inside the triangle
+        // Check if point is in triangle
         return (u >= 0) && (v >= 0) && (u + v <= 1);
     }
 

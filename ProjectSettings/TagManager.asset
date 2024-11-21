@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Wall
   - Obstacle
+  - asteroid
+  - ship
   layers:
   - Default
   - TransparentFX
@@ -44,6 +46,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Water
+    uniqueID: 3383245507
+    locked: 0
+  - name: Ground
+    uniqueID: 2743634443
+    locked: 0
+  - name: Enemy
+    uniqueID: 2045034985
+    locked: 0
   - name: Player
     uniqueID: 1586970795
+    locked: 0
+  - name: UI
+    uniqueID: 12987711
     locked: 0

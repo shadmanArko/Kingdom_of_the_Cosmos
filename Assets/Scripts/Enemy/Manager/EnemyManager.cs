@@ -34,7 +34,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     private EnemyData[] enemyDataArray;
     public float moveSpeed = 4f;
     public float obstacleAvoidanceRadius = 1f;
-    public float neighborAvoidanceRadius = 1.2f;
+    public float neighborAvoidanceRadius = 1f;
     public float collisionDistance = 1f;
     public float checkInterval = 0.1f;
     public float stucknessThreshold = 2f;
@@ -420,7 +420,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         {
             _computeBuffer = null;
         }
-        EnemyCountUpdated?.Invoke(_activeEnemies.Count);
+        EnemyCountUpdated?.Invoke(_activeEnemies.Count + _enemiesBeingKnockedBack.Count);
     }
     
     public void Dispose()

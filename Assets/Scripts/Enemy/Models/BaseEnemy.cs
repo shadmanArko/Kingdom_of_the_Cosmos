@@ -31,9 +31,10 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
     public virtual void Initialize()
     {
         health = MaxHealth;
+        HealthSlider.value = 1;
         IsAlive = true;
         DistanceToPlayer = 999f;
-        Stuckness = 1;
+        Stuckness = 0.5f;
 
     }
 

@@ -15,6 +15,12 @@ namespace Player
         
         public float speed = 5f;
 
+        #region Player Settings Variables
+
+        public bool isAutoAttacking;
+
+        #endregion
+
         #region Dash Variables
 
         [SerializeField] private Vector2 dashDirection;
@@ -82,11 +88,13 @@ namespace Player
         {
             _signalBus.Subscribe<StartDashSignal>(StartDash);
             _signalBus.Subscribe<StopDashSignal>(() => { });
+            _signalBus.Subscribe<ToggleAutoAttackSignal>(AutoAttack);
         }
         
         private void UnsubscribeToActions()
         {
             _signalBus.Unsubscribe<StartDashSignal>(StartDash);
+            _signalBus.Unsubscribe<ToggleAutoAttackSignal>(AutoAttack);
         }
 
         #endregion
@@ -139,7 +147,30 @@ namespace Player
             playerAnimationController.PlayAnimation("attack");
         }
 
-        public void AutoAttack()
+        #endregion
+        
+        #region Auto Attack
+
+        private void ToggleAutoAttack()
+        {
+            isAutoAttacking = !isAutoAttacking;
+            if(isAutoAttacking)
+                TurnOnAutoAttack();
+            else
+                TurnOffAutoAttack();
+        }
+
+        private void TurnOnAutoAttack()
+        {
+            
+        }
+
+        private void TurnOffAutoAttack()
+        {
+            
+        }
+
+        private void AutoAttack()
         {
             if (autoAttackTimer <= 0)
             {

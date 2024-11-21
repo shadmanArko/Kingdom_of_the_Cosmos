@@ -17,7 +17,6 @@ namespace InputScripts
         [Inject] private readonly SignalBus _signalBus;
 
         private RunningDataScriptable _runningDataScriptable;
-        private ScreenShakeManager _screenShakeManager;
 
         private PlayerController _playerController;
         
@@ -32,12 +31,6 @@ namespace InputScripts
 
         private InputAction _mousePositionAction;
 
-        #region Player Settings
-
-        [SerializeField] private bool isAutoAttacking;
-
-        #endregion
-
         #region Initializers
 
         private void Awake()
@@ -50,9 +43,8 @@ namespace InputScripts
         }
 
         [Inject]
-        private void InitializeDiReference(Camera cam, ScreenShakeManager screenShakeManager, BulletPoolingManager bulletPoolingManager, AbilityPoolManager abilityPoolManager, RunningDataScriptable runningDataScriptable, PlayerController playerController)
+        private void InitializeDiReference(Camera cam, BulletPoolingManager bulletPoolingManager, AbilityPoolManager abilityPoolManager, RunningDataScriptable runningDataScriptable, PlayerController playerController)
         {
-            _screenShakeManager = screenShakeManager;
             _camera = cam;
             _runningDataScriptable = runningDataScriptable;
             _playerController = playerController;
@@ -67,8 +59,9 @@ namespace InputScripts
             _inputControls.PlayerControl.Dash.canceled += _ => StopDash();
             _inputControls.PlayerControl.WeaponThrow.performed += _ => StartThrowWeapon();
             _inputControls.PlayerControl.WeaponThrow.canceled += _ => StopThrowWeapon();
+            _inputControls.PlayerControl.ToggleAutoAttack.performed += _ => ToggleAutoAttack();
         }
-        
+
         #region Enable and Disable
 
         private void OnEnable()
@@ -85,7 +78,6 @@ namespace InputScripts
         {
             _inputControls.Disable();
             _mousePositionAction.Disable();
-            _lastMousePosition = _mousePositionAction.ReadValue<Vector2>();
             
             _signalBus.Unsubscribe<MouseMovementSignal>(UpdateMouseMovement);
         }
@@ -112,9 +104,7 @@ namespace InputScripts
         private void AttackInput()
         {
             _signalBus.Fire<MeleeAttackSignal>();
-            
             _playerController.Attack(Vector2.zero);
-            // _screenShakeManager.ShakeScreen();
         }
         
         private void Reload()
@@ -140,21 +130,14 @@ namespace InputScripts
         }
 
         #region Update Mouse Position
-
-        private Vector3 _lastMousePosition;
+        
         private bool _mouseMoved;
-        private readonly float _movementThreshold = 0.01f;
         private void ReadMousePosition()
         {
             var mousePos = _mousePositionAction.ReadValue<Vector2>();
-            var distance = Vector3.Distance(mousePos, _lastMousePosition);
-
-            // if (!(distance > _movementThreshold)) return;
-            _lastMousePosition = mousePos;
             var mouseWorldPosition =
                 _camera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, _camera.nearClipPlane));
             var direction = (_playerController.gameObject.transform.position - mouseWorldPosition).normalized * -1;
-            // Debug.Log($"mouse direction: {direction}");
             _signalBus.Fire(new MouseMovementSignal(direction));
         }
         
@@ -176,6 +159,15 @@ namespace InputScripts
         {
             _signalBus.Fire<WeaponThrowStopSignal>();
             Debug.Log("Firing weapon throw STOP signal");
+        }
+
+        #endregion
+
+        #region Auto Attack
+
+        private void ToggleAutoAttack()
+        {
+            _signalBus.Fire<ToggleAutoAttackSignal>();
         }
 
         #endregion

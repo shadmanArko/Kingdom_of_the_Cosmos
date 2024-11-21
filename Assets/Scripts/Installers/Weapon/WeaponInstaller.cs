@@ -25,6 +25,7 @@ public class WeaponInstaller : ScriptableObjectInstaller<WeaponInstaller>
         Container.DeclareSignal<StopDashSignal>();
         Container.DeclareSignal<WeaponThrowStartSignal>();
         Container.DeclareSignal<WeaponThrowStopSignal>();
+        Container.DeclareSignal<ToggleAutoAttackSignal>();
         
         Container.Bind<WeaponManager>().AsSingle().NonLazy();
         Container.Bind<WeaponDataLoader>().AsSingle().NonLazy();

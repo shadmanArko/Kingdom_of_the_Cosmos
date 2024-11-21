@@ -89,6 +89,15 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleAutoAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""a66cc981-cdbd-443a-8b68-7bb99e583c06"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +221,17 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""action"": ""WeaponThrow"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""558ad33e-95aa-4806-91d3-a9e379520bbe"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardAndMouse"",
+                    ""action"": ""ToggleAutoAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -266,6 +286,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_PlayerControl_SwitchWeapon = m_PlayerControl.FindAction("SwitchWeapon", throwIfNotFound: true);
         m_PlayerControl_Dash = m_PlayerControl.FindAction("Dash", throwIfNotFound: true);
         m_PlayerControl_WeaponThrow = m_PlayerControl.FindAction("WeaponThrow", throwIfNotFound: true);
+        m_PlayerControl_ToggleAutoAttack = m_PlayerControl.FindAction("ToggleAutoAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -334,6 +355,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControl_SwitchWeapon;
     private readonly InputAction m_PlayerControl_Dash;
     private readonly InputAction m_PlayerControl_WeaponThrow;
+    private readonly InputAction m_PlayerControl_ToggleAutoAttack;
     public struct PlayerControlActions
     {
         private @InputMaster m_Wrapper;
@@ -345,6 +367,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @SwitchWeapon => m_Wrapper.m_PlayerControl_SwitchWeapon;
         public InputAction @Dash => m_Wrapper.m_PlayerControl_Dash;
         public InputAction @WeaponThrow => m_Wrapper.m_PlayerControl_WeaponThrow;
+        public InputAction @ToggleAutoAttack => m_Wrapper.m_PlayerControl_ToggleAutoAttack;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -375,6 +398,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @WeaponThrow.started += instance.OnWeaponThrow;
             @WeaponThrow.performed += instance.OnWeaponThrow;
             @WeaponThrow.canceled += instance.OnWeaponThrow;
+            @ToggleAutoAttack.started += instance.OnToggleAutoAttack;
+            @ToggleAutoAttack.performed += instance.OnToggleAutoAttack;
+            @ToggleAutoAttack.canceled += instance.OnToggleAutoAttack;
         }
 
         private void UnregisterCallbacks(IPlayerControlActions instance)
@@ -400,6 +426,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @WeaponThrow.started -= instance.OnWeaponThrow;
             @WeaponThrow.performed -= instance.OnWeaponThrow;
             @WeaponThrow.canceled -= instance.OnWeaponThrow;
+            @ToggleAutoAttack.started -= instance.OnToggleAutoAttack;
+            @ToggleAutoAttack.performed -= instance.OnToggleAutoAttack;
+            @ToggleAutoAttack.canceled -= instance.OnToggleAutoAttack;
         }
 
         public void RemoveCallbacks(IPlayerControlActions instance)
@@ -453,5 +482,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnSwitchWeapon(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnWeaponThrow(InputAction.CallbackContext context);
+        void OnToggleAutoAttack(InputAction.CallbackContext context);
     }
 }

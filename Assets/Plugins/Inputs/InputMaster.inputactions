@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleAutoAttack",
+                    "type": "Button",
+                    "id": "a66cc981-cdbd-443a-8b68-7bb99e583c06",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -188,6 +197,17 @@
                     "processors": "",
                     "groups": "KeyboardAndMouse",
                     "action": "WeaponThrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "558ad33e-95aa-4806-91d3-a9e379520bbe",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardAndMouse",
+                    "action": "ToggleAutoAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

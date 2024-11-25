@@ -1,10 +1,8 @@
 using DBMS.RunningData;
-using ObjectPoolScripts;
 using Player;
 using Signals.BattleSceneSignals;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Utilities;
 using Zenject;
 using zzz_TestScripts.Signals.BattleSceneSignals;
 
@@ -22,8 +20,8 @@ namespace InputScripts
         
         private Camera _camera;
         
-        private InputActionMap keyboardMap;
-        private InputActionMap gamepadMap;
+        // private InputActionMap keyboardMap;
+        // private InputActionMap gamepadMap;
 
         [SerializeField] private PlayerController unit;
         
@@ -43,7 +41,7 @@ namespace InputScripts
         }
 
         [Inject]
-        private void InitializeDiReference(Camera cam, BulletPoolingManager bulletPoolingManager, AbilityPoolManager abilityPoolManager, RunningDataScriptable runningDataScriptable, PlayerController playerController)
+        private void InitializeDiReference(Camera cam, RunningDataScriptable runningDataScriptable, PlayerController playerController)
         {
             _camera = cam;
             _runningDataScriptable = runningDataScriptable;
@@ -168,6 +166,7 @@ namespace InputScripts
         private void ToggleAutoAttack()
         {
             _signalBus.Fire<ToggleAutoAttackSignal>();
+            Debug.Log("Auto Attack Input Handler");
         }
 
         #endregion

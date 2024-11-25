@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Cinemachine;
 using Unity.Mathematics;
@@ -74,6 +76,7 @@ namespace Player
         {
             SubscribeToActions();
             canMove = true;
+            canAttack = true;
             isDashing = false;
             canDash = true;
             speed = moveSpeed;
@@ -88,13 +91,13 @@ namespace Player
         {
             _signalBus.Subscribe<StartDashSignal>(StartDash);
             _signalBus.Subscribe<StopDashSignal>(() => { });
-            _signalBus.Subscribe<ToggleAutoAttackSignal>(AutoAttack);
+            _signalBus.Subscribe<ToggleAutoAttackSignal>(ToggleAutoAttack);
         }
         
         private void UnsubscribeToActions()
         {
             _signalBus.Unsubscribe<StartDashSignal>(StartDash);
-            _signalBus.Unsubscribe<ToggleAutoAttackSignal>(AutoAttack);
+            _signalBus.Unsubscribe<ToggleAutoAttackSignal>(ToggleAutoAttack);
         }
 
         #endregion
@@ -148,39 +151,32 @@ namespace Player
         }
 
         #endregion
-        
+
+        private void FixedUpdate()
+        {
+            if (isAutoAttacking) AutoAttack();
+        }
+
         #region Auto Attack
+
+        private CancellationTokenSource _autoAttackCancellationTokenSource;
 
         private void ToggleAutoAttack()
         {
             isAutoAttacking = !isAutoAttacking;
-            if(isAutoAttacking)
-                TurnOnAutoAttack();
-            else
-                TurnOffAutoAttack();
-        }
-
-        private void TurnOnAutoAttack()
-        {
-            
-        }
-
-        private void TurnOffAutoAttack()
-        {
-            
         }
 
         private void AutoAttack()
         {
-            if (autoAttackTimer <= 0)
-            {
-                Attack(Vector2.down);
-                autoAttackTimer = autoAttackInterval;
-            }
-            else
+            if (autoAttackTimer > 0)
             {
                 autoAttackTimer -= Time.fixedDeltaTime;
+                return;
             }
+            
+            Attack(Vector2.down);
+            autoAttackTimer = autoAttackInterval;
+            Debug.Log("Playing auto attack");
         }
 
         #endregion

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DBMS.RunningData;
-using Signals.BattleSceneSignals;
 using UnityEngine;
 using Zenject;
 using zzz_TestScripts.Signals.BattleSceneSignals;
@@ -44,11 +42,6 @@ namespace Player
             _runningDataScriptable.attackAngle.Clear();
             foreach (var point in points)
                 _runningDataScriptable.attackAngle.Add(point.position);
-
-            for (var i = 0; i < points.Count; i++)
-            {
-                Debug.Log($"p{i}: {points[i].position}");
-            }
         }
     }
 }

@@ -354,6 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  isAutoAttacking: 0
   dashDirection: {x: 0, y: 0}
   dashCount: 2
   totalDashCount: 2
@@ -369,8 +370,8 @@ MonoBehaviour:
   moveSpeed: 5
   movement: {x: 0, y: 0}
   canMove: 0
-  autoAttackInterval: 0
-  autoAttackTimer: 0
+  autoAttackInterval: 3
+  autoAttackTimer: 3
   rb: {fileID: 3878785499377661370}
   playerAnimationController: {fileID: 2120594961658747589}
   canAttack: 0

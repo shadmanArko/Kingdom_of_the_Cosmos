@@ -24,7 +24,6 @@ namespace Installers
         [SerializeField] private PlayerController playerController;
 
         [SerializeField] private BulletPoolingManager bulletPoolingManager;
-        [SerializeField] private AbilityPoolManager abilityPoolManager;
     
         public override void InstallBindings()
         {
@@ -39,7 +38,6 @@ namespace Installers
             Container.Bind<ScreenShakeManager>().AsSingle();
             Container.Bind<PlayerController>().FromComponentInNewPrefab(playerController).AsSingle().NonLazy();
             Container.Bind<BulletPoolingManager>().FromComponentInNewPrefab(bulletPoolingManager).AsSingle();
-            Container.Bind<AbilityPoolManager>().FromComponentInNewPrefab(abilityPoolManager).AsSingle();
         }
     }
 }

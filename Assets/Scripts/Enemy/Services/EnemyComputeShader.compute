@@ -48,21 +48,26 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float distToPlayer = length(dirToPlayer);
     enemy.distanceToPlayer = distToPlayer;
     
-    // Determine movement direction based on distance to player
-    float2 normalizedDirToPlayer;
-    if (distToPlayer > 0.001f)
+    // Determine movement direction
+    float2 normalizedDirToPlayer = float2(0, 0);
+    
+    // Track back when player approaches
+    if (distToPlayer <= enemy.minDistance * 1.5f)
     {
-        normalizedDirToPlayer = dirToPlayer / distToPlayer;
-        // Reverse direction if too close to player
-        if (distToPlayer < enemy.minDistance)
-        {
-            normalizedDirToPlayer = -normalizedDirToPlayer;
-        }
+        // Move away from player when too close
+        normalizedDirToPlayer = -normalize(dirToPlayer);
     }
-    else
+    else if (distToPlayer > enemy.minDistance)
     {
-        // Random direction when extremely close
-        normalizedDirToPlayer = float2(sin(enemy.position.x * 1000), cos(enemy.position.y * 1000));
+        if (distToPlayer > 0.001f)
+        {
+            normalizedDirToPlayer = normalize(dirToPlayer);
+        }
+        else
+        {
+            // Random direction when extremely close
+            normalizedDirToPlayer = float2(sin(enemy.position.x * 1000), cos(enemy.position.y * 1000));
+        }
     }
     
     // Calculate obstacle avoidance
@@ -91,7 +96,17 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         
         if (distance > 0.001f && distance < neighborAvoidanceRadius)
         {
-            separationForce += normalize(toNeighbor) / distance;
+            // Lighter separation when close to player
+            if (distToPlayer <= enemy.minDistance * 1.5f)
+            {
+                // Reduced separation to prevent pushing towards player
+                separationForce += normalize(toNeighbor) * (1.0 / (distance * 2.0));
+            }
+            else
+            {
+                // Normal separation for other cases
+                separationForce += normalize(toNeighbor) / distance;
+            }
             neighborCount++;
         }
     }
@@ -99,19 +114,19 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     // Normalize separation force if there are neighbors
     if (neighborCount > 0)
     {
-        separationForce = normalize(separationForce) * 2.0;
+        separationForce = normalize(separationForce) * 1.2;
     }
     
     // Calculate distance-based speed multiplier
     float distanceMultiplier = 1.0;
-    if (distToPlayer < enemy.minDistance)
+    if (distToPlayer <= enemy.minDistance)
     {
-        // Move faster when too close to player
-        distanceMultiplier = 1.5;
+        // Reduce speed when too close to player
+        distanceMultiplier = 0.5;
     }
     
     // Combine all forces to get final movement direction
-    float2 finalDirection = normalizedDirToPlayer + avoidanceForce * 1.5f + separationForce;
+    float2 finalDirection = normalizedDirToPlayer + avoidanceForce + separationForce;
     float finalMagnitude = length(finalDirection);
     
     // Normalize final direction

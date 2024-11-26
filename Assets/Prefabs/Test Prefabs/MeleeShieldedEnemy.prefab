@@ -272,6 +272,8 @@ GameObject:
   - component: {fileID: 8065456931311595634}
   - component: {fileID: 1088428650878525725}
   - component: {fileID: 7384028251061610236}
+  - component: {fileID: 2878330234239903299}
+  - component: {fileID: -8219800820364334471}
   m_Layer: 0
   m_Name: MeleeShieldedEnemy
   m_TagString: Enemy
@@ -366,15 +368,79 @@ MonoBehaviour:
   Velocity:
     x: 0
     y: 0
+  MoveSpeed: 0
   MaxHealth: 0
   Stuckness: 0
   Damage: 0
   DistanceToPlayer: 0
+  MinDistanceToPlayer: 0
   IsAlive: 1
   HealthSlider: {fileID: 6652177637913935600}
   _animationController: {fileID: 3873786948047536699}
   _shieldSlider: {fileID: 5094268330361798392}
   maxShieldHealth: 20
+--- !u!50 &2878330234239903299
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3740269002705187921}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!58 &-8219800820364334471
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3740269002705187921}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.65625
 --- !u!1 &4419399628978288382
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +514,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1586970795
-  m_SortingLayer: 1
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -1647433700, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

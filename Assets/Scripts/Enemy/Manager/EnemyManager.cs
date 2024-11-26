@@ -99,21 +99,20 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         
         if (_activeEnemies.Count == 0) return;
         
-        UpdateEnemyPositions();
-        for (int i = enemyDataArray.Length - 1; i >= 0; i--)
+        // UpdateEnemyPositions();
+        UpdateEnemyPositionsWithoutShader();
+        
+    }
+
+    private void UpdateEnemyPositionsWithoutShader()
+    {
+        foreach (var enemy in _activeEnemies)
         {
-            if (enemyDataArray[i].isAlive == 0)
-            {
-                //Todo: handle enemy death 
-            }
-            else
-            {
-                // _activeEnemies[i].GetComponent<>()
-            }
+            enemy.MoveTowardsTarget(_playerTransform);
         }
     }
-    
-    
+
+
     private List<KnockbackData> _enemiesBeingKnockedBack = new List<KnockbackData>();
     
     private void OnMeleeAttack()

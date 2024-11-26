@@ -18,7 +18,7 @@ public class GameStatUI : MonoBehaviour
 
     private void EnemyCountUpdated(int obj)
     {
-        enemyCountText.text = $"Current Enemies: {obj}";
+        enemyCountText.text = $"Enemies: {obj}";
     }
 
     private float timer = 0f;

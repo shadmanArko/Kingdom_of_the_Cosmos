@@ -189,6 +189,7 @@ namespace Player
         private void StartDash()
         {
             if(!canDash) return;
+            if(isDashing) return;
             if(dashCount <= 0) return;
             Debug.Log("Start Dash called");
             canAttack = false;

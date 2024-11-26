@@ -370,11 +370,11 @@ MonoBehaviour:
   moveSpeed: 5
   movement: {x: 0, y: 0}
   canMove: 0
-  autoAttackInterval: 3
-  autoAttackTimer: 3
+  attackInterval: 1
+  attackTimer: 0
   rb: {fileID: 3878785499377661370}
   playerAnimationController: {fileID: 2120594961658747589}
-  canAttack: 0
+  canAttack: 1
 --- !u!50 &3878785499377661370
 Rigidbody2D:
   serializedVersion: 4

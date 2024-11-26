@@ -2,21 +2,25 @@
   "AnimationDatas": [
     {
       "stateName": "idle",
+      "triggerName": "idleTrigger",
       "clipPath": "Animations/idle",
       "speed": 1.0
     },
     {
       "stateName": "attack",
+      "triggerName": "attackTrigger",
       "clipPath": "Animations/attack",
       "speed": 1.5
     },
     {
       "stateName": "run",
+      "triggerName": "runTrigger",
       "clipPath": "Animations/run",
       "speed": 1.2
     },
     {
       "stateName": "dash",
+      "triggerName": "dashTrigger",
       "clipPath": "Animations/dash",
       "speed": 1.2
     }

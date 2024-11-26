@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using zzz_TestScripts.AnimationLoadingFromSpriteSheets;
 using zzz_TestScripts.AnimationSystemTest;
 
@@ -10,7 +13,9 @@ namespace Player
         [SerializeField] public Animator animator;
         
         [SerializeField] private AnimationDataScriptable animationDataScriptable;
-        [SerializeField] private AnimationData animationData;
+        
+        [SerializeField] private string currentAnimationName;
+        [SerializeField] private AnimationData currentAnimationData;
         
         #region Current Sprite Index
 
@@ -20,11 +25,11 @@ namespace Player
             get => currentSpriteIndex;
             set
             {
-                if (animationData.animationSprites.Count > 0)
+                if (currentAnimationData.animationSprites.Count > 0)
                 {
-                    currentSpriteIndex = value % animationData.animationSprites.Count;
+                    currentSpriteIndex = value % currentAnimationData.animationSprites.Count;
                     if (currentSpriteIndex < 0)
-                        currentSpriteIndex += animationData.animationSprites.Count;
+                        currentSpriteIndex += currentAnimationData.animationSprites.Count;
                 }
                 else
                 {
@@ -35,45 +40,39 @@ namespace Player
 
         #endregion
 
-
-        private void Start()
+        private void Update()
         {
-            
+            if(currentAnimationData.stateName != currentAnimationName)
+                LoadSpriteBasedOnCurrentAnimation(currentAnimationName);
         }
-        
+
         private void LateUpdate()
         {
-            if (animationData.animationSprites.Count > 0)
+            if (currentAnimationData.animationSprites.Count > 0)
             {
-                spriteRend.sprite = animationData.animationSprites[currentSpriteIndex];
+                spriteRend.sprite = currentAnimationData.animationSprites[currentSpriteIndex];
             }
-            
-            
-        }
-
-        [ContextMenu("Set New Animations")]
-        public void SetNewAnimations()
-        {
-            // var animStateSetter = new AnimationStateSetter(animator);
-            // var animJsonFilePath = "Assets/Scripts/zzz_TestScripts/AnimationSystemTest/AnimationDatas.json";
-            // animStateSetter.SetupAnimationStates(animJsonFilePath);
-        }
-
-        public void SetSprite()
-        {
-            
         }
 
         public void PlayAnimation(string state)
         {
             if (animator == null || !animator.isActiveAndEnabled) return;
+            currentAnimationName = state;
             LoadSpriteBasedOnCurrentAnimation(state);
-            animator.Play(state);
+            if (currentAnimationData.triggerName != "")
+            {
+                animator.SetTrigger(currentAnimationData.triggerName);
+            }
+            else
+            {
+                animator.Play(currentAnimationData.stateName);
+            }
         }
 
         private void LoadSpriteBasedOnCurrentAnimation(string currentStateName)
         {
-            if(animationData.stateName == currentStateName) return;
+            if (currentAnimationData.stateName == currentStateName) return;
+            
             if (animationDataScriptable.animationDatabases.Count <= 0)
             {
                 Debug.LogError("Fatal Error: Scriptable Object has no data in it");
@@ -83,7 +82,7 @@ namespace Player
             foreach (var data in animationDataScriptable.animationDatabases[0].animationDatas)
             {
                 if(data.stateName != currentStateName) continue;
-                animationData = data;
+                currentAnimationData = data;
                 CurrentSpriteIndex = 0;
                 return;
             }

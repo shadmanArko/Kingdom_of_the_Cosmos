@@ -1,9 +1,10 @@
-using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Cinemachine;
+using Signals.BattleSceneSignals;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
+using WeaponSystem.Managers;
 using Zenject;
 using zzz_TestScripts.Signals.BattleSceneSignals;
 using Vector2 = UnityEngine.Vector2;
@@ -13,6 +14,7 @@ namespace Player
     public class PlayerController : MonoBehaviour
     {
         private CinemachineVirtualCamera _cineMachineVirtualCamera;
+        private WeaponManager _weaponManager;
         private SignalBus _signalBus;
         
         public float speed = 5f;
@@ -56,19 +58,22 @@ namespace Player
 
         #region Attack Variables
 
-        [SerializeField] private float autoAttackInterval;
-        [SerializeField] private float autoAttackTimer;
+        [FormerlySerializedAs("autoAttackInterval")] [SerializeField] private float attackInterval;
+        [FormerlySerializedAs("autoAttackTimer")] [SerializeField] private float attackTimer;
 
         #endregion
         
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private PlayerAnimationController playerAnimationController;
 
+        #region Initializers
+        
         [Inject]
-        private void InitializeDiReference(CinemachineVirtualCamera cineMachineVirtualCamera, SignalBus signalBus)
+        private void InitializeDiReference(CinemachineVirtualCamera cineMachineVirtualCamera, WeaponManager weaponManager, SignalBus signalBus)
         {
             _cineMachineVirtualCamera = cineMachineVirtualCamera;
             _cineMachineVirtualCamera.Follow = gameObject.transform;
+            _weaponManager = weaponManager;
             _signalBus = signalBus;
         }
         
@@ -102,6 +107,16 @@ namespace Player
 
         #endregion
         
+        #endregion
+        
+        private void FixedUpdate()
+        {
+            if (attackTimer > 0)
+                attackTimer -= Time.fixedDeltaTime;
+            else if(isAutoAttacking) 
+                AutoAttack();
+        }
+        
         public void Move(Vector2 direction)
         {
             if(!canMove) return;
@@ -131,14 +146,14 @@ namespace Player
                 else
                     playerAnimationController.PlayAnimation( "run");
             }
-            else
-            {
-                var stateInfo = playerAnimationController.animator.GetCurrentAnimatorStateInfo(0);
-                if (stateInfo.length == 0 || stateInfo.normalizedTime >= 1.0f)
-                {
-                    playerAnimationController.PlayAnimation("idle");
-                }
-            }
+            // else
+            // {
+            //     var stateInfo = playerAnimationController.animator.GetCurrentAnimatorStateInfo(0);
+            //     if (stateInfo.length == 0 || stateInfo.normalizedTime >= 1.0f)
+            //     {
+            //         playerAnimationController.PlayAnimation("idle");
+            //     }
+            // }
         }
 
         #region Attack
@@ -147,35 +162,23 @@ namespace Player
         public void Attack(Vector2 direction)
         {
             if(!canAttack) return;
+            if(attackTimer > 0) return;
+            if (!_weaponManager.TriggerControlledWeapon()) return;
             playerAnimationController.PlayAnimation("attack");
+            attackTimer = attackInterval;
         }
 
         #endregion
 
-        private void FixedUpdate()
-        {
-            if (isAutoAttacking) AutoAttack();
-        }
-
         #region Auto Attack
 
-        private CancellationTokenSource _autoAttackCancellationTokenSource;
-
-        private void ToggleAutoAttack()
-        {
-            isAutoAttacking = !isAutoAttacking;
-        }
+        private void ToggleAutoAttack() => isAutoAttacking = !isAutoAttacking;
 
         private void AutoAttack()
         {
-            if (autoAttackTimer > 0)
-            {
-                autoAttackTimer -= Time.fixedDeltaTime;
-                return;
-            }
+            if(attackTimer > 0) return;
             
             Attack(Vector2.down);
-            autoAttackTimer = autoAttackInterval;
             Debug.Log("Playing auto attack");
         }
 

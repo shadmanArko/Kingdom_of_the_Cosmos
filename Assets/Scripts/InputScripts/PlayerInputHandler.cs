@@ -29,6 +29,8 @@ namespace InputScripts
 
         private InputAction _mousePositionAction;
 
+        private bool _canTakeAttackInput;
+
         #region Initializers
 
         private void Awake()
@@ -38,6 +40,8 @@ namespace InputScripts
             // gamepadMap = playerInput.actions.FindActionMap("Gamepad");
         
             SubscribeToActions();
+            
+            _canTakeAttackInput = true;
         }
 
         [Inject]
@@ -101,7 +105,7 @@ namespace InputScripts
         
         private void AttackInput()
         {
-            _signalBus.Fire<MeleeAttackSignal>();
+            if(!_canTakeAttackInput) return;
             _playerController.Attack(Vector2.zero);
         }
         
@@ -115,6 +119,8 @@ namespace InputScripts
             _signalBus.Fire<SwitchControlledWeaponSignal>();
         }
 
+        #region Dash
+
         private void StartDash()
         {
             _signalBus.Fire<StartDashSignal>();
@@ -126,6 +132,8 @@ namespace InputScripts
             _signalBus.Fire<StopDashSignal>();
             Debug.Log("Dash ended");
         }
+
+        #endregion
 
         #region Update Mouse Position
         
@@ -165,6 +173,7 @@ namespace InputScripts
 
         private void ToggleAutoAttack()
         {
+            _canTakeAttackInput = !_canTakeAttackInput;
             _signalBus.Fire<ToggleAutoAttackSignal>();
             Debug.Log("Auto Attack Input Handler");
         }

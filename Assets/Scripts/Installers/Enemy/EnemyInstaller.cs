@@ -1,4 +1,5 @@
 using System;
+using Enemy.Services;
 using Player;
 using UnityEngine;
 using Zenject;
@@ -11,6 +12,9 @@ public class EnemyInstaller : ScriptableObjectInstaller<EnemyInstaller>
     [SerializeField] private MeleeEnemyPool meleeEnemyPool;
     [SerializeField] private MeleeShieldedEnemyPool meleeShieldedEnemyPool;
     [SerializeField] private GameStatUI gameStatUI;
+    [SerializeField] private GameObject enemyProjectilePrefab;
+    [SerializeField] private int enemyProjectilePoolInitialSize;
+    [SerializeField] private int enemyProjectilePoolMaxSize;
 
     public override void InstallBindings()
     {
@@ -21,5 +25,6 @@ public class EnemyInstaller : ScriptableObjectInstaller<EnemyInstaller>
         Container.Bind<MeleeShieldedEnemyPool>().FromComponentInNewPrefab(meleeShieldedEnemyPool).AsSingle().NonLazy();
         Container.Bind<GameStatUI>().FromComponentInNewPrefab(gameStatUI).AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<EnemyManager>().AsSingle();
+        Container.Bind<EnemyProjectilePoolManager>().AsSingle().WithArguments(enemyProjectilePrefab, enemyProjectilePoolInitialSize, enemyProjectilePoolMaxSize);
     }
 }

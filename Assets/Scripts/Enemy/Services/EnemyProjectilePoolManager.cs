@@ -6,65 +6,31 @@ namespace Enemy.Services
 {
     public class EnemyProjectilePoolManager
     {
-        public class ProjectilePool
-        {
-            public string Type { get; }
-            public GameObject Prefab { get; }
-            public int InitialSize { get; }
-            public int MaxSize { get; }
+        private readonly ObjectPool<GameObject> _objectPool;
 
-            public ProjectilePool(string type, GameObject prefab, int initialSize, int maxSize)
-            {
-                Type = type;
-                Prefab = prefab;
-                InitialSize = initialSize;
-                MaxSize = maxSize;
-            }
+        public EnemyProjectilePoolManager(GameObject projectilePrefab, int initialSize, int maxSize)
+        {
+            _objectPool = new ObjectPool<GameObject>(
+                createFunc: () => Object.Instantiate(projectilePrefab),
+                actionOnGet: obj => obj.SetActive(true),
+                actionOnRelease: obj => obj.SetActive(false),
+                actionOnDestroy: Object.Destroy,
+                defaultCapacity: initialSize,
+                maxSize: maxSize
+            );
         }
 
-        private readonly Dictionary<string, ObjectPool<GameObject>> _poolDictionary;
-
-        public EnemyProjectilePoolManager(IEnumerable<ProjectilePool> projectilePools)
+        public GameObject GetFromPool(Vector3 position, Quaternion rotation)
         {
-            _poolDictionary = new Dictionary<string, ObjectPool<GameObject>>();
-
-            foreach (var pool in projectilePools)
-            {
-                _poolDictionary[pool.Type] = new ObjectPool<GameObject>(
-                    createFunc: () => Object.Instantiate(pool.Prefab),
-                    actionOnGet: obj => obj.SetActive(true),
-                    actionOnRelease: obj => obj.SetActive(false),
-                    actionOnDestroy: Object.Destroy,
-                    defaultCapacity: pool.InitialSize,
-                    maxSize: pool.MaxSize
-                );
-            }
+            var obj = _objectPool.Get();
+            obj.transform.position = position;
+            obj.transform.rotation = rotation;
+            return obj;
         }
-        
-        public GameObject GetFromPool(string type, Vector3 position, Quaternion rotation)
+
+        public void ReturnToPool(GameObject obj)
         {
-            if (_poolDictionary.TryGetValue(type, out var pool))
-            {
-                var obj = pool.Get();
-                obj.transform.position = position;
-                obj.transform.rotation = rotation;
-                return obj;
-            }
-            Debug.LogError($"Pool of type {type} does not exist.");
-            return null;
-        }
-        
-        public void ReturnToPool(string type, GameObject obj)
-        {
-            if (_poolDictionary.TryGetValue(type, out var pool))
-            {
-                pool.Release(obj);
-            }
-            else
-            {
-                Debug.LogError($"Pool of type {type} does not exist.");
-                Object.Destroy(obj); // Destroy the object if no pool exists to handle it.
-            }
+            _objectPool.Release(obj);
         }
         
     }

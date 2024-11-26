@@ -11,7 +11,6 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
     [Header("Basic Enemy Stats")]
     public float2 Position;
     public float2 Velocity;
-    public float MoveSpeed;
     public float MaxHealth;
     public float Stuckness;
     public float Damage;
@@ -20,36 +19,24 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
     public bool IsAlive;
     protected float health;
     [SerializeField] protected Slider HealthSlider;
-    protected Rigidbody2D rigidbody2D;
+
     protected virtual void Start()
     {
+        
     }
 
     public virtual void Move(Vector2 targetPosition)
     {
         transform.position = targetPosition;
     }
-
-    public void MoveTowardsTarget(Transform targetTransform)
-    {
-        rigidbody2D.velocity = Vector2.zero;
-        var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
-        if (distanceToPlayer > MinDistanceToPlayer)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetTransform.position,  MoveSpeed * Time.deltaTime);
-        }
-    }
-
     public virtual void Initialize()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
         health = MaxHealth;
         HealthSlider.value = 1;
         IsAlive = true;
         DistanceToPlayer = 999f;
         Stuckness = 0.5f;
-        MinDistanceToPlayer = 1.5f;
-        MoveSpeed = 3f;
+        MinDistanceToPlayer = 2f;
     }
 
     public virtual void SetStat(EnemyData data)

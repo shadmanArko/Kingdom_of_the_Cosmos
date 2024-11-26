@@ -36,7 +36,7 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
         IsAlive = true;
         DistanceToPlayer = 999f;
         Stuckness = 0.5f;
-        MinDistanceToPlayer = 10f;
+        MinDistanceToPlayer = 2f;
     }
 
     public virtual void SetStat(EnemyData data)

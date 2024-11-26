@@ -15,6 +15,7 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
     public float Stuckness;
     public float Damage;
     public float DistanceToPlayer;
+    public float MinDistanceToPlayer;
     public bool IsAlive;
     protected float health;
     [SerializeField] protected Slider HealthSlider;
@@ -35,7 +36,7 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
         IsAlive = true;
         DistanceToPlayer = 999f;
         Stuckness = 0.5f;
-
+        MinDistanceToPlayer = 10f;
     }
 
     public virtual void SetStat(EnemyData data)

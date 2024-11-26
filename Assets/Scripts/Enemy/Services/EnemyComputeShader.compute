@@ -7,11 +7,15 @@ struct Enemy
     float stuckness;
     float damage;
     float distanceToPlayer;
+    float minDistance;    // Minimum distance to maintain from player
     int isAlive;
 };
 
+// Buffers
 RWStructuredBuffer<Enemy> enemyBuffer;
 StructuredBuffer<float2> obstacleBuffer;
+
+// Parameters
 float2 playerPosition;
 float deltaTime;
 float moveSpeed;
@@ -26,26 +30,42 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 {
     uint index = id.x;
 
+    // Check if this thread should process an enemy
     if (index >= (uint)enemyCount)
         return;
 
     Enemy enemy = enemyBuffer[index];
 
-    // Skip dead enemies
+    // Skip processing dead enemies
     if (enemy.isAlive == 0)
     {
         enemyBuffer[index] = enemy;
         return;
     }
 
+    // Calculate direction and distance to player
     float2 dirToPlayer = playerPosition - enemy.position;
     float distToPlayer = length(dirToPlayer);
-    enemy.distanceToPlayer = abs(dirToPlayer);
+    enemy.distanceToPlayer = distToPlayer;
     
-    float2 normalizedDirToPlayer = distToPlayer > 0.001f 
-        ? dirToPlayer / distToPlayer 
-        : float2(sin(enemy.position.x * 1000), cos(enemy.position.y * 1000));
+    // Determine movement direction based on distance to player
+    float2 normalizedDirToPlayer;
+    if (distToPlayer > 0.001f)
+    {
+        normalizedDirToPlayer = dirToPlayer / distToPlayer;
+        // Reverse direction if too close to player
+        if (distToPlayer < enemy.minDistance)
+        {
+            normalizedDirToPlayer = -normalizedDirToPlayer;
+        }
+    }
+    else
+    {
+        // Random direction when extremely close
+        normalizedDirToPlayer = float2(sin(enemy.position.x * 1000), cos(enemy.position.y * 1000));
+    }
     
+    // Calculate obstacle avoidance
     float2 avoidanceForce = float2(0, 0);
     for (int i = 0; i < obstacleCount; i++)
     {
@@ -58,6 +78,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         }
     }
     
+    // Calculate separation from other enemies
     float2 separationForce = float2(0, 0);
     int neighborCount = 0;
     
@@ -75,14 +96,25 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         }
     }
     
+    // Normalize separation force if there are neighbors
     if (neighborCount > 0)
     {
         separationForce = normalize(separationForce) * 2.0;
     }
     
+    // Calculate distance-based speed multiplier
+    float distanceMultiplier = 1.0;
+    if (distToPlayer < enemy.minDistance)
+    {
+        // Move faster when too close to player
+        distanceMultiplier = 1.5;
+    }
+    
+    // Combine all forces to get final movement direction
     float2 finalDirection = normalizedDirToPlayer + avoidanceForce * 1.5f + separationForce;
     float finalMagnitude = length(finalDirection);
     
+    // Normalize final direction
     if (finalMagnitude > 0.001f)
     {
         finalDirection /= finalMagnitude;
@@ -92,14 +124,17 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         finalDirection = float2(sin(enemy.position.x * 1000), cos(enemy.position.y * 1000));
     }
     
-    // Calculate stuckness
+    // Update stuckness
     float totalForce = length(avoidanceForce) + length(separationForce);
     enemy.stuckness = clamp(enemy.stuckness + (totalForce > stucknessThreshold ? deltaTime : -deltaTime), 0, 1);
 
+    // Calculate final movement
     float stucknessMultiplier = 1 - enemy.stuckness;
-    float speed = max(moveSpeed * 0.5f, moveSpeed * finalMagnitude) * stucknessMultiplier;
-    enemy.position += finalDirection * speed * deltaTime;
-
+    float speed = max(moveSpeed * 0.5f, moveSpeed * finalMagnitude) * stucknessMultiplier * distanceMultiplier;
     
+    // Update position
+    enemy.position += finalDirection * speed * deltaTime;
+    
+    // Write back to buffer
     enemyBuffer[index] = enemy;
 }

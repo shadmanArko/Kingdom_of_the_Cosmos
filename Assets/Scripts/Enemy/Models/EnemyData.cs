@@ -7,6 +7,7 @@ public struct EnemyData
     public float stuckness;
     public float damage;
     public float distanceToPlayer;
+    public float minDistanceToPlayer;
     public int isAlive; // 1 means alive, 0 means dead
 }
 

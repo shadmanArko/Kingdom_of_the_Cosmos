@@ -319,7 +319,8 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
                 velocity = enemy.Velocity,
                 stuckness = enemy.Stuckness, // Initialize stuckness
                 damage = enemy.Damage,
-                isAlive = enemy.IsAlive ? 1: 0
+                isAlive = enemy.IsAlive ? 1: 0,
+                minDistanceToPlayer = enemy.MinDistanceToPlayer
             };
             // Debug.Log($"Sending health data  {enemy.Health}");
         }
@@ -414,7 +415,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         
         if (_activeEnemies.Count > 0)
         {
-            _computeBuffer = new ComputeBuffer(_activeEnemies.Count, 32); // 2 for position, 2 for velocity, 1 for stuckness
+            _computeBuffer = new ComputeBuffer(_activeEnemies.Count, 36); // 2 for position, 2 for velocity, 1 for stuckness
         }
         else
         {

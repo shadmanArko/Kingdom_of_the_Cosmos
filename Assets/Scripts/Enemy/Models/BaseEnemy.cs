@@ -9,12 +9,13 @@ using UnityEngine.UI;
 public abstract class BaseEnemy: MonoBehaviour, IEnemy 
 {
     [Header("Basic Enemy Stats")]
-    public float2 Position;
+    public Vector2 Position;
     public float2 Velocity;
     public float MoveSpeed;
     public float MaxHealth;
     public float Stuckness;
     public float Damage;
+    public float AttackRange;
     public float DistanceToPlayer;
     public float MinDistanceToPlayer;
     public bool IsAlive;
@@ -36,10 +37,12 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
     {
         _rigidbody2D.velocity = Vector2.zero;
         var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
+        DistanceToPlayer = distanceToPlayer;
         if (distanceToPlayer > MinDistanceToPlayer)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetTransform.position,  MoveSpeed * Time.deltaTime);
         }
+        Position = transform.position;
     }
 
     public virtual void Initialize()
@@ -52,6 +55,7 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
         DistanceToPlayer = 999f;
         Stuckness = 0.5f;
         MinDistanceToPlayer = 1.5f;
+        AttackRange = 2f;
     }
 
     public virtual void SetStat(EnemyData data)

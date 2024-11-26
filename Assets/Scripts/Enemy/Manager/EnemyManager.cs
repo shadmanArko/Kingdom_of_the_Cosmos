@@ -109,6 +109,10 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         foreach (var enemy in _activeEnemies)
         {
             enemy.MoveTowardsTarget(_playerTransform);
+            if (enemy.DistanceToPlayer <= enemy.AttackRange)
+            {
+                enemy.Attack(_playerController);
+            }
         }
     }
 
@@ -117,14 +121,15 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     
     private void OnMeleeAttack()
     {
+        Debug.Log("Melee Attack occured");
         var playerPos = _playerController.transform.position;
         var knockBackStrength = 10;
         var damageValue = 10;
         var p0 = _runningDataScriptable.attackAngle[0];
         var p1 = _runningDataScriptable.attackAngle[1];
         var p2 =  _runningDataScriptable.attackAngle[2];
-        Debug.Log($"player pos:{playerPos}, p0: {p0}, p1: {p1}, p2: {p2},");
         var enemiesWithinArea = GetAllEnemiesWithinAttackArea(p0, p1, p2);
+        Debug.Log($"player pos:{playerPos}, p0: {p0}, p1: {p1}, p2: {p2} enemiesWithinArea: {enemiesWithinArea.Count}");
     
         foreach (var enemy in enemiesWithinArea)
         {
@@ -353,7 +358,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
             enemy.SetStat(enemyData);
             enemy.Move(new Vector2(enemyData.position.x, enemyData.position.y));
             // _activeEnemies[i].GetComponent<MeleeEnemy>().SetMeleeAttackerStat(enemyStat);
-            if (enemy.DistanceToPlayer < 0.01f)
+            if (enemy.DistanceToPlayer < 2f)
             {
                 enemy.Attack(_playerController);
             }

@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 7397414394396932977}
   - component: {fileID: 1278470095925631877}
   - component: {fileID: 3878785499377661370}
-  - component: {fileID: 5915990948738474150}
+  - component: {fileID: 111531753288968612}
   m_Layer: 6
   m_Name: Player
   m_TagString: Obstacle
@@ -402,8 +402,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &5915990948738474150
-CapsuleCollider2D:
+--- !u!58 &111531753288968612
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -435,8 +435,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.5, y: 1}
-  m_Direction: 0
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &8915439952885424188
 GameObject:
   m_ObjectHideFlags: 0

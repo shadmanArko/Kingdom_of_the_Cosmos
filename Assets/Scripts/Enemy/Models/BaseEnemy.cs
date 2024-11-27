@@ -38,10 +38,19 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
         _rigidbody2D.velocity = Vector2.zero;
         var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
         DistanceToPlayer = distanceToPlayer;
+
         if (distanceToPlayer > MinDistanceToPlayer)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetTransform.position,  MoveSpeed * Time.deltaTime);
+            // Move towards player if too far
+            transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, MoveSpeed * Time.deltaTime);
         }
+        else if (distanceToPlayer < MinDistanceToPlayer)
+        {
+            // Backtrack when player is too close
+            Vector3 backtrackDirection = transform.position - targetTransform.position;
+            transform.position = Vector3.MoveTowards(transform.position, transform.position + backtrackDirection, MoveSpeed * Time.deltaTime);
+        }
+
         Position = transform.position;
     }
 

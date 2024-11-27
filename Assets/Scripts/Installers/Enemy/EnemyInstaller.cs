@@ -13,7 +13,7 @@ public class EnemyInstaller : ScriptableObjectInstaller<EnemyInstaller>
     [SerializeField] private MeleeShieldedEnemyPool meleeShieldedEnemyPool;
     [SerializeField] private RangedEnemyPool rangedEnemyPool;
     [SerializeField] private GameStatUI gameStatUI;
-    [SerializeField] private GameObject enemyProjectilePrefab;
+    [SerializeField] private EnemyProjectile enemyProjectilePrefab;
     [SerializeField] private int enemyProjectilePoolInitialSize;
     [SerializeField] private int enemyProjectilePoolMaxSize;
 

@@ -18,6 +18,7 @@ public class RangedEnemyPool : MonoBehaviour
     
     [Inject]
     [SerializeField] private  PlayerController playerController;
+    [Inject] private EnemyProjectilePoolManager _enemyProjectilePoolManager;
     
     // [Inject]
     // private EnemyManager _enemyManager;
@@ -86,6 +87,7 @@ public class RangedEnemyPool : MonoBehaviour
         rangedEnemy.AttackRange = rangedEnemyData.AttackRange;
         rangedEnemy.MaxHealth = rangedEnemyData.Health;
         rangedEnemy.Damage = rangedEnemyData.Damage;
+        rangedEnemy.enemyProjectilePoolManager = _enemyProjectilePoolManager;
         rangedEnemy.MinDistanceToPlayer = rangedEnemyData.AttackRange;
         enemy.Initialize();
         return enemy;

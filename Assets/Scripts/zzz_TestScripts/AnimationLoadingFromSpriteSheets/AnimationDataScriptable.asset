@@ -15,6 +15,7 @@ MonoBehaviour:
   animationDatabases:
   - animationDatas:
     - stateName: attack
+      triggerName: attackTrigger
       folderPath: 
       animationSprites:
       - {fileID: 811294473, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
@@ -23,18 +24,21 @@ MonoBehaviour:
       - {fileID: -2108144712, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       speed: 0
     - stateName: idle
+      triggerName: 
       folderPath: 
       animationSprites:
       - {fileID: -1647433700, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       - {fileID: -886500767, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       speed: 0
     - stateName: run
+      triggerName: runTrigger
       folderPath: 
       animationSprites:
       - {fileID: 362187716, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       - {fileID: 1241838891, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       speed: 0
     - stateName: roll
+      triggerName: 
       folderPath: 
       animationSprites:
       - {fileID: -608277689, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
@@ -43,6 +47,7 @@ MonoBehaviour:
       - {fileID: -311670487, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       speed: 1
     - stateName: dash
+      triggerName: dashTrigger
       folderPath: 
       animationSprites:
       - {fileID: -389395219, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}

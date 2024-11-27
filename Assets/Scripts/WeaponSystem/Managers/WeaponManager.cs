@@ -5,8 +5,9 @@ using DBMS.WeaponsData;
 using Player;
 using RicochetWeaponSystem;
 using UnityEngine;
-using WeaponSystem.AutomaticWeapon;
 using WeaponSystem.Models;
+using WeaponSystem.Services.Interfaces;
+using WeaponSystem.Services.Sub_Services.AutomaticWeapon;
 using WeaponSystem.Services.Sub_Services.ControlledWeapon;
 using Zenject;
 using zzz_TestScripts.Signals.BattleSceneSignals;
@@ -75,30 +76,32 @@ namespace WeaponSystem.Managers
 
             if (weaponData.type == "Controlled")
             {
-                newWeapon = new MeleeWeapon(weaponData); // Or ProjectileWeapon, based on category
+                newWeapon = new MeleeWeapon(weaponData, _signalBus); // Or ProjectileWeapon, based on category
                 _controlledWeapons.Add(newWeapon);
 
                 // If no controlled weapon is active, activate the new one
                 if (_activeControlledWeapon == null)
                 {
                     _activeControlledWeapon = newWeapon;
-                    _activeControlledWeapon.Activate(_signalBus);
+                    _activeControlledWeapon.Activate();
                 }
             }
             else if (weaponData.type == "Automatic")
             {
-                newWeapon = new ProjectileWeapon(weaponData);
+                newWeapon = new ProjectileWeapon(weaponData, _signalBus);
                 automaticWeapons.Add(newWeapon);
 
                 // Trigger the weapon immediately if it can activate
                 if (newWeapon.CanActivate())
                 {
-                    newWeapon.Activate(_signalBus);
+                    newWeapon.Activate();
                 }
             }
             
             Debug.Log("New weapon added: " + weaponData.name);
         }
+
+        #region Upgrade Weapon
 
         public void UpgradeControlledWeapon(string weaponName, int newDamage, float newCooldown)
         {
@@ -123,13 +126,22 @@ namespace WeaponSystem.Managers
                 weaponToUpgrade.UpgradeWeapon(newDamage, newCooldown);
             }
         }
+
+        #endregion
         
         private void HandleControlledWeaponSwitch()
         {
-            _activeControlledWeapon.Deactivate(_signalBus);
+            _activeControlledWeapon.Deactivate();
             _currentControlledIndex = (_currentControlledIndex + 1) % _controlledWeapons.Count;
             _activeControlledWeapon = _controlledWeapons[_currentControlledIndex];
-            _activeControlledWeapon.Activate(_signalBus);
+            _activeControlledWeapon.Activate();
+        }
+
+        public bool TriggerControlledWeapon()
+        {
+            if(!_controlledWeapons[_currentControlledIndex].CanAttack()) return false;
+            _controlledWeapons[_currentControlledIndex].TriggerAttack();
+            return true;
         }
 
         private void OnAutomaticWeaponTrigger(AutomaticWeaponTriggerSignal signal)
@@ -138,7 +150,7 @@ namespace WeaponSystem.Managers
             {
                 if (weapon.CanActivate())
                 {
-                    weapon.Activate(_signalBus);
+                    weapon.Activate();
                 }
             }
         }
@@ -167,7 +179,7 @@ namespace WeaponSystem.Managers
                 return;
             }
             
-            _controlledWeapons[^1].Deactivate(_signalBus);
+            _controlledWeapons[^1].Deactivate();
             Debug.Log("Unsubscribe melee weapon");
         }
 

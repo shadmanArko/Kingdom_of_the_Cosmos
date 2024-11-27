@@ -32,7 +32,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     private float enemySpawningInterval = 1f;
     private float nextEnemySpawnTime;
     private EnemyData[] enemyDataArray;
-    public float moveSpeed = 4f;
+    public float moveSpeed = 1f;
     public float obstacleAvoidanceRadius = 1f;
     public float neighborAvoidanceRadius = 1f;
     public float collisionDistance = 1f;

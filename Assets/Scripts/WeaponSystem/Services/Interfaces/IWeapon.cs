@@ -1,12 +1,12 @@
-﻿using Zenject;
-
-namespace WeaponSystem
+﻿namespace WeaponSystem.Services.Interfaces
 {
     public interface IWeapon
     {
-        void Activate(SignalBus signalBus);
-        void Deactivate(SignalBus signalBus);
+        void Activate();
+        void Deactivate();
         bool CanActivate();
+        bool CanAttack();
+        void TriggerAttack();
         void UpgradeWeapon(int newDamage, float newCooldown);
         string GetName();
     }

@@ -7,8 +7,13 @@ namespace WeaponSystem.Services.Sub_Services.ControlledWeapon
 {
     public class MeleeWeapon : WeaponBase
     {
-        public MeleeWeapon(WeaponData data) : base(data) { }
+        private SignalBus _signalBus;
 
+        public MeleeWeapon(WeaponData data, SignalBus signalBus) : base(data)
+        {
+            _signalBus = signalBus;
+        }
+        
         public override bool CanActivate()
         {
             // For controlled weapons, check input
@@ -16,21 +21,31 @@ namespace WeaponSystem.Services.Sub_Services.ControlledWeapon
             return true;
         }
 
-        public override void Activate(SignalBus signalBus)
+        public override bool CanAttack()
         {
-            signalBus.Subscribe<MeleeAttackSignal>(TriggerAttack);
+            
+            return true;
+        }
+
+        #region Activate and Deactivate
+
+        public override void Activate()
+        {
+            // _signalBus.Subscribe<MeleeAttackSignal>(TriggerAttack);
             Debug.Log($"Activated weapon: {weaponData.name}");
         }
 
-        public override void Deactivate(SignalBus signalBus)
+        public override void Deactivate()
         {
-            signalBus.Unsubscribe<MeleeAttackSignal>(TriggerAttack);
+            // _signalBus.Unsubscribe<MeleeAttackSignal>(TriggerAttack);
             Debug.Log($"Deactivated weapon: {weaponData.name}");
         }
-
-        private void TriggerAttack()
+        
+        #endregion
+        public override void TriggerAttack()
         {
             Debug.Log($"Attacked with Weapon {weaponData.name}");
+            _signalBus.Fire<MeleeAttackSignal>();
         }
     }
 }

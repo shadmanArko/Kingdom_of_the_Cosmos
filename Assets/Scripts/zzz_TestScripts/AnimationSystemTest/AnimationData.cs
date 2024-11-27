@@ -8,6 +8,7 @@ namespace zzz_TestScripts.AnimationSystemTest
     public class AnimationData
     {
         public string stateName;
+        public string triggerName;
         public string folderPath;
         public List<Sprite> animationSprites;
         public float speed;

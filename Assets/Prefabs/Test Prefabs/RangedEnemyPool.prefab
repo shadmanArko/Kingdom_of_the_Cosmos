@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3706586112130876116}
-  - component: {fileID: 7581579931838258487}
+  - component: {fileID: 6847194376810699582}
   m_Layer: 0
-  m_Name: ShieldedMeleeEnemyPool
+  m_Name: RangedEnemyPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7581579931838258487
+--- !u!114 &6847194376810699582
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,10 +41,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8517899687962030858}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f68f9fe9efb4f2eba8259c472bbf208, type: 3}
+  m_Script: {fileID: 11500000, guid: 97a595170bbca0b46a57d08d43a2d080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 7384028251061610236, guid: 98bf1d4a3a75f41479147c8400bd4ddf, type: 3}
+  enemyPrefab: {fileID: -7022451243493465840, guid: 7059846392a470342a405bf134063289, type: 3}
   enemiesPerWave: 10
   increaseEnemiesPerWave: 3
   timeBetweenWaves: 5

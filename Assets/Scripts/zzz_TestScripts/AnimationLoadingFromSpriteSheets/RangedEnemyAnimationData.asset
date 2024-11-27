@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c4bbd20954b97e4186d20aec43db718, type: 3}
-  m_Name: ShieldedMeleeEnemyAnimationDataScriptable
+  m_Name: RangedEnemyAnimationData
   m_EditorClassIdentifier: 
   animationDatabases:
   - animationDatas:
@@ -34,8 +34,8 @@ MonoBehaviour:
       triggerName: 
       folderPath: 
       animationSprites:
-      - {fileID: 1226259874, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
-      - {fileID: -608963220, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -2055144112, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -2123930504, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       speed: 0
     - stateName: dash
       triggerName: 

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DBMS.RunningData;
+using Enemy.Services;
 using GameData;
 using Player;
 using Signals.BattleSceneSignals;
@@ -21,6 +22,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
     private readonly ComputeShader _enemyComputeShader;
     private readonly MeleeEnemyPool _meleeEnemyPool;
     private readonly MeleeShieldedEnemyPool _meleeShieldedEnemyPool;
+    private readonly RangedEnemyPool _rangedEnemyPool;
     private readonly SignalBus _signalBus;
 
     private Transform _playerTransform;
@@ -46,6 +48,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         ComputeShader enemyComputeShader,
         MeleeEnemyPool meleeEnemyMeleeEnemyPool,
         MeleeShieldedEnemyPool meleeShieldedEnemyPool,
+        RangedEnemyPool rangedEnemyPool,
         GameDataScriptable gameDataScriptable,
         RunningDataScriptable runningDataScriptable,
         SignalBus signalBus)
@@ -53,6 +56,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         _playerController = playerController;
         _enemyComputeShader = enemyComputeShader;
         _meleeEnemyPool = meleeEnemyMeleeEnemyPool;
+        _rangedEnemyPool = rangedEnemyPool;
         _meleeShieldedEnemyPool = meleeShieldedEnemyPool;
         _gameDataScriptable = gameDataScriptable;
         _runningDataScriptable = runningDataScriptable;
@@ -87,11 +91,17 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         var meleeShieldedEnemyData = _enemies.MeleeShieldedEnemyDatas.FirstOrDefault(data => data.Id == "1");
         _meleeShieldedEnemyPool.CreateMeleeEnemy(meleeShieldedEnemyData);
     }
+    private void CreateEnemyFromRangedEnemyPool()
+    {
+        var rangedEnemyData = _enemies.RangedEnemyDatas.FirstOrDefault(data => data.Id == "1");
+        _rangedEnemyPool.CreateRangeEnemy(rangedEnemyData);
+    }
     public void Tick()
     {
         HandleKnockBack();
         HandleEnemySpawning();
         _activeEnemies = _meleeEnemyPool.activeEnemies.Concat(_meleeShieldedEnemyPool.activeEnemies).ToList();
+        _activeEnemies = _activeEnemies.Concat(_rangedEnemyPool.activeEnemies).ToList();
         if (_activeEnemies.Count > 0)
         {
             UpdateBuffers();
@@ -152,6 +162,10 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         {
             _meleeEnemyPool.ReleaseEnemy(enemy);
         }
+        if (enemy.GetComponent<RangedEnemy>())
+        {
+            _rangedEnemyPool.ReleaseEnemy(enemy);
+        }
     }
 
 
@@ -194,6 +208,10 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         {
             _meleeEnemyPool.RemoveFromActiveEnemies(enemy);
         }
+        if (enemy.GetComponent<RangedEnemy>())
+        {
+            _rangedEnemyPool.RemoveFromActiveEnemies(enemy);
+        }
     }
     private void AddToActiveEnemies(BaseEnemy enemy)
     {
@@ -205,6 +223,10 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         if (enemy.GetComponent<MeleeEnemy>())
         {
             _meleeEnemyPool.AddToActiveEnemies(enemy);
+        }
+        if (enemy.GetComponent<RangedEnemy>())
+        {
+            _rangedEnemyPool.AddToActiveEnemies(enemy);
         }
     }
 
@@ -284,15 +306,22 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         return (u >= 0) && (v >= 0) && (u + v <= 1);
     }
 
-    private int _numberOfMeleeEnemies = 10;
+    private int _numberOfMeleeEnemies = 2;
+    private int _numberOfShieldedMeleeEnemies = 3;
     private int _countOfMeleeEnemies;
+    private int _countOfShieldedMeleeEnemies;
     private void HandleEnemySpawning()
     {
         
         if (nextEnemySpawnTime < Time.time )
         {
-            if (_countOfMeleeEnemies >= _numberOfMeleeEnemies)
+            if (_countOfShieldedMeleeEnemies >= _numberOfShieldedMeleeEnemies)
             {
+                CreateEnemyFromRangedEnemyPool();
+            }
+            else if (_countOfMeleeEnemies >= _numberOfMeleeEnemies)
+            {
+                _countOfShieldedMeleeEnemies++;
                 CreateEnemyFromMeleeShieldedEnemyPool();
             }
             else

@@ -33,7 +33,7 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
         transform.position = targetPosition;
     }
 
-    public void MoveTowardsTarget(Transform targetTransform)
+    public virtual void MoveTowardsTarget(Transform targetTransform)
     {
         _rigidbody2D.velocity = Vector2.zero;
         var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);

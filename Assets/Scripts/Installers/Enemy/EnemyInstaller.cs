@@ -11,6 +11,7 @@ public class EnemyInstaller : ScriptableObjectInstaller<EnemyInstaller>
     [SerializeField] private ComputeShader enemyComputeShader;
     [SerializeField] private MeleeEnemyPool meleeEnemyPool;
     [SerializeField] private MeleeShieldedEnemyPool meleeShieldedEnemyPool;
+    [SerializeField] private RangedEnemyPool rangedEnemyPool;
     [SerializeField] private GameStatUI gameStatUI;
     [SerializeField] private GameObject enemyProjectilePrefab;
     [SerializeField] private int enemyProjectilePoolInitialSize;
@@ -23,6 +24,7 @@ public class EnemyInstaller : ScriptableObjectInstaller<EnemyInstaller>
         
         Container.Bind<MeleeEnemyPool>().FromComponentInNewPrefab(meleeEnemyPool).AsSingle().NonLazy();
         Container.Bind<MeleeShieldedEnemyPool>().FromComponentInNewPrefab(meleeShieldedEnemyPool).AsSingle().NonLazy();
+        Container.Bind<RangedEnemyPool>().FromComponentInNewPrefab(rangedEnemyPool).AsSingle().NonLazy();
         Container.Bind<GameStatUI>().FromComponentInNewPrefab(gameStatUI).AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<EnemyManager>().AsSingle();
         Container.Bind<EnemyProjectilePoolManager>().AsSingle().WithArguments(enemyProjectilePrefab, enemyProjectilePoolInitialSize, enemyProjectilePoolMaxSize);

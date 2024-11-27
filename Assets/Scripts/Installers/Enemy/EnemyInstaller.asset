@@ -16,4 +16,8 @@ MonoBehaviour:
   enemyComputeShader: {fileID: 7200000, guid: 85e1cb728b113fa43951232d108c1651, type: 3}
   meleeEnemyPool: {fileID: 2383170108146576834, guid: 3ff22cc9f14189940b21e8a73c395cd2, type: 3}
   meleeShieldedEnemyPool: {fileID: 7581579931838258487, guid: d1b0219c740ac9442be0f830ac90a13f, type: 3}
+  rangedEnemyPool: {fileID: 6847194376810699582, guid: 0d26a6407ab2a954a9cbe2539dadbb7f, type: 3}
   gameStatUI: {fileID: 1694760451738670377, guid: 9141774e66ada8749882dde7b7e05dd0, type: 3}
+  enemyProjectilePrefab: {fileID: 0}
+  enemyProjectilePoolInitialSize: 0
+  enemyProjectilePoolMaxSize: 0

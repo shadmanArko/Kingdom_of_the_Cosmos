@@ -88,7 +88,7 @@ public class RangedEnemyPool : MonoBehaviour
         rangedEnemy.MaxHealth = rangedEnemyData.Health;
         rangedEnemy.Damage = rangedEnemyData.Damage;
         rangedEnemy.enemyProjectilePoolManager = _enemyProjectilePoolManager;
-        rangedEnemy.MinDistanceToPlayer = rangedEnemyData.AttackRange;
+        rangedEnemy.MinDistanceToPlayer = rangedEnemyData.AttackRange - 0.5f;
         enemy.Initialize();
         return enemy;
     }

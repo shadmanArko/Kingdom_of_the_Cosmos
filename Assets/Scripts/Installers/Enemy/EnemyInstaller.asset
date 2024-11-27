@@ -18,6 +18,6 @@ MonoBehaviour:
   meleeShieldedEnemyPool: {fileID: 7581579931838258487, guid: d1b0219c740ac9442be0f830ac90a13f, type: 3}
   rangedEnemyPool: {fileID: 6847194376810699582, guid: 0d26a6407ab2a954a9cbe2539dadbb7f, type: 3}
   gameStatUI: {fileID: 1694760451738670377, guid: 9141774e66ada8749882dde7b7e05dd0, type: 3}
-  enemyProjectilePrefab: {fileID: 0}
-  enemyProjectilePoolInitialSize: 0
-  enemyProjectilePoolMaxSize: 0
+  enemyProjectilePrefab: {fileID: 3842052294937295158, guid: 8176ffa6e7c9a2d478c852e997a5c195, type: 3}
+  enemyProjectilePoolInitialSize: 10
+  enemyProjectilePoolMaxSize: 100

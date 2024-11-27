@@ -40,57 +40,104 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 
     float2 dirToPlayer = playerPosition - enemy.position;
     float distToPlayer = length(dirToPlayer);
+<<<<<<< Updated upstream
     enemy.distanceToPlayer = abs(dirToPlayer);
     
     float2 normalizedDirToPlayer = distToPlayer > 0.001f 
         ? dirToPlayer / distToPlayer 
         : float2(sin(enemy.position.x * 1000), cos(enemy.position.y * 1000));
     
+=======
+    enemy.distanceToPlayer = distToPlayer;
+
+    // Determine movement direction based on distance to player
+    float2 normalizedDirToPlayer;
+    if (distToPlayer > 0.001f)
+    {
+        normalizedDirToPlayer = dirToPlayer / distToPlayer;
+        // Reverse direction if too close to player
+        if (distToPlayer < enemy.minDistance)
+        {
+            normalizedDirToPlayer = -normalizedDirToPlayer;
+        }
+    }
+    else
+    {
+        // Random direction when extremely close
+        normalizedDirToPlayer = float2(sin(enemy.position.x * 1000), cos(enemy.position.y * 1000));
+    }
+
+    // Calculate obstacle avoidance
+>>>>>>> Stashed changes
     float2 avoidanceForce = float2(0, 0);
     for (int i = 0; i < obstacleCount; i++)
     {
         float2 toObstacle = enemy.position - obstacleBuffer[i];
         float distance = length(toObstacle);
-        
+
         if (distance > 0.001f && distance < obstacleAvoidanceRadius)
         {
             avoidanceForce += toObstacle / (distance * distance);
         }
     }
+<<<<<<< Updated upstream
     
+=======
+
+    // Calculate separation from other enemies
+>>>>>>> Stashed changes
     float2 separationForce = float2(0, 0);
     int neighborCount = 0;
-    
+
     for (int i = 0; i < enemyCount; i++)
     {
         if (i == index) continue;
-        
+
         float2 toNeighbor = enemy.position - enemyBuffer[i].position;
         float distance = length(toNeighbor);
-        
+
         if (distance > 0.001f && distance < neighborAvoidanceRadius)
         {
             separationForce += normalize(toNeighbor) / distance;
             neighborCount++;
         }
     }
+<<<<<<< Updated upstream
     
+=======
+
+    // Normalize separation force if there are neighbors
+>>>>>>> Stashed changes
     if (neighborCount > 0)
     {
-        separationForce = normalize(separationForce) * 2.0;
+        separationForce /= neighborCount; // Average the force
+        separationForce = normalize(separationForce) * 2.0f; // Normalize and scale
     }
+<<<<<<< Updated upstream
     
     float2 finalDirection = normalizedDirToPlayer + avoidanceForce * 1.5f + separationForce;
     float finalMagnitude = length(finalDirection);
     
+=======
+
+    // Combine forces with proper weighting
+    float2 finalDirection = normalize(normalizedDirToPlayer * 1.0f 
+                                      + avoidanceForce * 1.5f 
+                                      + separationForce * 2.0f);
+
+    // Ensure final direction is stable
+    float finalMagnitude = length(finalDirection);
+>>>>>>> Stashed changes
     if (finalMagnitude > 0.001f)
     {
         finalDirection /= finalMagnitude;
     }
     else
     {
+        // Stable random fallback based on position
         finalDirection = float2(sin(enemy.position.x * 1000), cos(enemy.position.y * 1000));
     }
+<<<<<<< Updated upstream
     
     // Calculate stuckness
     float totalForce = length(avoidanceForce) + length(separationForce);
@@ -101,5 +148,21 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     enemy.position += finalDirection * speed * deltaTime;
 
     
+=======
+
+    // Update stuckness with more aggressive adjustment
+    float totalForce = length(avoidanceForce) + length(separationForce);
+    enemy.stuckness = clamp(enemy.stuckness + (totalForce > stucknessThreshold ? deltaTime * 2.0f : -deltaTime), 0, 1);
+
+    // Calculate distance-based speed multiplier with soft constraint
+    float distanceMultiplier = smoothstep(enemy.minDistance, enemy.minDistance * 1.5f, distToPlayer);
+    float stucknessMultiplier = 1.0f - enemy.stuckness;
+    float speed = max(moveSpeed * 0.5f, moveSpeed) * stucknessMultiplier * distanceMultiplier;
+
+    // Update position
+    enemy.position += finalDirection * speed * deltaTime;
+
+    // Write back to buffer
+>>>>>>> Stashed changes
     enemyBuffer[index] = enemy;
 }

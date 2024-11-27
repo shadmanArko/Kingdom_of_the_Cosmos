@@ -63,7 +63,6 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
         IsAlive = true;
         DistanceToPlayer = 999f;
         Stuckness = 0.5f;
-        MinDistanceToPlayer = 1.5f;
         AttackRange = 2f;
     }
 

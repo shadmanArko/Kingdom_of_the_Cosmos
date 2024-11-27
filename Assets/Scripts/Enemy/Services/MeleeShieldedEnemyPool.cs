@@ -85,6 +85,7 @@ public class MeleeShieldedEnemyPool : MonoBehaviour
         shieldedEnemy.maxShieldHealth = meleeShieldedEnemyData.ShieldHealth;
         shieldedEnemy.MaxHealth = meleeShieldedEnemyData.Health;
         shieldedEnemy.Damage = meleeShieldedEnemyData.Damage;
+        shieldedEnemy.MinDistanceToPlayer = 1.5f;
         enemy.Initialize();
         return enemy;
     }

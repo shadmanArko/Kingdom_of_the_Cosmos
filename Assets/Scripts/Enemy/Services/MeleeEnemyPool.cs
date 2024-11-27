@@ -82,6 +82,7 @@ public class MeleeEnemyPool : MonoBehaviour
         var shieldedEnemy = enemy.GetComponent<MeleeEnemy>();
         shieldedEnemy.MaxHealth = meleeEnemyData.Health;
         shieldedEnemy.Damage = meleeEnemyData.Damage;
+        shieldedEnemy.MinDistanceToPlayer = 1.5f;
         enemy.Initialize();
         return enemy;
     }

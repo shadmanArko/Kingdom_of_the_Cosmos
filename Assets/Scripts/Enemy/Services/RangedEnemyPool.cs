@@ -83,11 +83,11 @@ public class RangedEnemyPool : MonoBehaviour
         activeEnemies.Add(enemy);
         
         var rangedEnemy = enemy.GetComponent<RangedEnemy>();
-        enemy.Initialize();
         rangedEnemy.AttackRange = rangedEnemyData.AttackRange;
         rangedEnemy.MaxHealth = rangedEnemyData.Health;
         rangedEnemy.Damage = rangedEnemyData.Damage;
         rangedEnemy.MinDistanceToPlayer = rangedEnemyData.AttackRange;
+        enemy.Initialize();
         return enemy;
     }
 

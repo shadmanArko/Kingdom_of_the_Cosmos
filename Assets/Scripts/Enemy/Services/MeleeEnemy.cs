@@ -24,6 +24,7 @@ public class MeleeEnemy : BaseEnemy
         _animationController.PlayAnimation("attack");
         await Task.Delay((1000));
         _attacking = false;
+        isAttacking = false;
         _animationController.PlayAnimation("run");
     }
 }

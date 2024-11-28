@@ -47,17 +47,19 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
             // Move towards player if too far
             transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, MoveSpeed * Time.deltaTime);
         }
-        else if (distanceToPlayer < MinDistanceToPlayer && !isAttacking && Time.time > lastAttackTime + AttackSpeed)
+        else if (distanceToPlayer <= MinDistanceToPlayer && !isAttacking && (Time.time > lastAttackTime + AttackSpeed))
         {
             lastAttackTime = Time.time;
             Attack(targetTransform.GetComponent<PlayerController>());
             isAttacking = true;
         }
-        else if (distanceToPlayer < MinDistanceToPlayer && !isAttacking)
+        
+        if (distanceToPlayer < MinDistanceToPlayer && !isAttacking)
         {
             // Backtrack when player is too close
             Vector3 backtrackDirection = transform.position - targetTransform.position;
             transform.position = Vector3.MoveTowards(transform.position, transform.position + backtrackDirection, MoveSpeed * Time.deltaTime);
+            Debug.DrawRay(transform.position, targetTransform.position, Color.red);
         }
 
         Position = transform.position;
@@ -70,7 +72,8 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
         HealthSlider.value = 1;
         MoveSpeed = 3f;
         IsAlive = true;
-        AttackSpeed = 0.5f;
+        
+        AttackSpeed = 2f;
         DistanceToPlayer = 999f;
         Stuckness = 0.5f;
         AttackRange = 2f;

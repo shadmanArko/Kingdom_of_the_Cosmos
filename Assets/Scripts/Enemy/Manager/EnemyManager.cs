@@ -116,14 +116,18 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
 
     private void UpdateEnemyPositionsWithoutShader()
     {
+        var closestEnemyToPlayer = _activeEnemies[0];
         foreach (var enemy in _activeEnemies)
         {
             enemy.MoveTowardsTarget(_playerTransform);
-            if (enemy.DistanceToPlayer <= enemy.AttackRange)
+            
+            if (enemy.DistanceToPlayer < closestEnemyToPlayer.DistanceToPlayer)
             {
-                enemy.Attack(_playerController);
+                closestEnemyToPlayer = enemy;
             }
         }
+
+        _runningDataScriptable.closestEnemyToPlayer = closestEnemyToPlayer;
     }
 
 

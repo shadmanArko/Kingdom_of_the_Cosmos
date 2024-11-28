@@ -12,6 +12,7 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
     public Vector2 Position;
     public float2 Velocity;
     public float MoveSpeed;
+    public float AttackSpeed;
     public float MaxHealth;
     public float Stuckness;
     public float Damage;
@@ -22,6 +23,8 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
     protected float health;
     [SerializeField] protected Slider HealthSlider;
     protected Rigidbody2D _rigidbody2D;
+    protected bool isAttacking;
+    protected float lastAttackTime;
 
     protected virtual void Start()
     {
@@ -44,7 +47,13 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
             // Move towards player if too far
             transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, MoveSpeed * Time.deltaTime);
         }
-        else if (distanceToPlayer < MinDistanceToPlayer)
+        else if (distanceToPlayer < MinDistanceToPlayer && !isAttacking && Time.time > lastAttackTime + AttackSpeed)
+        {
+            lastAttackTime = Time.time;
+            Attack(targetTransform.GetComponent<PlayerController>());
+            isAttacking = true;
+        }
+        else if (distanceToPlayer < MinDistanceToPlayer && !isAttacking)
         {
             // Backtrack when player is too close
             Vector3 backtrackDirection = transform.position - targetTransform.position;
@@ -61,6 +70,7 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
         HealthSlider.value = 1;
         MoveSpeed = 3f;
         IsAlive = true;
+        AttackSpeed = 0.5f;
         DistanceToPlayer = 999f;
         Stuckness = 0.5f;
         AttackRange = 2f;

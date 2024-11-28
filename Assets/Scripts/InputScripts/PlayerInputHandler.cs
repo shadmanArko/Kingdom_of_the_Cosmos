@@ -106,7 +106,7 @@ namespace InputScripts
         private void AttackInput()
         {
             if(!_canTakeAttackInput) return;
-            _playerController.Attack(Vector2.zero);
+            _playerController.Attack(_runningDataScriptable.attackDirection);
         }
         
         private void Reload()
@@ -138,8 +138,10 @@ namespace InputScripts
         #region Update Mouse Position
         
         private bool _mouseMoved;
+        private Vector2 _lastMousePosition;
         private void ReadMousePosition()
         {
+            if(!_canTakeAttackInput) return;
             var mousePos = _mousePositionAction.ReadValue<Vector2>();
             var mouseWorldPosition =
                 _camera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, _camera.nearClipPlane));
@@ -174,6 +176,7 @@ namespace InputScripts
         private void ToggleAutoAttack()
         {
             _canTakeAttackInput = !_canTakeAttackInput;
+            _runningDataScriptable.isAutoAttacking = !_canTakeAttackInput;
             _signalBus.Fire<ToggleAutoAttackSignal>();
             Debug.Log("Auto Attack Input Handler");
         }

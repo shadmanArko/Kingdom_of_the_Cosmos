@@ -1,12 +1,15 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Cinemachine;
-using Signals.BattleSceneSignals;
+using DBMS.RunningData;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 using WeaponSystem.Managers;
 using Zenject;
 using zzz_TestScripts.Signals.BattleSceneSignals;
+using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 
 namespace Player
@@ -15,6 +18,8 @@ namespace Player
     {
         private CinemachineVirtualCamera _cineMachineVirtualCamera;
         private WeaponManager _weaponManager;
+        private EnemyManager _enemyManager;
+        private RunningDataScriptable _runningDataScriptable;
         private SignalBus _signalBus;
         
         public float speed = 5f;
@@ -69,10 +74,11 @@ namespace Player
         #region Initializers
         
         [Inject]
-        private void InitializeDiReference(CinemachineVirtualCamera cineMachineVirtualCamera, WeaponManager weaponManager, SignalBus signalBus)
+        private void InitializeDiReference(CinemachineVirtualCamera cineMachineVirtualCamera,RunningDataScriptable runningDataScriptable, WeaponManager weaponManager, SignalBus signalBus)
         {
             _cineMachineVirtualCamera = cineMachineVirtualCamera;
             _cineMachineVirtualCamera.Follow = gameObject.transform;
+            _runningDataScriptable = runningDataScriptable;
             _weaponManager = weaponManager;
             _signalBus = signalBus;
         }
@@ -163,6 +169,7 @@ namespace Player
         {
             if(!canAttack) return;
             if(attackTimer > 0) return;
+            Debug.Log($"Attacking direction: {direction}");
             if (!_weaponManager.TriggerControlledWeapon()) return;
             playerAnimationController.PlayAnimation("attack");
             attackTimer = attackInterval;
@@ -177,11 +184,14 @@ namespace Player
         private void AutoAttack()
         {
             if(attackTimer > 0) return;
-            
-            Attack(Vector2.down);
+            //TODO: GET CLOSEST ENEMY AND DIRECT THE
+            var closestEnemyTransform = _runningDataScriptable.closestEnemyToPlayer.transform;
+            var direction = (closestEnemyTransform != null ? transform.position - closestEnemyTransform.position : Vector3.zero).normalized * -1;
+            _runningDataScriptable.attackDirection = direction;
+            Attack(direction);
             Debug.Log("Playing auto attack");
         }
-
+        
         #endregion
 
         #region Dash
@@ -200,28 +210,42 @@ namespace Player
         
         private async void LungeDash()
         {
-            isDashing = true;
-            dashDirection = movement.normalized;
-            isLungeDashing = true;
-            speed = lungeDashSpeed;
-            Debug.Log($"Lunge Dashing direction: {dashDirection}");
-            await Task.Delay(Mathf.CeilToInt(lungeDashDuration * 1000));
-            isLungeDashing = false;
+            try
+            {
+                isDashing = true;
+                dashDirection = movement.normalized;
+                isLungeDashing = true;
+                speed = lungeDashSpeed;
+                Debug.Log($"Lunge Dashing direction: {dashDirection}");
+                await Task.Delay(Mathf.CeilToInt(lungeDashDuration * 1000));
+                isLungeDashing = false;
             
-            RollDash();
+                RollDash();
+            }
+            catch (Exception e)
+            {
+                Debug.Log($"Lunge Dash Error: {e}");
+            }
         }
 
         private async void RollDash()
         {
-            dashDirection = movement.normalized;
-            isRollDashing = true;
-            speed = rollDashSpeed;
-            Debug.Log($"Roll Dashing direction: {dashDirection}");
-            await Task.Delay(Mathf.CeilToInt(rollDashDuration * 1000));
-            isRollDashing = false;
+            try
+            {
+                dashDirection = movement.normalized;
+                isRollDashing = true;
+                speed = rollDashSpeed;
+                Debug.Log($"Roll Dashing direction: {dashDirection}");
+                await Task.Delay(Mathf.CeilToInt(rollDashDuration * 1000));
+                isRollDashing = false;
             
-            StopDash();
-            StartDashCooldown();
+                StopDash();
+                StartDashCooldown();
+            }
+            catch (Exception e)
+            {
+                Debug.Log($"Roll Dash Error: {e}");
+            }
         }
 
         private void StopDash()
@@ -235,10 +259,17 @@ namespace Player
 
         private async void StartDashCooldown()
         {
-            dashCount -= 1;
-            await Task.Delay(Mathf.CeilToInt(dashCooldownDuration * 1000));
-            dashCount += 1;
-            dashCount = math.clamp(dashCount, 0, totalDashCount);
+            try
+            {
+                dashCount -= 1;
+                await Task.Delay(Mathf.CeilToInt(dashCooldownDuration * 1000));
+                dashCount += 1;
+                dashCount = math.clamp(dashCount, 0, totalDashCount);
+            }
+            catch (Exception e)
+            {
+                Debug.Log($"Start Dash Cooldown Error: {e}");
+            }
         }
 
         #endregion

@@ -7,6 +7,8 @@ namespace DBMS.RunningData
     public class RunningDataScriptable : ScriptableObject
     {
         public Vector2 attackDirection;
-        public List<Vector2> attackAngle; 
+        public List<Vector2> attackAngle;
+        public bool isAutoAttacking;
+        public BaseEnemy closestEnemyToPlayer;
     }
 }

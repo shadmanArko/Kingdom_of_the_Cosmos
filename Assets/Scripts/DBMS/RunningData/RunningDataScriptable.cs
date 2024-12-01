@@ -9,6 +9,6 @@ namespace DBMS.RunningData
         public Vector2 attackDirection;
         public List<Vector2> attackAngle;
         public bool isAutoAttacking;
-        public BaseEnemy closestEnemyToPlayer;
+        public Transform closestEnemyToPlayer;
     }
 }

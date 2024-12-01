@@ -185,7 +185,7 @@ namespace Player
         {
             if(attackTimer > 0) return;
             //TODO: GET CLOSEST ENEMY AND DIRECT THE
-            var closestEnemyTransform = _runningDataScriptable.closestEnemyToPlayer.transform;
+            var closestEnemyTransform = _runningDataScriptable.closestEnemyToPlayer;
             var direction = (closestEnemyTransform != null ? transform.position - closestEnemyTransform.position : Vector3.zero).normalized * -1;
             _runningDataScriptable.attackDirection = direction;
             Attack(direction);

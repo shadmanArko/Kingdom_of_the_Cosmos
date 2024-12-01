@@ -1,11 +1,9 @@
 using DBMS.RunningData;
-using ObjectPool;
 using ObjectPoolScripts;
 using Player;
 using UnityEngine;
-using Zenject;
 
-namespace TestScripts.WeaponsTest
+namespace zzz_TestScripts.WeaponsTest
 {
     public class AttackOppositeDirection : AttackBase
     {

@@ -1,28 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
-using GameData;
-using Models;
-using SaveAndLoad;
+using Champions.Models;
+using DBMS.SaveAndLoad;
 using UnityEngine;
 
-public class TestScript : MonoBehaviour
+namespace TestScripts
 {
-    // Start is called before the first frame update
-    void Start()
+    public class TestScript : MonoBehaviour
     {
-        var saveFile = new SaveData();
-        saveFile.champion = new Champion()
+        // Start is called before the first frame update
+        void Start()
         {
-            name = "bla"
-        };
+            var saveFile = new SaveData();
+            saveFile.champion = new Champion()
+            {
+                name = "bla"
+            };
         
-        // var gameData =  GameDataLoader.Instance.LoadGameData();
-        // Debug.Log(saveData);
-    }
+            // var gameData =  GameDataLoader.Instance.LoadGameData();
+            // Debug.Log(saveData);
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
+        // Update is called once per frame
+        void Update()
+        {
         
+        }
     }
 }

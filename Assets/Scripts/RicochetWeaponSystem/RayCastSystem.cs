@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using RicochetWeaponSystem;
 using UnityEngine;
 
-namespace RicochetSystem
+namespace RicochetWeaponSystem
 {
     public struct RayCastHitInfo
     {

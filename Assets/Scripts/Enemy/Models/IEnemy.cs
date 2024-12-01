@@ -1,10 +1,13 @@
 ﻿using Player;
 using UnityEngine;
 
-public interface IEnemy
+namespace Enemy.Models
 {
-     void Move(Vector2 targetPosition);
-     void MoveTowardsTarget(Transform targetTransform);
-     void Attack(PlayerController target);
-     void TakeDamage(float amount);
+     public interface IEnemy
+     {
+          void Move(Vector2 targetPosition);
+          void MoveTowardsTarget(Transform targetTransform);
+          void Attack(PlayerController target);
+          void TakeDamage(float amount);
+     }
 }

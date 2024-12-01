@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Models;
+using Champions.Models;
+using Enemy.Models;
+using zzz_TestScripts;
 
-namespace GameData
+namespace DBMS.GameData
 {
     [Serializable]
     public class GameData

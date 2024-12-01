@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AStarPathfinding
+namespace Pathfinding
+{
+    public class AStarPathfinding
     {
 
         //todo Connect with main program
@@ -190,3 +192,4 @@ public class AStarPathfinding
 
 
     }
+}

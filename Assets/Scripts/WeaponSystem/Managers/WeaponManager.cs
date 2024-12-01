@@ -3,14 +3,15 @@ using System.Linq;
 using DBMS.RunningData;
 using DBMS.WeaponsData;
 using Player;
+using Player.Signals.BattleSceneSignals;
 using RicochetWeaponSystem;
 using UnityEngine;
 using WeaponSystem.Models;
 using WeaponSystem.Services.Interfaces;
 using WeaponSystem.Services.Sub_Services.AutomaticWeapon;
 using WeaponSystem.Services.Sub_Services.ControlledWeapon;
+using WeaponSystem.Signals;
 using Zenject;
-using zzz_TestScripts.Signals.BattleSceneSignals;
 
 namespace WeaponSystem.Managers
 {

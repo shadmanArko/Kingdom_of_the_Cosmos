@@ -1,39 +1,41 @@
 using DBMS.WeaponsData;
-using Signals.BattleSceneSignals;
+using Player.Signals.BattleSceneSignals;
 using UnityEngine;
 using UnityEngine.Serialization;
-using WeaponSystem;
 using WeaponSystem.Managers;
+using WeaponSystem.Signals;
 using Zenject;
-using zzz_TestScripts.Signals.BattleSceneSignals;
 
-[CreateAssetMenu(fileName = "WeaponInstaller", menuName = "Installers/WeaponInstaller")]
-public class WeaponInstaller : ScriptableObjectInstaller<WeaponInstaller>
+namespace Installers.Weapon
 {
-    [FormerlySerializedAs("weaponDataScriptable")] [SerializeField] private WeaponDatabaseScriptable weaponDatabaseScriptable;
-    [SerializeField] private RicochetWeaponSystem.RicochetSystem _ricochetSystem;
-    public override void InstallBindings()
+    [CreateAssetMenu(fileName = "WeaponInstaller", menuName = "Installers/WeaponInstaller")]
+    public class WeaponInstaller : ScriptableObjectInstaller<WeaponInstaller>
     {
-        SignalBusInstaller.Install(Container);
+        [FormerlySerializedAs("weaponDataScriptable")] [SerializeField] private WeaponDatabaseScriptable weaponDatabaseScriptable;
+        [SerializeField] private RicochetWeaponSystem.RicochetSystem _ricochetSystem;
+        public override void InstallBindings()
+        {
+            SignalBusInstaller.Install(Container);
         
-        Container.DeclareSignal<AutomaticWeaponTriggerSignal>();
-        Container.DeclareSignal<MeleeAttackSignal>();
-        Container.DeclareSignal<MouseMovementSignal>();
-        Container.DeclareSignal<ReloadSignal>();
-        Container.DeclareSignal<SwitchControlledWeaponSignal>();
-        Container.DeclareSignal<StartDashSignal>();
-        Container.DeclareSignal<StopDashSignal>();
-        Container.DeclareSignal<WeaponThrowStartSignal>();
-        Container.DeclareSignal<WeaponThrowStopSignal>();
-        Container.DeclareSignal<ToggleAutoAttackSignal>();
+            Container.DeclareSignal<AutomaticWeaponTriggerSignal>();
+            Container.DeclareSignal<MeleeAttackSignal>();
+            Container.DeclareSignal<MouseMovementSignal>();
+            Container.DeclareSignal<ReloadSignal>();
+            Container.DeclareSignal<SwitchControlledWeaponSignal>();
+            Container.DeclareSignal<StartDashSignal>();
+            Container.DeclareSignal<StopDashSignal>();
+            Container.DeclareSignal<WeaponThrowStartSignal>();
+            Container.DeclareSignal<WeaponThrowStopSignal>();
+            Container.DeclareSignal<ToggleAutoAttackSignal>();
         
-        Container.Bind<WeaponManager>().AsSingle().NonLazy();
-        Container.Bind<WeaponDataLoader>().AsSingle().NonLazy();
+            Container.Bind<WeaponManager>().AsSingle().NonLazy();
+            Container.Bind<WeaponDataLoader>().AsSingle().NonLazy();
 
-        Container.Bind<RicochetWeaponSystem.RicochetSystem>().FromComponentInNewPrefab(_ricochetSystem).AsSingle()
-            .NonLazy();
+            Container.Bind<RicochetWeaponSystem.RicochetSystem>().FromComponentInNewPrefab(_ricochetSystem).AsSingle()
+                .NonLazy();
         
         
-        Container.Bind<WeaponDatabaseScriptable>().FromScriptableObject(weaponDatabaseScriptable).AsSingle().NonLazy();
+            Container.Bind<WeaponDatabaseScriptable>().FromScriptableObject(weaponDatabaseScriptable).AsSingle().NonLazy();
+        }
     }
 }

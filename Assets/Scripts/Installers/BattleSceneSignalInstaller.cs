@@ -1,4 +1,3 @@
-using Signals.BattleSceneSignals;
 using UnityEngine;
 using WeaponSystem;
 using Zenject;

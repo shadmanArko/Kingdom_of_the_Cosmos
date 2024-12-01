@@ -1,9 +1,8 @@
-using System;
 using System.IO;
 using UnityEngine;
 using Zenject;
 
-namespace GameData
+namespace DBMS.GameData
 {
     public class GameDataLoader 
     {

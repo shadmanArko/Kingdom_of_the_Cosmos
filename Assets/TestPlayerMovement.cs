@@ -25,7 +25,7 @@ public class TestPlayerMovement : MonoBehaviour
         movement = movement.normalized * moveSpeed;
 
         // Apply movement to the rigidbody
-        rb.velocity = movement;
+        rb.linearVelocity = movement;
     }
     // private void OnTriggerEnter2D(Collider2D other)
     // {

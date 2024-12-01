@@ -38,7 +38,7 @@ public abstract class BaseEnemy: MonoBehaviour, IEnemy
 
     public virtual void MoveTowardsTarget(Transform targetTransform)
     {
-        _rigidbody2D.velocity = Vector2.zero;
+        _rigidbody2D.linearVelocity = Vector2.zero;
         var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
         DistanceToPlayer = distanceToPlayer;
 

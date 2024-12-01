@@ -131,16 +131,16 @@ namespace Player
             if (!isDashing)
             {
                 movement = direction.normalized;
-                rb.velocity = movement * speed;
+                rb.linearVelocity = movement * speed;
             }
             else
             {
                 Debug.Log("Dashing...");
                 dashDirection = isRollDashing ? direction.normalized : dashDirection;
-                rb.velocity = dashDirection * speed;
+                rb.linearVelocity = dashDirection * speed;
             }
 
-            if (rb.velocity.magnitude > 0)
+            if (rb.linearVelocity.magnitude > 0)
             {
                 if (isDashing)
                 {

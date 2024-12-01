@@ -24,7 +24,7 @@ namespace Projectiles
         {
             if (!isInitialized) return;
             var moveSpeed = direction.normalized * (speed * Time.fixedDeltaTime);
-            rBody.velocity =  moveSpeed;
+            rBody.linearVelocity =  moveSpeed;
             
             if (lifetimeCounter <= 0)
             {

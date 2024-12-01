@@ -127,7 +127,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
             }
         }
 
-        _runningDataScriptable.closestEnemyToPlayer = closestEnemyToPlayer;
+        _runningDataScriptable.closestEnemyToPlayer = closestEnemyToPlayer.transform;
     }
 
 

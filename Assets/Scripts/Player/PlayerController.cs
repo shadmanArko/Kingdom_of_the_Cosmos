@@ -165,11 +165,10 @@ namespace Player
         #region Attack
 
         [SerializeField] private bool canAttack;
-        public void Attack(Vector2 direction)
+        public void Attack()
         {
             if(!canAttack) return;
             if(attackTimer > 0) return;
-            Debug.Log($"Attacking direction: {direction}");
             if (!_weaponManager.TriggerControlledWeapon()) return;
             playerAnimationController.PlayAnimation("attack");
             attackTimer = attackInterval;
@@ -196,7 +195,7 @@ namespace Player
             var normalizedClosestEnemyPos = closestEnemyPosition.normalized;
             var angle = Mathf.Atan2(playerAttackAngleDirection.y, playerAttackAngleDirection.x) * Mathf.Rad2Deg - 90;
             _runningDataScriptable.attackAngle = angle;
-            Attack(direction);
+            Attack();
             Debug.Log("Playing auto attack");
         }
         

@@ -4,7 +4,6 @@ using Player.Signals.BattleSceneSignals;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
-using UniRx;
 
 namespace InputScripts
 {
@@ -26,6 +25,15 @@ namespace InputScripts
         private Vector2 _moveInput;
 
         private InputAction _mousePositionAction;
+        
+        private System.Action<InputAction.CallbackContext> _attackInputAction;
+        private System.Action<InputAction.CallbackContext> _reloadAction;
+        private System.Action<InputAction.CallbackContext> _switchWeaponAction;
+        private System.Action<InputAction.CallbackContext> _startDashAction;
+        private System.Action<InputAction.CallbackContext> _stopDashAction;
+        private System.Action<InputAction.CallbackContext> _startWeaponThrowAction;
+        private System.Action<InputAction.CallbackContext> _stopWeaponThrowAction;
+        private System.Action<InputAction.CallbackContext> _toggleAutoAttackAction;
 
         private bool _canTakeAttackInput;
 
@@ -36,8 +44,6 @@ namespace InputScripts
             _inputControls = new InputMaster();
             // keyboardMap = inp.actions.FindActionMap("Keyboard");
             // gamepadMap = playerInput.actions.FindActionMap("Gamepad");
-        
-            SubscribeToActions();
             
             _canTakeAttackInput = true;
         }
@@ -50,71 +56,42 @@ namespace InputScripts
             _playerController = playerController;
         }
 
+        #region Subscribe and Unsubscribe
+
         private void SubscribeToActions()
         {
-            // _inputControls.PlayerControl.MeleeAttack.performed += _ => AttackInput();
-            // _inputControls.PlayerControl.Reload.performed += _ => Reload();
-            // _inputControls.PlayerControl.SwitchWeapon.performed += _ => SwitchWeapon();
-            // _inputControls.PlayerControl.Dash.performed += _ => StartDash();
-            // _inputControls.PlayerControl.Dash.canceled += _ => StopDash();
-            // _inputControls.PlayerControl.WeaponThrow.performed += _ => StartWeaponThrow();
-            // _inputControls.PlayerControl.WeaponThrow.canceled += _ => StopWeaponThrow();
-            // _inputControls.PlayerControl.ToggleAutoAttack.performed += _ => ToggleAutoAttack();
+            _attackInputAction = _ => AttackInput();
+            _reloadAction = _ => Reload();
+            _switchWeaponAction = _ => SwitchWeapon();
+            _startDashAction = _ => StartDash();
+            _stopDashAction = _ => StopDash();
+            _startWeaponThrowAction = _ => StartWeaponThrow();
+            _stopWeaponThrowAction = _ => StopWeaponThrow();
+            _toggleAutoAttackAction = _ => ToggleAutoAttack();
             
-            // _inputControls.PlayerControl.MeleeAttack.()
-            //     .Where(x => x)  // Only proceed when the action is performed
-            //     .Subscribe(_ => AttackInput())
-            //     .AddTo(this);  // Ensures the subscription is cleaned up when the object is destroyed
-            
-            
-            // _inputControls.PlayerControl.Reload
-            //     .ToObservable()
-            //     .Where(x => x)
-            //     .Subscribe(_ => Reload())
-            //     .AddTo(this);
-            //
-            // // Switch Weapon
-            // _inputControls.PlayerControl.SwitchWeapon
-            //     .ToObservable()
-            //     .Where(x => x)
-            //     .Subscribe(_ => SwitchWeapon())
-            //     .AddTo(this);
-            //
-            // // Dash Start
-            // _inputControls.PlayerControl.Dash
-            //     .ToObservable()
-            //     .Where(x => x)  // Only when Dash action is performed
-            //     .Subscribe(_ => StartDash())
-            //     .AddTo(this);
-            //
-            // // Dash Stop (canceled)
-            // _inputControls.PlayerControl.Dash
-            //     .ToObservable()
-            //     .Where(x => !x)  // When Dash is canceled
-            //     .Subscribe(_ => StopDash())
-            //     .AddTo(this);
-            //
-            // // Weapon Throw Start
-            // _inputControls.PlayerControl.WeaponThrow
-            //     .ToObservable()
-            //     .Where(x => x)
-            //     .Subscribe(_ => StartWeaponThrow())
-            //     .AddTo(this);
-            //
-            // // Weapon Throw Stop (canceled)
-            // _inputControls.PlayerControl.WeaponThrow
-            //     .ToObservable()
-            //     .Where(x => !x)  // When the weapon throw is canceled
-            //     .Subscribe(_ => StopWeaponThrow())
-            //     .AddTo(this);
-            //
-            // // Toggle Auto Attack
-            // _inputControls.PlayerControl.ToggleAutoAttack
-            //     .ToObservable()
-            //     .Where(x => x)
-            //     .Subscribe(_ => ToggleAutoAttack())
-            //     .AddTo(this);
+            _inputControls.PlayerControl.MeleeAttack.performed += _attackInputAction;
+            _inputControls.PlayerControl.Reload.performed += _reloadAction;
+            _inputControls.PlayerControl.SwitchWeapon.performed += _switchWeaponAction;
+            _inputControls.PlayerControl.Dash.performed += _startDashAction;
+            _inputControls.PlayerControl.Dash.canceled += _stopDashAction;
+            _inputControls.PlayerControl.WeaponThrow.performed += _startWeaponThrowAction;
+            _inputControls.PlayerControl.WeaponThrow.canceled += _stopWeaponThrowAction;
+            _inputControls.PlayerControl.ToggleAutoAttack.performed += _toggleAutoAttackAction;
         }
+        
+        private void UnSubscribeToActions()
+        {
+            _inputControls.PlayerControl.MeleeAttack.performed -= _attackInputAction;
+            _inputControls.PlayerControl.Reload.performed -= _reloadAction;
+            _inputControls.PlayerControl.SwitchWeapon.performed -= _switchWeaponAction;
+            _inputControls.PlayerControl.Dash.performed -= _startDashAction;
+            _inputControls.PlayerControl.Dash.canceled -= _stopDashAction;
+            _inputControls.PlayerControl.WeaponThrow.performed -= _startWeaponThrowAction;
+            _inputControls.PlayerControl.WeaponThrow.canceled -= _stopWeaponThrowAction;
+            _inputControls.PlayerControl.ToggleAutoAttack.performed -= _toggleAutoAttackAction;
+        }
+
+        #endregion
 
         #region Enable and Disable
 
@@ -124,10 +101,12 @@ namespace InputScripts
 
             _mousePositionAction = _inputControls.PlayerControl.MousePosition;
             _mousePositionAction.Enable();
+            SubscribeToActions();
         }
 
         private void OnDisable()
         {
+            UnSubscribeToActions();
             _inputControls.Disable();
             _mousePositionAction.Disable();
         }
@@ -154,8 +133,8 @@ namespace InputScripts
         private void AttackInput()
         {
             if(!_canTakeAttackInput) return;
-            // _playerController.Attack();
             _signalBus.Fire<MeleeAttackSignal>();
+            Debug.LogWarning("Attack Input Signal Fired");
         }
         
         private void Reload()

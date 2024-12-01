@@ -98,7 +98,7 @@ namespace InputScripts
 
         private void FixedUpdate()
         {
-            unit.Move(_moveInput);
+            _playerController.Move(_moveInput);
         }
 
         #endregion
@@ -106,7 +106,7 @@ namespace InputScripts
         private void AttackInput()
         {
             if(!_canTakeAttackInput) return;
-            _playerController.Attack(_runningDataScriptable.attackDirection);
+            _playerController.Attack();
         }
         
         private void Reload()

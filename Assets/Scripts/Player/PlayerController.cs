@@ -185,9 +185,17 @@ namespace Player
         {
             if(attackTimer > 0) return;
             //TODO: GET CLOSEST ENEMY AND DIRECT THE
-            var closestEnemyTransform = _runningDataScriptable.closestEnemyToPlayer;
-            var direction = (closestEnemyTransform != null ? transform.position - closestEnemyTransform.position : Vector3.zero).normalized * -1;
+            var closestEnemyPosition = _runningDataScriptable.closestEnemyToPlayer;
+            var direction = (transform.position - closestEnemyPosition).normalized * -1;
             _runningDataScriptable.attackDirection = direction;
+
+            var playerAttackAngleDirection = closestEnemyPosition - _runningDataScriptable.playerAttackAnglePosition;
+            playerAttackAngleDirection.z = 0;
+            
+            
+            var normalizedClosestEnemyPos = closestEnemyPosition.normalized;
+            var angle = Mathf.Atan2(playerAttackAngleDirection.y, playerAttackAngleDirection.x) * Mathf.Rad2Deg - 90;
+            _runningDataScriptable.attackAngle = angle;
             Attack(direction);
             Debug.Log("Playing auto attack");
         }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace DBMS.RunningData
 {
@@ -7,8 +8,10 @@ namespace DBMS.RunningData
     public class RunningDataScriptable : ScriptableObject
     {
         public Vector2 attackDirection;
-        public List<Vector2> attackAngle;
+        public List<Vector2> attackAnglePoints;
+        public float attackAngle;
         public bool isAutoAttacking;
-        public Transform closestEnemyToPlayer;
+        public Vector3 playerAttackAnglePosition;
+        public Vector3 closestEnemyToPlayer;
     }
 }

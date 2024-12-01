@@ -127,7 +127,7 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
             }
         }
 
-        _runningDataScriptable.closestEnemyToPlayer = closestEnemyToPlayer.transform;
+        _runningDataScriptable.closestEnemyToPlayer = closestEnemyToPlayer.transform.position;
     }
 
 
@@ -139,9 +139,9 @@ public class EnemyManager : IInitializable, ITickable, IDisposable
         var playerPos = _playerController.transform.position;
         var knockBackStrength = 10;
         var damageValue = 10;
-        var p0 = _runningDataScriptable.attackAngle[0];
-        var p1 = _runningDataScriptable.attackAngle[1];
-        var p2 =  _runningDataScriptable.attackAngle[2];
+        var p0 = _runningDataScriptable.attackAnglePoints[0];
+        var p1 = _runningDataScriptable.attackAnglePoints[1];
+        var p2 =  _runningDataScriptable.attackAnglePoints[2];
         var enemiesWithinArea = GetAllEnemiesWithinAttackArea(p0, p1, p2);
         Debug.Log($"player pos:{playerPos}, p0: {p0}, p1: {p1}, p2: {p2} enemiesWithinArea: {enemiesWithinArea.Count}");
     

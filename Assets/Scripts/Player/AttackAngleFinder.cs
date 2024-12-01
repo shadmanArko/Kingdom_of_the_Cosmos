@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DBMS.RunningData;
 using UnityEngine;
 using Zenject;
@@ -19,7 +20,7 @@ namespace Player
             _runningDataScriptable = runningDataScriptable;
             _signalBus = signalBus;
 
-            _runningDataScriptable.attackAngle = new List<Vector2>();
+            _runningDataScriptable.attackAnglePoints = new List<Vector2>();
         }
 
         private void Start()
@@ -37,11 +38,31 @@ namespace Player
             var mouseDirection = _runningDataScriptable.attackDirection;
             mouseDirection.Normalize();
             var angle = Mathf.Atan2(mouseDirection.y, mouseDirection.x) * Mathf.Rad2Deg - 90;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            // transform.rotation = Quaternion.Euler(0, 0, angle);
             
-            _runningDataScriptable.attackAngle.Clear();
+            _runningDataScriptable.attackAnglePoints.Clear();
             foreach (var point in points)
-                _runningDataScriptable.attackAngle.Add(point.position);
+                _runningDataScriptable.attackAnglePoints.Add(point.position);
+            _runningDataScriptable.attackAngle = angle;
+        }
+
+        private void Update()
+        {
+            _runningDataScriptable.playerAttackAnglePosition = transform.position;
+            transform.rotation = Quaternion.Euler(0, 0, _runningDataScriptable.attackAngle);
+            _runningDataScriptable.attackAnglePoints.Clear();
+            foreach (var point in points)
+                _runningDataScriptable.attackAnglePoints.Add(point.position);
+        }
+
+        private void UnsubscribeToActions()
+        {
+            _signalBus.Unsubscribe<MouseMovementSignal>(DetermineAttackAngle);
+        }
+
+        private void OnDestroy()
+        {
+            UnsubscribeToActions();
         }
     }
 }

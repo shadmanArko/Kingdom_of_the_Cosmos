@@ -262,7 +262,7 @@ namespace Enemy.Manager
                     // Continue knockback
                     var enemyTransform = knockback.Enemy.transform;
                     var enemyPos = enemyTransform.position;
-                    enemyPos += knockback.Direction * knockback.KnockbackStrength * Time.deltaTime;
+                    enemyPos += knockback.Direction * (knockback.KnockbackStrength * Time.deltaTime);
                     enemyTransform.position = enemyPos;
                 }
             }

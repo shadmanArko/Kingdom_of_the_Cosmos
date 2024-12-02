@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Models
+namespace zzz_TestScripts.AnimationLoadingFromSpriteSheets
 {
     [Serializable]
     public class SpriteSheetInfo

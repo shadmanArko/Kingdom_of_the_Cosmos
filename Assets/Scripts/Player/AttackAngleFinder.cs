@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using DBMS.RunningData;
+using Player.Signals.BattleSceneSignals;
 using UnityEngine;
 using Zenject;
-using zzz_TestScripts.Signals.BattleSceneSignals;
 
 namespace Player
 {

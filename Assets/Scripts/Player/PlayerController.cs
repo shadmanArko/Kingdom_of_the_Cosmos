@@ -3,12 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cinemachine;
 using DBMS.RunningData;
+using Enemy.Manager;
+using Player.Signals.BattleSceneSignals;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 using WeaponSystem.Managers;
 using Zenject;
-using zzz_TestScripts.Signals.BattleSceneSignals;
 using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 

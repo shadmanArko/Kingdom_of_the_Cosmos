@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using Models;
-using UnityEngine.Serialization;
+using Champions.Models;
 
-namespace SaveAndLoad
+namespace DBMS.SaveAndLoad
 {
     [Serializable]
     public class SaveData

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace zzz_TestScripts.Signals.BattleSceneSignals
+namespace Player.Signals.BattleSceneSignals
 {
     public class MouseMovementSignal
     {

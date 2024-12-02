@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace TestScripts
+namespace zzz_TestScripts
 {
     public class CustomCollider : MonoBehaviour
     {

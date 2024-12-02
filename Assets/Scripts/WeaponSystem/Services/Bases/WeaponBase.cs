@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using WeaponSystem.Models;
 using WeaponSystem.Services.Interfaces;
-using Zenject;
 
-namespace WeaponSystem
+namespace WeaponSystem.Services.Bases
 {
     public abstract class WeaponBase : IWeapon
     {

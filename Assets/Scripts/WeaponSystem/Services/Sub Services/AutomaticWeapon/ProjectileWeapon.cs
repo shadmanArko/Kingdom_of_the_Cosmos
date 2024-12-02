@@ -1,5 +1,6 @@
 using UnityEngine;
 using WeaponSystem.Models;
+using WeaponSystem.Services.Bases;
 using Zenject;
 
 namespace WeaponSystem.Services.Sub_Services.AutomaticWeapon

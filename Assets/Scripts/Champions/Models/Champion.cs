@@ -1,6 +1,6 @@
 using System;
 
-namespace Models
+namespace Champions.Models
 {
     [Serializable]
     public class Champion

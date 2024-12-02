@@ -1,7 +1,7 @@
-﻿using UnityEngine.Pool;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Pool;
 
-namespace Projectiles
+namespace zzz_TestScripts.Projectiles
 {
     public class Bullet : MonoBehaviour
     {

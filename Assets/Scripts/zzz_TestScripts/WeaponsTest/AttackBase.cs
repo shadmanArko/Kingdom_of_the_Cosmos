@@ -1,9 +1,4 @@
-using System.Collections.Generic;
-using ObjectPool;
-using ObjectPoolScripts;
-using UnityEngine;
-
-namespace TestScripts.WeaponsTest
+namespace zzz_TestScripts.WeaponsTest
 {
     public abstract class AttackBase
     {

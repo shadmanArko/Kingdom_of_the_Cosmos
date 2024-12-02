@@ -1,15 +1,18 @@
 using UnityEngine;
 using Zenject;
 
-public class SceneInstaller : MonoInstaller
+namespace Installers.Enemy
 {
-    // Reference the player directly through inspector
-    [SerializeField] private Transform playerTransform;
-
-    public override void InstallBindings()
+    public class SceneInstaller : MonoInstaller
     {
-        Container.Bind<Transform>()
-            .FromInstance(playerTransform)
-            .AsSingle();
+        // Reference the player directly through inspector
+        [SerializeField] private Transform playerTransform;
+
+        public override void InstallBindings()
+        {
+            Container.Bind<Transform>()
+                .FromInstance(playerTransform)
+                .AsSingle();
+        }
     }
 }

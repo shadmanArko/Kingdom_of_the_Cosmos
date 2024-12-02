@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Models
+namespace zzz_TestScripts
 {
     [Serializable]
     public class Weapon

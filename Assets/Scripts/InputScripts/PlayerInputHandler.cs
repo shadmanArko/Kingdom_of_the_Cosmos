@@ -1,10 +1,9 @@
 using DBMS.RunningData;
 using Player;
-using Signals.BattleSceneSignals;
+using Player.Signals.BattleSceneSignals;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
-using zzz_TestScripts.Signals.BattleSceneSignals;
 
 namespace InputScripts
 {
@@ -22,12 +21,19 @@ namespace InputScripts
         
         // private InputActionMap keyboardMap;
         // private InputActionMap gamepadMap;
-
-        [SerializeField] private PlayerController unit;
         
         private Vector2 _moveInput;
 
         private InputAction _mousePositionAction;
+        
+        private System.Action<InputAction.CallbackContext> _attackInputAction;
+        private System.Action<InputAction.CallbackContext> _reloadAction;
+        private System.Action<InputAction.CallbackContext> _switchWeaponAction;
+        private System.Action<InputAction.CallbackContext> _startDashAction;
+        private System.Action<InputAction.CallbackContext> _stopDashAction;
+        private System.Action<InputAction.CallbackContext> _startWeaponThrowAction;
+        private System.Action<InputAction.CallbackContext> _stopWeaponThrowAction;
+        private System.Action<InputAction.CallbackContext> _toggleAutoAttackAction;
 
         private bool _canTakeAttackInput;
 
@@ -38,8 +44,6 @@ namespace InputScripts
             _inputControls = new InputMaster();
             // keyboardMap = inp.actions.FindActionMap("Keyboard");
             // gamepadMap = playerInput.actions.FindActionMap("Gamepad");
-        
-            SubscribeToActions();
             
             _canTakeAttackInput = true;
         }
@@ -52,17 +56,42 @@ namespace InputScripts
             _playerController = playerController;
         }
 
+        #region Subscribe and Unsubscribe
+
         private void SubscribeToActions()
         {
-            _inputControls.PlayerControl.MeleeAttack.performed += _ => AttackInput();
-            _inputControls.PlayerControl.Reload.performed += _ => Reload();
-            _inputControls.PlayerControl.SwitchWeapon.performed += _ => SwitchWeapon();
-            _inputControls.PlayerControl.Dash.performed += _ => StartDash();
-            _inputControls.PlayerControl.Dash.canceled += _ => StopDash();
-            _inputControls.PlayerControl.WeaponThrow.performed += _ => StartThrowWeapon();
-            _inputControls.PlayerControl.WeaponThrow.canceled += _ => StopThrowWeapon();
-            _inputControls.PlayerControl.ToggleAutoAttack.performed += _ => ToggleAutoAttack();
+            _attackInputAction = _ => AttackInput();
+            _reloadAction = _ => Reload();
+            _switchWeaponAction = _ => SwitchWeapon();
+            _startDashAction = _ => StartDash();
+            _stopDashAction = _ => StopDash();
+            _startWeaponThrowAction = _ => StartWeaponThrow();
+            _stopWeaponThrowAction = _ => StopWeaponThrow();
+            _toggleAutoAttackAction = _ => ToggleAutoAttack();
+            
+            _inputControls.PlayerControl.MeleeAttack.performed += _attackInputAction;
+            _inputControls.PlayerControl.Reload.performed += _reloadAction;
+            _inputControls.PlayerControl.SwitchWeapon.performed += _switchWeaponAction;
+            _inputControls.PlayerControl.Dash.performed += _startDashAction;
+            _inputControls.PlayerControl.Dash.canceled += _stopDashAction;
+            _inputControls.PlayerControl.WeaponThrow.performed += _startWeaponThrowAction;
+            _inputControls.PlayerControl.WeaponThrow.canceled += _stopWeaponThrowAction;
+            _inputControls.PlayerControl.ToggleAutoAttack.performed += _toggleAutoAttackAction;
         }
+        
+        private void UnSubscribeToActions()
+        {
+            _inputControls.PlayerControl.MeleeAttack.performed -= _attackInputAction;
+            _inputControls.PlayerControl.Reload.performed -= _reloadAction;
+            _inputControls.PlayerControl.SwitchWeapon.performed -= _switchWeaponAction;
+            _inputControls.PlayerControl.Dash.performed -= _startDashAction;
+            _inputControls.PlayerControl.Dash.canceled -= _stopDashAction;
+            _inputControls.PlayerControl.WeaponThrow.performed -= _startWeaponThrowAction;
+            _inputControls.PlayerControl.WeaponThrow.canceled -= _stopWeaponThrowAction;
+            _inputControls.PlayerControl.ToggleAutoAttack.performed -= _toggleAutoAttackAction;
+        }
+
+        #endregion
 
         #region Enable and Disable
 
@@ -72,16 +101,14 @@ namespace InputScripts
 
             _mousePositionAction = _inputControls.PlayerControl.MousePosition;
             _mousePositionAction.Enable();
-            
-            _signalBus.Subscribe<MouseMovementSignal>(UpdateMouseMovement);
+            SubscribeToActions();
         }
 
         private void OnDisable()
         {
+            UnSubscribeToActions();
             _inputControls.Disable();
             _mousePositionAction.Disable();
-            
-            _signalBus.Unsubscribe<MouseMovementSignal>(UpdateMouseMovement);
         }
 
         #endregion
@@ -106,7 +133,8 @@ namespace InputScripts
         private void AttackInput()
         {
             if(!_canTakeAttackInput) return;
-            _playerController.Attack();
+            _signalBus.Fire<MeleeAttackSignal>();
+            Debug.LogWarning("Attack Input Signal Fired");
         }
         
         private void Reload()
@@ -124,13 +152,11 @@ namespace InputScripts
         private void StartDash()
         {
             _signalBus.Fire<StartDashSignal>();
-            Debug.Log("Dash started");
         }
         
         private void StopDash()
         {
             _signalBus.Fire<StopDashSignal>();
-            Debug.Log("Dash ended");
         }
 
         #endregion
@@ -146,27 +172,21 @@ namespace InputScripts
             var mouseWorldPosition =
                 _camera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, _camera.nearClipPlane));
             var direction = (_playerController.gameObject.transform.position - mouseWorldPosition).normalized * -1;
+            _runningDataScriptable.attackDirection = direction;
             _signalBus.Fire(new MouseMovementSignal(direction));
-        }
-        
-        private void UpdateMouseMovement(MouseMovementSignal mouseMovementSignal)
-        {
-            _runningDataScriptable.attackDirection = mouseMovementSignal.MousePos;
         }
 
         #endregion
 
         #region Weapon Throw
 
-        private void StartThrowWeapon()
+        private void StartWeaponThrow()
         {
-            Debug.Log("Firing weapon throw START signal");
             _signalBus.Fire<WeaponThrowStartSignal>();
         }
-        private void StopThrowWeapon()
+        private void StopWeaponThrow()
         {
             _signalBus.Fire<WeaponThrowStopSignal>();
-            Debug.Log("Firing weapon throw STOP signal");
         }
 
         #endregion
@@ -178,7 +198,6 @@ namespace InputScripts
             _canTakeAttackInput = !_canTakeAttackInput;
             _runningDataScriptable.isAutoAttacking = !_canTakeAttackInput;
             _signalBus.Fire<ToggleAutoAttackSignal>();
-            Debug.Log("Auto Attack Input Handler");
         }
 
         #endregion

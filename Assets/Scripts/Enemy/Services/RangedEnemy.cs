@@ -1,3 +1,4 @@
+using Enemy.Models;
 using Player;
 using UnityEngine;
 using Zenject;

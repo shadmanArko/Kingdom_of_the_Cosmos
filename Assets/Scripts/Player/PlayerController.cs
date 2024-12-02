@@ -166,7 +166,7 @@ namespace Player
         #region Attack
 
         [SerializeField] private bool canAttack;
-        public void Attack()
+        private void Attack()
         {
             if(!canAttack) return;
             if(attackTimer > 0) return;

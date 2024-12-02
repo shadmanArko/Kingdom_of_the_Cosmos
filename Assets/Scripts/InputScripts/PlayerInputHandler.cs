@@ -134,7 +134,6 @@ namespace InputScripts
         {
             if(!_canTakeAttackInput) return;
             _signalBus.Fire<MeleeAttackSignal>();
-            Debug.LogWarning("Attack Input Signal Fired");
         }
         
         private void Reload()

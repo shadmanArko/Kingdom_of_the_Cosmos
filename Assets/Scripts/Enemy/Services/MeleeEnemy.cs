@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Enemy.Models;
 using Player;
+using Player.Controllers;
+using Player.Views;
 using UnityEngine;
 
 namespace Enemy.Services
@@ -16,7 +18,7 @@ namespace Enemy.Services
             _animationController.PlayAnimation("run");
         }
 
-        public override async void Attack(PlayerController target)
+        public override async void Attack(PlayerView target)
         {
             if (_attacking) return;
             _attacking = true;

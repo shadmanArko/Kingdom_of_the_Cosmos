@@ -49,6 +49,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -133,6 +136,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -269,6 +275,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -313,9 +322,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7397414394396932977}
-  - component: {fileID: 1278470095925631877}
   - component: {fileID: 3878785499377661370}
   - component: {fileID: 111531753288968612}
+  - component: {fileID: 2253353513372176064}
   m_Layer: 6
   m_Name: Player
   m_TagString: Obstacle
@@ -341,43 +350,9 @@ Transform:
   - {fileID: 8693602181769680829}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1278470095925631877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7256200811749845537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555db9bacd1183c4398ddac79d71705c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  isAutoAttacking: 0
-  dashDirection: {x: 0, y: 0}
-  dashCount: 2
-  totalDashCount: 2
-  isDashing: 0
-  canDash: 0
-  lungeDashSpeed: 15
-  rollDashSpeed: 10
-  lungeDashDuration: 0.4
-  rollDashDuration: 0.6
-  isLungeDashing: 0
-  isRollDashing: 0
-  dashCooldownDuration: 2
-  moveSpeed: 5
-  movement: {x: 0, y: 0}
-  canMove: 0
-  attackInterval: 1
-  attackTimer: 0
-  rb: {fileID: 3878785499377661370}
-  playerAnimationController: {fileID: 2120594961658747589}
-  canAttack: 1
 --- !u!50 &3878785499377661370
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -388,8 +363,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0
+  m_LinearDamping: 0
+  m_AngularDamping: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -410,6 +385,7 @@ CircleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7256200811749845537}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -433,10 +409,24 @@ CircleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &2253353513372176064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7256200811749845537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6db9855a55e94f6ba286d7fc2fb4b46f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 3878785499377661370}
+  playerAnimationController: {fileID: 2120594961658747589}
 --- !u!1 &8915439952885424188
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,6 +476,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -650,10 +643,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1474992380231495400, guid: d28eb4b30135d0d48bb739336c6447c5, type: 3}
-      propertyPath: unit
-      value: 
-      objectReference: {fileID: 1278470095925631877}
     - target: {fileID: 6647660289440691330, guid: d28eb4b30135d0d48bb739336c6447c5, type: 3}
       propertyPath: m_Name
       value: Input Handler
@@ -662,10 +651,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 6757851923265503427, guid: d28eb4b30135d0d48bb739336c6447c5, type: 3}
-      propertyPath: unit
-      value: 
-      objectReference: {fileID: 1278470095925631877}
     - target: {fileID: 6757851923265503427, guid: d28eb4b30135d0d48bb739336c6447c5, type: 3}
       propertyPath: attackBase
       value: 

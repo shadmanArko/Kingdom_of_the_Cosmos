@@ -6,7 +6,9 @@ using DBMS.RunningData;
 using Enemy.Models;
 using Enemy.Services;
 using Player;
+using Player.Controllers;
 using Player.Signals.BattleSceneSignals;
+using Player.Views;
 using UnityEngine;
 using Zenject;
 using IInitializable = Zenject.IInitializable;
@@ -19,6 +21,7 @@ namespace Enemy.Manager
    
 
         private readonly PlayerController _playerController;
+        private readonly PlayerView _playerView;
         private readonly ComputeShader _enemyComputeShader;
         private readonly MeleeEnemyPool _meleeEnemyPool;
         private readonly MeleeShieldedEnemyPool _meleeShieldedEnemyPool;
@@ -51,7 +54,8 @@ namespace Enemy.Manager
             RangedEnemyPool rangedEnemyPool,
             GameDataScriptable gameDataScriptable,
             RunningDataScriptable runningDataScriptable,
-            SignalBus signalBus)
+            SignalBus signalBus,
+            PlayerView playerView)
         {
             _playerController = playerController;
             _enemyComputeShader = enemyComputeShader;
@@ -61,13 +65,14 @@ namespace Enemy.Manager
             _gameDataScriptable = gameDataScriptable;
             _runningDataScriptable = runningDataScriptable;
             _signalBus = signalBus;
+            _playerView = playerView;
             Debug.Log($"Enemy Manager constructor Started. signal bus found {_signalBus!= null}");
 
         }
 
         public void Initialize()
         {
-            _playerTransform = _playerController.transform;
+            _playerTransform = _playerView.transform;
             nextEnemySpawnTime = enemySpawningInterval + Time.time;
             _enemies = _gameDataScriptable.gameData.enemies;
             _signalBus.Subscribe<MeleeAttackSignal>(OnMeleeAttack);
@@ -136,7 +141,7 @@ namespace Enemy.Manager
         private void OnMeleeAttack()
         {
             Debug.Log("Melee Attack occured");
-            var playerPos = _playerController.transform.position;
+            var playerPos = _playerView.transform.position;
             var knockBackStrength = 10;
             var damageValue = 10;
             var p0 = _runningDataScriptable.attackAnglePoints[0];
@@ -393,7 +398,7 @@ namespace Enemy.Manager
                 // _activeEnemies[i].GetComponent<MeleeEnemy>().SetMeleeAttackerStat(enemyStat);
                 if (enemy.DistanceToPlayer < 2f)
                 {
-                    enemy.Attack(_playerController);
+                    enemy.Attack(_playerView);
                 }
             }
         }
@@ -411,7 +416,7 @@ namespace Enemy.Manager
                     // Collision detected, return enemy to pool
                     BaseEnemy enemy = _activeEnemies[i];
                     // _activeEnemies.RemoveAt(i);
-                    enemy.Attack(_playerController);
+                    enemy.Attack(_playerView);
                     // if (_meleeEnemyPool != null)
                     // {
                     //     _meleeEnemyPool.ReleaseEnemy(enemy);

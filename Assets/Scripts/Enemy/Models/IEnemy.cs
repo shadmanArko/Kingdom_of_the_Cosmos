@@ -1,4 +1,6 @@
 ﻿using Player;
+using Player.Controllers;
+using Player.Views;
 using UnityEngine;
 
 namespace Enemy.Models
@@ -7,7 +9,7 @@ namespace Enemy.Models
      {
           void Move(Vector2 targetPosition);
           void MoveTowardsTarget(Transform targetTransform);
-          void Attack(PlayerController target);
+          void Attack(PlayerView target);
           void TakeDamage(float amount);
      }
 }

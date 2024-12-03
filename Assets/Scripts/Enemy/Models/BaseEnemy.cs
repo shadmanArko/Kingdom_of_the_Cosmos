@@ -1,4 +1,6 @@
 ﻿using Player;
+using Player.Controllers;
+using Player.Views;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,7 +51,7 @@ namespace Enemy.Models
             else if (distanceToPlayer <= MinDistanceToPlayer && !isAttacking && (Time.time > lastAttackTime + AttackSpeed))
             {
                 lastAttackTime = Time.time;
-                Attack(targetTransform.GetComponent<PlayerController>());
+                Attack(targetTransform.GetComponent<PlayerView>());
                 isAttacking = true;
             }
         
@@ -87,7 +89,7 @@ namespace Enemy.Models
             DistanceToPlayer = data.distanceToPlayer;
             IsAlive = data.isAlive == 1;
         }
-        public abstract void Attack(PlayerController target);
+        public abstract void Attack(PlayerView target);
     
 
         public virtual void TakeDamage(float amount)

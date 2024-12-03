@@ -1,5 +1,7 @@
 using Enemy.Models;
 using Player;
+using Player.Controllers;
+using Player.Views;
 using UnityEngine;
 using Zenject;
 using Task = System.Threading.Tasks.Task;
@@ -26,7 +28,7 @@ namespace Enemy.Services
             _animationController.PlayAnimation("run");
         }
 
-        public override async void Attack(PlayerController target)
+        public override async void Attack(PlayerView target)
         {
             EnemyProjectile projectile = enemyProjectilePoolManager.GetFromPool(transform.position, transform.rotation);
             _animationController.PlayAnimation("attack");

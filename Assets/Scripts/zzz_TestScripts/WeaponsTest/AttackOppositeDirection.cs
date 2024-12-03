@@ -1,6 +1,7 @@
 using DBMS.RunningData;
 using ObjectPoolScripts;
 using Player;
+using Player.Controllers;
 using UnityEngine;
 
 namespace zzz_TestScripts.WeaponsTest
@@ -22,7 +23,7 @@ namespace zzz_TestScripts.WeaponsTest
         {
             var bullet = _bulletPoolingManager.Pool.Get();
             
-            bullet.transform.position = _playerController.transform.position;
+            // bullet.transform.position = _playerController.transform.position;
             
             var direction = _runningDataScriptable.attackDirection;
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;

@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using DBMS.RunningData;
 using ObjectPoolScripts;
 using Player;
+using Player.Controllers;
 using UnityEngine;
 using Zenject;
 
@@ -23,8 +24,8 @@ namespace zzz_TestScripts.WeaponsTest
         public override void Attack()
         {
             var bullet = _bulletPoolingManager.Pool.Get();
-            var attackerPos = _playerController.gameObject.transform.position;
-            bullet.transform.position = attackerPos;
+            // var attackerPos = _playerController.gameObject.transform.position;
+            // bullet.transform.position = attackerPos;
             
             var direction = _runningDataScriptable.attackDirection;
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;

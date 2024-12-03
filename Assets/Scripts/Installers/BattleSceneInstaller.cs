@@ -4,6 +4,7 @@ using DBMS.RunningData;
 using DBMS.SaveAndLoad;
 using ObjectPoolScripts;
 using Player;
+using Player.Controllers;
 using UnityEngine;
 using Utilities;
 using WeaponSystem;
@@ -35,7 +36,6 @@ namespace Installers
             Container.Bind<Camera>().FromComponentInNewPrefab(mainCamera).AsSingle().NonLazy();
             Container.Bind<CinemachineVirtualCamera>().FromComponentInNewPrefab(cineMachineVirtualCamera).AsSingle();
             Container.Bind<ScreenShakeManager>().AsSingle();
-            Container.Bind<PlayerController>().FromComponentInNewPrefab(playerController).AsSingle().NonLazy();
             Container.Bind<BulletPoolingManager>().FromComponentInNewPrefab(bulletPoolingManager).AsSingle();
         }
     }

@@ -1,6 +1,8 @@
 using DBMS.RunningData;
 using Player;
+using Player.Controllers;
 using Player.Signals.BattleSceneSignals;
+using Player.Views;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
@@ -14,8 +16,8 @@ namespace InputScripts
         [Inject] private readonly SignalBus _signalBus;
 
         private RunningDataScriptable _runningDataScriptable;
-
-        private PlayerController _playerController;
+        
+        private PlayerView _playerView;
         
         private Camera _camera;
         
@@ -49,11 +51,11 @@ namespace InputScripts
         }
 
         [Inject]
-        private void InitializeDiReference(Camera cam, RunningDataScriptable runningDataScriptable, PlayerController playerController)
+        private void InitializeDiReference(Camera cam, RunningDataScriptable runningDataScriptable, PlayerView playerView)
         {
             _camera = cam;
             _runningDataScriptable = runningDataScriptable;
-            _playerController = playerController;
+            _playerView = playerView;
         }
 
         #region Subscribe and Unsubscribe
@@ -120,12 +122,9 @@ namespace InputScripts
         private void Update()
         {
             _moveInput = _inputControls.PlayerControl.Movement.ReadValue<Vector2>();
+            _runningDataScriptable.movementDirection = _moveInput;
+            _signalBus.Fire(new PlayerMovementSignal(_moveInput));
             ReadMousePosition();
-        }
-
-        private void FixedUpdate()
-        {
-            _playerController.Move(_moveInput);
         }
 
         #endregion
@@ -170,7 +169,7 @@ namespace InputScripts
             var mousePos = _mousePositionAction.ReadValue<Vector2>();
             var mouseWorldPosition =
                 _camera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, _camera.nearClipPlane));
-            var direction = (_playerController.gameObject.transform.position - mouseWorldPosition).normalized * -1;
+            var direction = (_playerView.gameObject.transform.position - mouseWorldPosition).normalized * -1;
             _runningDataScriptable.attackDirection = direction;
             _signalBus.Fire(new MouseMovementSignal(direction));
         }

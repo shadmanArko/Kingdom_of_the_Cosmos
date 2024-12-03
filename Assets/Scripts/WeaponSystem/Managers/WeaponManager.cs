@@ -3,7 +3,9 @@ using System.Linq;
 using DBMS.RunningData;
 using DBMS.WeaponsData;
 using Player;
+using Player.Controllers;
 using Player.Signals.BattleSceneSignals;
+using Player.Views;
 using RicochetWeaponSystem;
 using UnityEngine;
 using WeaponSystem.Models;
@@ -21,7 +23,7 @@ namespace WeaponSystem.Managers
         private WeaponDatabaseScriptable _weaponDatabaseScriptable;
         private RunningDataScriptable _runningDataScriptable;
         private WeaponDataLoader _weaponDataLoader;
-        private PlayerController _playerController;
+        private PlayerView _playerView;
 
         private List<IWeapon> _controlledWeapons = new();
         private List<IWeapon> automaticWeapons = new();
@@ -33,14 +35,14 @@ namespace WeaponSystem.Managers
         private RicochetWeaponSystem.RicochetSystem _ricochetSystem;
         
         [Inject]
-        public WeaponManager(SignalBus signalBus, WeaponDatabaseScriptable weaponDatabaseScriptable, WeaponDataLoader weaponDataLoader, RunningDataScriptable runningDataScriptable, PlayerController playerController, RicochetWeaponSystem.RicochetSystem ricochetSystem)
+        public WeaponManager(SignalBus signalBus, WeaponDatabaseScriptable weaponDatabaseScriptable, WeaponDataLoader weaponDataLoader, RunningDataScriptable runningDataScriptable, RicochetSystem ricochetSystem, PlayerView playerView)
         {
             _signalBus = signalBus;
             _weaponDatabaseScriptable = weaponDatabaseScriptable;
             _runningDataScriptable = runningDataScriptable;
             _weaponDataLoader = weaponDataLoader;
-            _playerController = playerController;
             _ricochetSystem = ricochetSystem;
+            _playerView = playerView; 
             SubscribeToActions();
             Start();
         }
@@ -188,7 +190,7 @@ namespace WeaponSystem.Managers
         private void StartWeaponThrow()
         {
             var mouseDirection = _runningDataScriptable.attackDirection;
-            List<RicochetHitInfo> hits = _ricochetSystem.CalculateRicochetPath(_playerController.transform.position, mouseDirection);
+            List<RicochetHitInfo> hits = _ricochetSystem.CalculateRicochetPath(_playerView.transform.position, mouseDirection);
             Debug.Log("Casting Ray");
             Debug.Log($"Hit count: {hits.Count}");
             foreach (var hit in hits)

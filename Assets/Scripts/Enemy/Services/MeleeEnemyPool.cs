@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Enemy.Models;
 using Player;
+using Player.Controllers;
+using Player.Views;
 using UnityEngine;
 using UnityEngine.Pool;
 using Zenject;
@@ -18,7 +20,9 @@ namespace Enemy.Services
         [SerializeField] private float spawnRadius = 10f;
     
         [Inject]
-        [SerializeField] private PlayerController playerController;
+        private PlayerController playerController;
+        [Inject]
+        private PlayerView _playerView;
     
     
         // [Inject]
@@ -38,7 +42,7 @@ namespace Enemy.Services
 
         private void Start()
         {
-            playerTransform = playerController.gameObject.transform;
+            playerTransform = _playerView.gameObject.transform;
         
             enemyPool = new ObjectPool<BaseEnemy>(
                 createFunc: CreateEnemy,

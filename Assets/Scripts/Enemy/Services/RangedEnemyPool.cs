@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Enemy.Models;
 using Player;
+using Player.Controllers;
+using Player.Views;
 using UnityEngine;
 using UnityEngine.Pool;
 using Zenject;
@@ -18,6 +20,8 @@ namespace Enemy.Services
     
         [Inject]
         [SerializeField] private  PlayerController playerController;
+
+        [Inject] private PlayerView _playerView;
         [Inject] private EnemyProjectilePoolManager _enemyProjectilePoolManager;
     
         // [Inject]
@@ -37,7 +41,7 @@ namespace Enemy.Services
 
         private void Start()
         {
-            playerTransform = playerController.gameObject.transform;
+            playerTransform = _playerView.gameObject.transform;
             // if (_enemyManager == null)
             // {
             //     Debug.LogError("EnemyManager not injected!");

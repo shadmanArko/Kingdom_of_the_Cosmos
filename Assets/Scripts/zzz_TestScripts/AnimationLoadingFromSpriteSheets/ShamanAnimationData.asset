@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4bbd20954b97e4186d20aec43db718, type: 3}
+  m_Name: ShamanAnimationData
+  m_EditorClassIdentifier: 
+  animationDatabases:
+  - animationDatas:
+    - stateName: attack
+      triggerName: 
+      folderPath: 
+      animationSprites:
+      - {fileID: 811294473, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -2143662658, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: 1750589068, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -2108144712, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      speed: 0
+    - stateName: idle
+      triggerName: 
+      folderPath: 
+      animationSprites:
+      - {fileID: -389395219, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -1211596388, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      speed: 0
+    - stateName: run
+      triggerName: 
+      folderPath: 
+      animationSprites:
+      - {fileID: 1908915096, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: 1989275123, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      speed: 0
+    - stateName: dash
+      triggerName: 
+      folderPath: 
+      animationSprites:
+      - {fileID: -608277689, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -868339984, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: 162197762, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -311670487, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      speed: 1

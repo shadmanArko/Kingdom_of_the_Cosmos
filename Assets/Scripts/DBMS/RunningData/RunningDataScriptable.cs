@@ -8,11 +8,11 @@ namespace DBMS.RunningData
     public class RunningDataScriptable : ScriptableObject
     {
         public Vector2 attackDirection;
-        public Vector2 movementDirection;
         public List<Vector2> attackAnglePoints;
         public float attackAngle;
-        public bool isAutoAttacking;
         public Vector3 playerAttackAnglePosition;
+        
+        
         public Vector3 closestEnemyToPlayer;
     }
 }

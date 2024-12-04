@@ -9,7 +9,7 @@
                     "name": "MeleeAttack",
                     "type": "Button",
                     "id": "50d5c34e-a230-4b7b-89a8-dca173943c8e",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -33,12 +33,12 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Reload",
+                    "name": "HeavyAttack",
                     "type": "Button",
                     "id": "7d18a066-85e8-4e6c-9133-6cac944db393",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold(duration=0.1,pressPoint=0.1)",
                     "initialStateCheck": false
                 },
                 {
@@ -163,7 +163,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardAndMouse",
-                    "action": "Reload",
+                    "action": "HeavyAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -1,6 +1,4 @@
 using DBMS.RunningData;
-using Player;
-using Player.Controllers;
 using Player.Signals.BattleSceneSignals;
 using Player.Views;
 using UnityEngine;
@@ -28,8 +26,9 @@ namespace InputScripts
 
         private InputAction _mousePositionAction;
         
-        private System.Action<InputAction.CallbackContext> _attackInputAction;
-        private System.Action<InputAction.CallbackContext> _reloadAction;
+        private System.Action<InputAction.CallbackContext> _meleeAttackInputAction;
+        private System.Action<InputAction.CallbackContext> _startHeavyAttackInputAction;
+        private System.Action<InputAction.CallbackContext> _stopHeavyAttackInputAction;
         private System.Action<InputAction.CallbackContext> _switchWeaponAction;
         private System.Action<InputAction.CallbackContext> _startDashAction;
         private System.Action<InputAction.CallbackContext> _stopDashAction;
@@ -62,35 +61,48 @@ namespace InputScripts
 
         private void SubscribeToActions()
         {
-            _attackInputAction = _ => AttackInput();
-            _reloadAction = _ => Reload();
+            _meleeAttackInputAction = _ => MeleeAttackInput();
+            _toggleAutoAttackAction = _ => ToggleAutoAttack();
             _switchWeaponAction = _ => SwitchWeapon();
+            
+            _startHeavyAttackInputAction = _ => StartHeavyAttackInput();
+            _stopHeavyAttackInputAction = _ => StopHeavyAttackInput();
+            
             _startDashAction = _ => StartDash();
             _stopDashAction = _ => StopDash();
+            
             _startWeaponThrowAction = _ => StartWeaponThrow();
             _stopWeaponThrowAction = _ => StopWeaponThrow();
-            _toggleAutoAttackAction = _ => ToggleAutoAttack();
             
-            _inputControls.PlayerControl.MeleeAttack.performed += _attackInputAction;
-            _inputControls.PlayerControl.Reload.performed += _reloadAction;
+            
+            _inputControls.PlayerControl.MeleeAttack.performed += _meleeAttackInputAction;
+            _inputControls.PlayerControl.ToggleAutoAttack.performed += _toggleAutoAttackAction;
             _inputControls.PlayerControl.SwitchWeapon.performed += _switchWeaponAction;
+            
+            _inputControls.PlayerControl.HeavyAttack.performed += _startHeavyAttackInputAction;
+            _inputControls.PlayerControl.HeavyAttack.canceled += _stopHeavyAttackInputAction;
+            
             _inputControls.PlayerControl.Dash.performed += _startDashAction;
             _inputControls.PlayerControl.Dash.canceled += _stopDashAction;
+            
             _inputControls.PlayerControl.WeaponThrow.performed += _startWeaponThrowAction;
             _inputControls.PlayerControl.WeaponThrow.canceled += _stopWeaponThrowAction;
-            _inputControls.PlayerControl.ToggleAutoAttack.performed += _toggleAutoAttackAction;
         }
         
         private void UnSubscribeToActions()
         {
-            _inputControls.PlayerControl.MeleeAttack.performed -= _attackInputAction;
-            _inputControls.PlayerControl.Reload.performed -= _reloadAction;
+            _inputControls.PlayerControl.MeleeAttack.performed -= _meleeAttackInputAction;
             _inputControls.PlayerControl.SwitchWeapon.performed -= _switchWeaponAction;
+            _inputControls.PlayerControl.ToggleAutoAttack.performed -= _toggleAutoAttackAction;
+            
             _inputControls.PlayerControl.Dash.performed -= _startDashAction;
             _inputControls.PlayerControl.Dash.canceled -= _stopDashAction;
+            
+            _inputControls.PlayerControl.HeavyAttack.performed -= _startHeavyAttackInputAction;
+            _inputControls.PlayerControl.HeavyAttack.canceled -= _stopHeavyAttackInputAction;
+            
             _inputControls.PlayerControl.WeaponThrow.performed -= _startWeaponThrowAction;
             _inputControls.PlayerControl.WeaponThrow.canceled -= _stopWeaponThrowAction;
-            _inputControls.PlayerControl.ToggleAutoAttack.performed -= _toggleAutoAttackAction;
         }
 
         #endregion
@@ -122,29 +134,37 @@ namespace InputScripts
         private void Update()
         {
             _moveInput = _inputControls.PlayerControl.Movement.ReadValue<Vector2>();
-            _runningDataScriptable.movementDirection = _moveInput;
             _signalBus.Fire(new PlayerMovementSignal(_moveInput));
             ReadMousePosition();
         }
 
         #endregion
         
-        private void AttackInput()
+        private void MeleeAttackInput()
         {
             if(!_canTakeAttackInput) return;
             _signalBus.Fire<MeleeAttackSignal>();
         }
         
-        private void Reload()
-        {
-            _signalBus.Fire<ReloadSignal>();
-        }
-
         private void SwitchWeapon()
         {
             _signalBus.Fire<SwitchControlledWeaponSignal>();
         }
 
+        #region Heavy Attack
+
+        private void StartHeavyAttackInput()
+        {
+            _signalBus.Fire<StartHeavyAttackSignal>();
+        }
+
+        private void StopHeavyAttackInput()
+        {
+            _signalBus.Fire<StopHeavyAttackSignal>();
+        }
+
+        #endregion
+        
         #region Dash
 
         private void StartDash()
@@ -194,7 +214,6 @@ namespace InputScripts
         private void ToggleAutoAttack()
         {
             _canTakeAttackInput = !_canTakeAttackInput;
-            _runningDataScriptable.isAutoAttacking = !_canTakeAttackInput;
             _signalBus.Fire<ToggleAutoAttackSignal>();
         }
 

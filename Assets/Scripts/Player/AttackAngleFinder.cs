@@ -56,10 +56,10 @@ namespace Player
     
             // Get P0's transform information
             Vector3 p0Position = points[0].transform.position;
-            Quaternion p0Rotation = points[0].rotation;
+            Quaternion p0Rotation = transform.rotation;
     
             // Calculate base center position using P0's forward direction
-            Vector3 baseCenter = p0Position + p0Rotation * Vector3.down * height;
+            Vector3 baseCenter = p0Position + p0Rotation * Vector3.up * height;
     
             // Position base vertices using P0's right direction for the base
             Vector3 rightDirection = p0Rotation * Vector3.right;

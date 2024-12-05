@@ -13,6 +13,7 @@ using Vector2 = UnityEngine.Vector2;
 
 namespace Player.Controllers
 {
+    [Serializable]
     public class PlayerController : IInitializable, IFixedTickable, IDisposable 
     {
         private CinemachineVirtualCamera _cineMachineVirtualCamera;
@@ -92,6 +93,7 @@ namespace Player.Controllers
 
             _dashCooldownDuration = 2f;
             _totalDashCount = 2;
+            _runningDataScriptable.playerController = this;
         }
 
         #region Subscribe and Unsubscribe
@@ -176,7 +178,7 @@ namespace Player.Controllers
 
         #region Attack
 
-        private bool _canAttack;
+        public bool _canAttack;
         private void Attack()
         {
             if(!_canAttack) return;
@@ -190,14 +192,14 @@ namespace Player.Controllers
 
         #region Heavy Attack
 
-        private bool _canPerformHeavyAttack = true;
-        private bool _isHeavyAttackCharging;
+        public bool _canPerformHeavyAttack = true;
+        public bool _isHeavyAttackCharging;
         
-        private float _heavyAttackChargeMeter = 0.1f;
-        private float _heavyAttackTimer;
+        public float _heavyAttackChargeMeter = 0.1f;
+        public float _heavyAttackTimer;
         
-        private const float HeavyAttackMaxChargeLimit = 4f;
-        private const float HeavyAttackCooldownTimer = 3f;
+        public const float HeavyAttackMaxChargeLimit = 4f;
+        public const float HeavyAttackCooldownTimer = 3f;
         private void CheckHeavyAttackEligibility()
         {
             if(!_canAttack) return;
@@ -210,6 +212,7 @@ namespace Player.Controllers
         private void InitiateHeavyAttackCharge()
         {
             _canMove = false;
+            _canPerformHeavyAttack = false;
             _heavyAttackChargeMeter = 0f;
             _isHeavyAttackCharging = true;
             Debug.LogWarning($"heavy attack Charging: {_isHeavyAttackCharging}");
@@ -245,8 +248,9 @@ namespace Player.Controllers
             _isHeavyAttackCharging = false;
             _canMove = true;
             _heavyAttackChargeMeter = 0f;
+            _heavyAttackTimer = 0f;
             _signalBus.Fire(new HeavyAttackAngleIncrementSignal(3, 5));   // meter back to normal
-            Debug.LogWarning($"heavy attack Charging: {_isHeavyAttackCharging}");
+            _canPerformHeavyAttack = true;
         }
         
         #endregion

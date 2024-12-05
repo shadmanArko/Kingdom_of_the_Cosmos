@@ -40,8 +40,8 @@ namespace Player.Controllers
         private bool _isDashing;
         private bool _canDash;
         
-        private float _lungeDashSpeed = 15f;
-        private float _rollDashSpeed = 10f;
+        private float _lungeDashSpeed = 8f;
+        private float _rollDashSpeed = 5f;
         
         private float _lungeDashDuration = 0.4f;
         private float _rollDashDuration = 0.6f;
@@ -49,13 +49,13 @@ namespace Player.Controllers
         private bool _isLungeDashing;
         private bool _isRollDashing;
         
-        private float _dashCooldownDuration = 2;
+        private float _dashCooldownDuration = 3f;
 
         #endregion
 
         #region Move Variables
 
-        public float MoveSpeed = 5f;
+        public float MoveSpeed = 3f;
         private Vector2 _movement;
         private bool _canMove;
 

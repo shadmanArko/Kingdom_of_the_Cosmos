@@ -94,6 +94,8 @@ namespace Player.Controllers
             _dashCooldownDuration = 2f;
             _totalDashCount = 2;
             _runningDataScriptable.playerController = this;
+            
+            _signalBus.Fire(new HeavyAttackAngleIncrementSignal(3, 3));   // setting initial height to 4
         }
 
         #region Subscribe and Unsubscribe
@@ -225,12 +227,13 @@ namespace Player.Controllers
             {
                 _heavyAttackChargeMeter += Time.fixedDeltaTime;
                 _heavyAttackChargeMeter = Mathf.Clamp(_heavyAttackChargeMeter, 0, HeavyAttackMaxChargeLimit);
-                _signalBus.Fire(new HeavyAttackAngleIncrementSignal(20, _heavyAttackChargeMeter * 5)); // meter increasing
+                _signalBus.Fire(new HeavyAttackAngleIncrementSignal(5, _heavyAttackChargeMeter * 4)); // meter increasing
                 return;
             }
             
-            _signalBus.Fire(new HeavyAttackAngleIncrementSignal(20, HeavyAttackMaxChargeLimit * 5));   // meter max
+            _signalBus.Fire(new HeavyAttackAngleIncrementSignal(5, HeavyAttackMaxChargeLimit * 4));   // meter max base 90 degrees
             PerformHeavyAttack();
+            StopHeavyAttack();
         }
         
         private void PerformHeavyAttack()
@@ -249,7 +252,7 @@ namespace Player.Controllers
             _canMove = true;
             _heavyAttackChargeMeter = 0f;
             _heavyAttackTimer = 0f;
-            _signalBus.Fire(new HeavyAttackAngleIncrementSignal(3, 5));   // meter back to normal
+            _signalBus.Fire(new HeavyAttackAngleIncrementSignal(3, 3));   // meter back to normal
             _canPerformHeavyAttack = true;
         }
         

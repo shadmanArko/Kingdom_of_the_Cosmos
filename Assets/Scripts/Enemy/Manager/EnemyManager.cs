@@ -338,7 +338,7 @@ namespace Enemy.Manager
         }
 
         private int _numberOfMeleeEnemies = 2;
-        private int _numberOfShamanEnemies = 4;
+        private int _numberOfShamanEnemies = 1;
         private int _numberOfShieldedMeleeEnemies = 3;
         private int _countOfMeleeEnemies;
         private int _countOfShieldedMeleeEnemies;
@@ -352,7 +352,7 @@ namespace Enemy.Manager
                 {
                     CreateEnemyFromRangedEnemyPool();
                 }
-                if (_countOfShieldedMeleeEnemies >= _numberOfShieldedMeleeEnemies)
+                else if (_countOfShieldedMeleeEnemies >= _numberOfShieldedMeleeEnemies)
                 {
                     _countOfShamanEnemies++;
                     CreateEnemyFromShamanEnemyPool();

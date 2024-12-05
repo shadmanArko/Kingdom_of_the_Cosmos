@@ -92,7 +92,7 @@ namespace Enemy.Services
             rangedEnemy.Damage = shamanEnemyData.Damage;
             rangedEnemy.shamanRadius = shamanEnemyData.ShamanRadius;
             rangedEnemy.shamanInterval = shamanEnemyData.ShamanInterval;
-            rangedEnemy.MinDistanceToPlayer = shamanEnemyData.AttackRange - 0.5f;
+            rangedEnemy.MinDistanceToPlayer = shamanEnemyData.AttackRange - 1f;
             enemy.Initialize();
             return enemy;
         }

@@ -200,10 +200,10 @@
     "ShamanEnemyDatas": [
       {
         "Id": "1",
-        "MovementSpeed": 2.5,
+        "MovementSpeed": 3.2,
         "Health": 120.0,
-        "AttackRange": 20.0,
-        "ShamanRadius": 10.0,
+        "AttackRange": 7.0,
+        "ShamanRadius": 5.0,
         "ShamanInterval": 5.0,
         "Damage": 15.0,
         "AttackCooldown": 3.0

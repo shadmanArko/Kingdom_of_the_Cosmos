@@ -1,4 +1,6 @@
-﻿using Player;
+﻿using System.Collections;
+using Enemy.Services;
+using Player;
 using Player.Controllers;
 using Player.Views;
 using Unity.Mathematics;
@@ -21,12 +23,13 @@ namespace Enemy.Models
         public float DistanceToPlayer;
         public float MinDistanceToPlayer;
         public bool IsAlive;
+        
         protected float health;
         [SerializeField] protected Slider HealthSlider;
         protected Rigidbody2D _rigidbody2D;
         protected bool isAttacking;
         protected float lastAttackTime;
-
+        protected bool canGetBuff = true;
         protected virtual void Start()
         {
         
@@ -103,6 +106,28 @@ namespace Enemy.Models
             HealthSlider.value = 1 - (MaxHealth - health)/MaxHealth;
             Debug.Log($"Took Damage {amount}, health {MaxHealth} is alive: {IsAlive}");
         }
+
+        public void GetBuff(EnemyBuffTypes buffType, float amount, float duration)
+        {
+            if (!canGetBuff) return; // Prevent stacking buffs
+
+            StartCoroutine(ApplyTemporaryBuff(amount, duration));
+        }
+
+        private IEnumerator ApplyTemporaryBuff(float amount, float duration)
+        {
+            // Apply the buff
+            MoveSpeed += amount;
+            canGetBuff = false;
+
+            // Wait for the specified duration
+            yield return new WaitForSeconds(duration);
+
+            // Remove the buff
+            MoveSpeed -= amount;
+            canGetBuff = true;
+        }
+
         protected virtual void Die()
         {
             IsAlive = false;

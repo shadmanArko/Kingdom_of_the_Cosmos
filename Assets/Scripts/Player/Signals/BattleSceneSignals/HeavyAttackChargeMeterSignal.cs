@@ -1,11 +1,11 @@
 ﻿namespace Player.Signals.BattleSceneSignals
 {
-    public class HeavyAttackAngleIncrementSignal
+    public class HeavyAttackChargeMeterSignal
     {
         public float attackAngleBase;
         public float attackAngleHeight;
 
-        public HeavyAttackAngleIncrementSignal(float angleBase, float angleHeight)
+        public HeavyAttackChargeMeterSignal(float angleBase, float angleHeight)
         {
             attackAngleBase = angleBase;
             attackAngleHeight = angleHeight;

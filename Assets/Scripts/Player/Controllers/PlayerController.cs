@@ -7,6 +7,7 @@ using Player.Signals.BattleSceneSignals;
 using Player.Views;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using WeaponSystem.Managers;
 using Zenject;
 using Vector2 = UnityEngine.Vector2;
@@ -63,8 +64,7 @@ namespace Player.Controllers
 
         #region Attack Variables
 
-        private readonly float _lightAttackCooldownTimer = 1f;
-        private float _lightAttackTimer;
+        public bool canAttack;
 
         #endregion
 
@@ -86,16 +86,19 @@ namespace Player.Controllers
             Debug.Log("Initialize from Player Controller");
             SubscribeToActions();
             _canMove = true;
-            _canAttack = true;
             _isDashing = false;
             _canDash = true;
+            
+            canAttack = true;
+            canPerformLightAttack = true;
+            canPerformHeavyAttack = true;
+            
             _speed = MoveSpeed;
-
             _dashCooldownDuration = 2f;
             _totalDashCount = 2;
             _runningDataScriptable.playerController = this;
             
-            _signalBus.Fire(new HeavyAttackAngleIncrementSignal(3, 3));   // setting initial height to 4
+            _signalBus.Fire(new HeavyAttackChargeMeterSignal(3, 3));   // setting initial height to 4
         }
 
         #region Subscribe and Unsubscribe
@@ -108,6 +111,7 @@ namespace Player.Controllers
             _signalBus.Subscribe<PlayerMovementSignal>(Move);
             _signalBus.Subscribe<StartHeavyAttackSignal>(CheckHeavyAttackEligibility);
             _signalBus.Subscribe<StopHeavyAttackSignal>(StopHeavyAttack);
+            _signalBus.Subscribe<CancelHeavyAttackSignal>(CancelHeavyAttackWithDash);
         }
         
         private void UnsubscribeToActions()
@@ -117,6 +121,7 @@ namespace Player.Controllers
             _signalBus.Unsubscribe<PlayerMovementSignal>(Move);
             _signalBus.Unsubscribe<StartHeavyAttackSignal>(CheckHeavyAttackEligibility);
             _signalBus.Unsubscribe<StopHeavyAttackSignal>(StopHeavyAttack);
+            _signalBus.Unsubscribe<CancelHeavyAttackSignal>(CancelHeavyAttackWithDash);
         }
 
         #endregion
@@ -130,7 +135,10 @@ namespace Player.Controllers
             else if(_isAutoAttacking) 
                 AutoAttack();
             
-            if(_isHeavyAttackCharging)
+            if(heavyAttackTimer > 0)
+                heavyAttackTimer -= Time.fixedDeltaTime;
+            
+            if(isHeavyAttackCharging)
                 ChargeHeavyAttackMeter();
         }
 
@@ -180,13 +188,17 @@ namespace Player.Controllers
 
         #region Attack
 
-        public bool _canAttack;
+        public bool canPerformLightAttack;
+        private readonly float _lightAttackCooldownTimer = 1f;
+        private float _lightAttackTimer;
+
+        
         private void Attack()
         {
-            if(!_canAttack) return;
+            if(!canAttack) return;
             if(_lightAttackTimer > 0) return;
             if (!_weaponManager.TriggerControlledWeaponLightAttack()) return;
-            _playerView.playerAnimationController.PlayAnimation("attack");
+            _playerView.playerAnimationController.PlayAnimation("attack");  
             _lightAttackTimer = _lightAttackCooldownTimer;
         }
 
@@ -194,66 +206,90 @@ namespace Player.Controllers
 
         #region Heavy Attack
 
-        public bool _canPerformHeavyAttack = true;
-        public bool _isHeavyAttackCharging;
+        public bool canPerformHeavyAttack = true;
+        public bool isHeavyAttackCharging;
         
-        public float _heavyAttackChargeMeter = 0.1f;
-        public float _heavyAttackTimer;
+        public float heavyAttackChargeMeterDistance = 0.1f;
+        public float heavyAttackChargeMeterDistanceThreshold = 0.5f;
+        public const float HeavyAttackChargeMeterDistanceLimit = 3f;
         
-        public const float HeavyAttackMaxChargeLimit = 4f;
-        public const float HeavyAttackCooldownTimer = 3f;
+        public float heavyAttackChargeMeterAngle = 0.1f;
+        public float heavyAttackChargeMeterAngleThreshold = 2f;
+        public const float HeavyAttackChargeMeterAngleLimit = 10f;
+        
+        
+        public float heavyAttackTimer;
+        public const float HeavyAttackCooldownTimer = 5f;
         private void CheckHeavyAttackEligibility()
         {
-            if(!_canAttack) return;
-            if(!_canPerformHeavyAttack) return;
-            if(_isHeavyAttackCharging) return;
-            if(_heavyAttackTimer > 0) return;
+            if(!canAttack) return;
+            if(!canPerformHeavyAttack) return;
+            if(isHeavyAttackCharging) return;
+            if(heavyAttackTimer > 0) return;
             InitiateHeavyAttackCharge();
         }
 
         private void InitiateHeavyAttackCharge()
         {
             _canMove = false;
-            _canPerformHeavyAttack = false;
-            _heavyAttackChargeMeter = 0f;
-            _isHeavyAttackCharging = true;
-            Debug.LogWarning($"heavy attack Charging: {_isHeavyAttackCharging}");
+            canPerformHeavyAttack = false;
+            heavyAttackChargeMeterDistance = 0f;
+            _playerView.rb.linearVelocity = Vector2.zero;
+            isHeavyAttackCharging = true;
         }
 
         private void ChargeHeavyAttackMeter()
         {
-            //TODO: Check for heavy attack cancellations
-            if (_heavyAttackChargeMeter < HeavyAttackMaxChargeLimit)
+            if (heavyAttackChargeMeterDistance < HeavyAttackChargeMeterDistanceLimit)
             {
-                _heavyAttackChargeMeter += Time.fixedDeltaTime;
-                _heavyAttackChargeMeter = Mathf.Clamp(_heavyAttackChargeMeter, 0, HeavyAttackMaxChargeLimit);
-                _signalBus.Fire(new HeavyAttackAngleIncrementSignal(5, _heavyAttackChargeMeter * 4)); // meter increasing
+                heavyAttackChargeMeterDistance += Time.fixedDeltaTime;
+                heavyAttackChargeMeterDistance = Mathf.Clamp(heavyAttackChargeMeterDistance, 0.1f, HeavyAttackChargeMeterDistanceLimit);
+                
+                heavyAttackChargeMeterAngle += 0.06f;
+                heavyAttackChargeMeterAngle = Mathf.Clamp(heavyAttackChargeMeterAngle, 0.1f, HeavyAttackChargeMeterAngleLimit);
+                
+                _signalBus.Fire(new HeavyAttackChargeMeterSignal(heavyAttackChargeMeterAngle, heavyAttackChargeMeterDistance * 3)); // meter increasing
                 return;
             }
             
-            _signalBus.Fire(new HeavyAttackAngleIncrementSignal(5, HeavyAttackMaxChargeLimit * 4));   // meter max base 90 degrees
+            _signalBus.Fire(new HeavyAttackChargeMeterSignal(heavyAttackChargeMeterAngle, HeavyAttackChargeMeterDistanceLimit * 3));   // meter max base 90 degrees
             PerformHeavyAttack();
             StopHeavyAttack();
         }
         
         private void PerformHeavyAttack()
         {
-            if(!_canAttack) return;
-            
+            if(!canAttack) return;
             if (!_weaponManager.TriggerControlledWeaponHeavyAttack()) return;
             _playerView.playerAnimationController.PlayAnimation("attack");
-            _heavyAttackTimer = HeavyAttackCooldownTimer;
+            
+            heavyAttackChargeMeterDistance = 0f;
+            heavyAttackChargeMeterAngle = 0f;
+            heavyAttackTimer = HeavyAttackCooldownTimer;
         }
         
         private void StopHeavyAttack()
         {
-            if(!_isHeavyAttackCharging) return;
-            _isHeavyAttackCharging = false;
+            if(!isHeavyAttackCharging) return;
+            isHeavyAttackCharging = false;
+            
+            if(heavyAttackChargeMeterDistance >= heavyAttackChargeMeterDistanceThreshold && 
+               heavyAttackChargeMeterAngle >= heavyAttackChargeMeterAngleThreshold) 
+                PerformHeavyAttack();
+            
             _canMove = true;
-            _heavyAttackChargeMeter = 0f;
-            _heavyAttackTimer = 0f;
-            _signalBus.Fire(new HeavyAttackAngleIncrementSignal(3, 3));   // meter back to normal
-            _canPerformHeavyAttack = true;
+            heavyAttackChargeMeterDistance = 0f;
+            heavyAttackChargeMeterAngle = 0f;
+            _signalBus.Fire(new HeavyAttackChargeMeterSignal(3, 3));   // meter back to normal
+            canPerformHeavyAttack = true;
+        }
+
+        private void CancelHeavyAttackWithDash()
+        {
+            heavyAttackChargeMeterAngle = 0;
+            heavyAttackChargeMeterDistance = 0;
+            StopHeavyAttack();
+            heavyAttackTimer = HeavyAttackCooldownTimer / 2f;
         }
         
         #endregion
@@ -264,8 +300,7 @@ namespace Player.Controllers
 
         private void AutoAttack()
         {
-            if(!_canAttack) return;
-            if(_lightAttackTimer > 0) return;
+            if(!canAttack) return;
             var closestEnemyPosition = _runningDataScriptable.closestEnemyToPlayer;
             var direction = (_playerView.transform.position - closestEnemyPosition).normalized * -1;
             _runningDataScriptable.attackDirection = direction;
@@ -275,7 +310,8 @@ namespace Player.Controllers
 
             var angle = Mathf.Atan2(playerAttackAngleDirection.y, playerAttackAngleDirection.x) * Mathf.Rad2Deg - 90;
             _runningDataScriptable.attackAngle = angle;
-            Attack();
+            
+            if(_lightAttackTimer <= 0 && canPerformLightAttack) Attack();
         }
         
         #endregion
@@ -289,7 +325,7 @@ namespace Player.Controllers
             if(_isDashing) return;
             if(_dashCount <= 0) return;
             Debug.Log("Start Dash called");
-            _canAttack = false;
+            canAttack = false;
             _isDashing = true;
             
             LungeDash();
@@ -340,7 +376,7 @@ namespace Player.Controllers
             if(!_isDashing) return;
             Debug.Log("Stop Dash called");
             _speed = MoveSpeed;
-            _canAttack = true;
+            canAttack = true;
             _isDashing = false;
         }
 

@@ -30,7 +30,7 @@ namespace Player
         private void SubscribeToActions()
         {
             _signalBus.Subscribe<MouseMovementSignal>(DetermineAttackAngle);
-            _signalBus.Subscribe<HeavyAttackAngleIncrementSignal>(ConstructTriangle);
+            _signalBus.Subscribe<HeavyAttackChargeMeterSignal>(ConstructTriangle);
         }
         
         private void DetermineAttackAngle()
@@ -44,10 +44,10 @@ namespace Player
             _runningDataScriptable.attackAngle = angle;
         }
         
-        private void ConstructTriangle(HeavyAttackAngleIncrementSignal heavyAttackAngleIncrementSignal)
+        private void ConstructTriangle(HeavyAttackChargeMeterSignal heavyAttackChargeMeterSignal)
         {
-            var baseLength = heavyAttackAngleIncrementSignal.attackAngleBase;
-            var height = heavyAttackAngleIncrementSignal.attackAngleHeight;
+            var baseLength = heavyAttackChargeMeterSignal.attackAngleBase;
+            var height = heavyAttackChargeMeterSignal.attackAngleHeight;
             if (points[0] == null || points[1] == null || points[2] == null)
             {
                 Debug.LogError("Please assign all vertex GameObjects!");
@@ -79,7 +79,7 @@ namespace Player
         private void UnsubscribeToActions()
         {
             _signalBus.Unsubscribe<MouseMovementSignal>(DetermineAttackAngle);
-            _signalBus.Unsubscribe<HeavyAttackAngleIncrementSignal>(ConstructTriangle);
+            _signalBus.Unsubscribe<HeavyAttackChargeMeterSignal>(ConstructTriangle);
         }
 
         private void OnDestroy()

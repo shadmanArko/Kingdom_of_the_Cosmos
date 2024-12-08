@@ -17,6 +17,7 @@ namespace Installers.PlayerInstaller
             Container.Bind<PlayerView>().FromComponentInNewPrefab(playerView).AsSingle();
 
             Container.DeclareSignal<PlayerMovementSignal>();
+            Container.DeclareSignal<CancelHeavyAttackSignal>();
         }
     }
 }

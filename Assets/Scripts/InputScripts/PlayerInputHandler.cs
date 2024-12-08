@@ -169,6 +169,7 @@ namespace InputScripts
 
         private void StartDash()
         {
+            _signalBus.Fire<CancelHeavyAttackSignal>();
             _signalBus.Fire<StartDashSignal>();
         }
         

@@ -9,6 +9,7 @@ namespace DBMS.RunningData
     public class RunningDataScriptable : ScriptableObject
     {
         public PlayerController playerController;
+        public Vector2 moveDirection;
         public Vector2 attackDirection;
         public List<Vector2> attackAnglePoints;
         public float attackAngle;

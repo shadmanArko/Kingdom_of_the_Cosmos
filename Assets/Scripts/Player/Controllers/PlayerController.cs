@@ -7,7 +7,6 @@ using Player.Signals.BattleSceneSignals;
 using Player.Views;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Serialization;
 using WeaponSystem.Managers;
 using Zenject;
 using Vector2 = UnityEngine.Vector2;
@@ -56,9 +55,9 @@ namespace Player.Controllers
 
         #region Move Variables
 
-        public float MoveSpeed = 3f;
-        private Vector2 _movement;
-        private bool _canMove;
+        public float moveSpeed = 3f;
+        public Vector2 movement;
+        public bool canMove;
 
         #endregion
 
@@ -85,7 +84,7 @@ namespace Player.Controllers
         {
             Debug.Log("Initialize from Player Controller");
             SubscribeToActions();
-            _canMove = true;
+            canMove = true;
             _isDashing = false;
             _canDash = true;
             
@@ -93,7 +92,7 @@ namespace Player.Controllers
             canPerformLightAttack = true;
             canPerformHeavyAttack = true;
             
-            _speed = MoveSpeed;
+            _speed = moveSpeed;
             _dashCooldownDuration = 2f;
             _totalDashCount = 2;
             _runningDataScriptable.playerController = this;
@@ -146,21 +145,21 @@ namespace Player.Controllers
 
         private void Move(PlayerMovementSignal playerMovementSignal)
         {
-            if(!_canMove) return;
-            var direction = playerMovementSignal.MovePos;
-            _movement = direction.normalized;
-            
-            if (!_isDashing)
-            {
-                _movement = direction.normalized;
-                _playerView.rb.linearVelocity = _movement * _speed;
-            }
-            else
-            {
-                Debug.Log("Dashing...");
-                _dashDirection = _isRollDashing ? direction.normalized : _dashDirection;
-                _playerView.rb.linearVelocity = _dashDirection * _speed;
-            }
+            movement = playerMovementSignal.MovePos.normalized;
+            Debug.LogWarning($"direction: {movement.x}, {movement.y}");
+            if(!canMove) return;
+            _playerView.rb.linearVelocity = movement * _speed;
+            // if (!_isDashing)
+            // {
+            //     // movement = direction.normalized;
+            //     _playerView.rb.linearVelocity = movement * _speed;
+            // }
+            // else
+            // {
+            //     Debug.Log("Dashing...");
+            //     // _dashDirection = _isRollDashing ? movement : _dashDirection;
+            //     _playerView.rb.linearVelocity = _dashDirection * _speed;
+            // }
 
             if (_playerView.rb.linearVelocity.magnitude > 0)
             {
@@ -231,7 +230,7 @@ namespace Player.Controllers
 
         private void InitiateHeavyAttackCharge()
         {
-            _canMove = false;
+            canMove = false;
             canPerformHeavyAttack = false;
             heavyAttackChargeMeterDistance = 0f;
             _playerView.rb.linearVelocity = Vector2.zero;
@@ -277,7 +276,7 @@ namespace Player.Controllers
                heavyAttackChargeMeterAngle >= heavyAttackChargeMeterAngleThreshold) 
                 PerformHeavyAttack();
             
-            _canMove = true;
+            canMove = true;
             heavyAttackChargeMeterDistance = 0f;
             heavyAttackChargeMeterAngle = 0f;
             _signalBus.Fire(new HeavyAttackChargeMeterSignal(3, 3));   // meter back to normal
@@ -288,7 +287,13 @@ namespace Player.Controllers
         {
             heavyAttackChargeMeterAngle = 0;
             heavyAttackChargeMeterDistance = 0;
-            StopHeavyAttack();
+            
+            // StopHeavyAttack();
+            canMove = true;
+            isHeavyAttackCharging = false;
+            canPerformHeavyAttack = true;
+            _signalBus.Fire(new HeavyAttackChargeMeterSignal(3, 3));   // meter back to normal
+            
             heavyAttackTimer = HeavyAttackCooldownTimer / 2f;
         }
         
@@ -320,7 +325,7 @@ namespace Player.Controllers
         
         private void StartDash()
         {
-            if(!_canMove) return;
+            if(!canMove) return;
             if(!_canDash) return;
             if(_isDashing) return;
             if(_dashCount <= 0) return;
@@ -336,7 +341,7 @@ namespace Player.Controllers
             try
             {
                 _isDashing = true;
-                _dashDirection = _movement.normalized;
+                _dashDirection = movement.normalized;
                 _isLungeDashing = true;
                 _speed = _lungeDashSpeed;
                 Debug.Log($"Lunge Dashing direction: {_dashDirection}");
@@ -347,7 +352,7 @@ namespace Player.Controllers
             }
             catch (Exception e)
             {
-                Debug.Log($"Lunge Dash Error: {e}");
+                Debug.LogError($"Lunge Dash Error: {e}");
             }
         }
 
@@ -355,7 +360,7 @@ namespace Player.Controllers
         {
             try
             {
-                _dashDirection = _movement.normalized;
+                _dashDirection = movement.normalized;
                 _isRollDashing = true;
                 _speed = _rollDashSpeed;
                 Debug.Log($"Roll Dashing direction: {_dashDirection}");
@@ -367,7 +372,7 @@ namespace Player.Controllers
             }
             catch (Exception e)
             {
-                Debug.Log($"Roll Dash Error: {e}");
+                Debug.LogError($"Roll Dash Error: {e}");
             }
         }
 
@@ -375,7 +380,7 @@ namespace Player.Controllers
         {
             if(!_isDashing) return;
             Debug.Log("Stop Dash called");
-            _speed = MoveSpeed;
+            _speed = moveSpeed;
             canAttack = true;
             _isDashing = false;
         }

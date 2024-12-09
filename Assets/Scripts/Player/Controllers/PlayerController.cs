@@ -146,20 +146,8 @@ namespace Player.Controllers
         private void Move(PlayerMovementSignal playerMovementSignal)
         {
             movement = playerMovementSignal.MovePos.normalized;
-            Debug.LogWarning($"direction: {movement.x}, {movement.y}");
             if(!canMove) return;
             _playerView.rb.linearVelocity = movement * _speed;
-            // if (!_isDashing)
-            // {
-            //     // movement = direction.normalized;
-            //     _playerView.rb.linearVelocity = movement * _speed;
-            // }
-            // else
-            // {
-            //     Debug.Log("Dashing...");
-            //     // _dashDirection = _isRollDashing ? movement : _dashDirection;
-            //     _playerView.rb.linearVelocity = _dashDirection * _speed;
-            // }
 
             if (_playerView.rb.linearVelocity.magnitude > 0)
             {
@@ -285,10 +273,10 @@ namespace Player.Controllers
 
         private void CancelHeavyAttackWithDash()
         {
+            if(!isHeavyAttackCharging) return;
             heavyAttackChargeMeterAngle = 0;
             heavyAttackChargeMeterDistance = 0;
             
-            // StopHeavyAttack();
             canMove = true;
             isHeavyAttackCharging = false;
             canPerformHeavyAttack = true;

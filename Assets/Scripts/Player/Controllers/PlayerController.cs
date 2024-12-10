@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Cinemachine;
 using DBMS.RunningData;
 using Enemy.Manager;
+using Player.Services;
 using Player.Signals.BattleSceneSignals;
 using Player.Views;
 using Unity.Mathematics;
@@ -17,11 +18,15 @@ namespace Player.Controllers
     public class PlayerController : IInitializable, IFixedTickable, IDisposable 
     {
         private CinemachineVirtualCamera _cineMachineVirtualCamera;
-        private readonly WeaponManager _weaponManager;
-        private EnemyManager _enemyManager;
+        
         private readonly RunningDataScriptable _runningDataScriptable;
         private readonly PlayerView _playerView;
         private readonly SignalBus _signalBus;
+        
+        private readonly WeaponManager _weaponManager;
+        private EnemyManager _enemyManager;
+        
+        private readonly WeaponThrowService _weaponThrowService;
         
         #region Player Settings Variables
 
@@ -69,20 +74,25 @@ namespace Player.Controllers
 
         #region Initializers
         
-        private PlayerController (CinemachineVirtualCamera cineMachineVirtualCamera,RunningDataScriptable runningDataScriptable, WeaponManager weaponManager, SignalBus signalBus, PlayerView playerView)
+        private PlayerController (CinemachineVirtualCamera cineMachineVirtualCamera,
+            RunningDataScriptable runningDataScriptable, 
+            WeaponManager weaponManager, 
+            SignalBus signalBus, 
+            PlayerView playerView,
+            WeaponThrowService weaponThrowService)
         {
             _cineMachineVirtualCamera = cineMachineVirtualCamera;
             _runningDataScriptable = runningDataScriptable;
             _weaponManager = weaponManager;
             _signalBus = signalBus;
             _playerView = playerView;
+            _weaponThrowService = weaponThrowService;
             
             _cineMachineVirtualCamera.Follow = playerView.transform;
         }
         
         public void Initialize()
         {
-            Debug.Log("Initialize from Player Controller");
             SubscribeToActions();
             canMove = true;
             _isDashing = false;
@@ -110,6 +120,8 @@ namespace Player.Controllers
             _signalBus.Subscribe<PlayerMovementSignal>(Move);
             _signalBus.Subscribe<StartHeavyAttackSignal>(CheckHeavyAttackEligibility);
             _signalBus.Subscribe<StopHeavyAttackSignal>(StopHeavyAttack);
+            _signalBus.Subscribe<CancelHeavyAttackSignal>(CancelHeavyAttackWithDash);
+            _signalBus.Subscribe<WeaponThrowStartSignal>(CancelHeavyAttackWithDash);
             _signalBus.Subscribe<CancelHeavyAttackSignal>(CancelHeavyAttackWithDash);
         }
         
@@ -386,6 +398,30 @@ namespace Player.Controllers
             {
                 Debug.Log($"Start Dash Cooldown Error: {e}");
             }
+        }
+
+        #endregion
+
+        #region Weapon Throw
+
+        public bool canThrowWeapon; 
+        private void CheckWeaponThrowEligibility()
+        {
+            if(!canThrowWeapon) return;
+            InitiateWeaponThrow();
+        }
+
+        private void InitiateWeaponThrow()
+        {
+            var weaponThrowEligible = _weaponManager.CheckEquippedWeaponThrowEligibility();
+            if(weaponThrowEligible)
+                _weaponThrowService.
+                
+        }
+
+        private void StopWeaponThrow()
+        {
+            
         }
 
         #endregion

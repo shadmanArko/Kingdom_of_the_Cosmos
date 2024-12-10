@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DBMS.RunningData;
 using DBMS.WeaponsData;
-using Player;
-using Player.Controllers;
 using Player.Signals.BattleSceneSignals;
 using Player.Views;
 using RicochetWeaponSystem;
@@ -17,7 +16,7 @@ using Zenject;
 
 namespace WeaponSystem.Managers
 {
-    public class WeaponManager
+    public class WeaponManager : IDisposable
     {
         private SignalBus _signalBus;
         private WeaponDatabaseScriptable _weaponDatabaseScriptable;
@@ -30,22 +29,10 @@ namespace WeaponSystem.Managers
 
         private IWeapon _activeControlledWeapon;
         private int _currentControlledIndex;
-
-        // private RayCastSystem _rayCastSystem;
-        private RicochetWeaponSystem.RicochetSystem _ricochetSystem;
         
-        [Inject]
-        public WeaponManager(SignalBus signalBus, WeaponDatabaseScriptable weaponDatabaseScriptable, WeaponDataLoader weaponDataLoader, RunningDataScriptable runningDataScriptable, RicochetSystem ricochetSystem, PlayerView playerView)
-        {
-            _signalBus = signalBus;
-            _weaponDatabaseScriptable = weaponDatabaseScriptable;
-            _runningDataScriptable = runningDataScriptable;
-            _weaponDataLoader = weaponDataLoader;
-            _ricochetSystem = ricochetSystem;
-            _playerView = playerView; 
-            SubscribeToActions();
-            Start();
-        }
+        private RicochetSystem _ricochetSystem;
+        
+        #region Subscribe and Unsubscribe
 
         private void SubscribeToActions()
         {
@@ -65,6 +52,23 @@ namespace WeaponSystem.Managers
             _signalBus.Unsubscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
         }
 
+        #endregion
+        
+        #region Initializers
+
+        [Inject]
+        public WeaponManager(SignalBus signalBus, WeaponDatabaseScriptable weaponDatabaseScriptable, WeaponDataLoader weaponDataLoader, RunningDataScriptable runningDataScriptable, RicochetSystem ricochetSystem, PlayerView playerView)
+        {
+            _signalBus = signalBus;
+            _weaponDatabaseScriptable = weaponDatabaseScriptable;
+            _runningDataScriptable = runningDataScriptable;
+            _weaponDataLoader = weaponDataLoader;
+            _ricochetSystem = ricochetSystem;
+            _playerView = playerView; 
+            SubscribeToActions();
+            Start();
+        }
+
         private void Start()
         {
             LoadWeaponDataFromJson();
@@ -72,6 +76,8 @@ namespace WeaponSystem.Managers
 
             _currentControlledIndex = 0;
         }
+
+        #endregion
 
         public void AddNewWeapon(WeaponData weaponData)
         {
@@ -131,7 +137,9 @@ namespace WeaponSystem.Managers
         }
 
         #endregion
-        
+
+        #region Controlled Weapon
+
         private void HandleControlledWeaponSwitch()
         {
             _activeControlledWeapon.Deactivate();
@@ -154,6 +162,10 @@ namespace WeaponSystem.Managers
             return true;
         }
 
+        #endregion
+
+        #region Automatic Weapon
+
         private void OnAutomaticWeaponTrigger(AutomaticWeaponTriggerSignal signal)
         {
             foreach (var weapon in automaticWeapons)
@@ -164,6 +176,20 @@ namespace WeaponSystem.Managers
                 }
             }
         }
+
+        #endregion
+
+        #region Throw Weapon
+
+        public bool CheckEquippedWeaponThrowEligibility()
+        {
+            //TODO: check if the currently active weapon can be thrown
+            //TODO: remove the equipped weapon from list of controlled weapons
+            //TODO: switch secondary weapon as equipped
+            return true;
+        }
+
+        #endregion
 
         private void LoadWeaponDataFromJson()
         {
@@ -220,6 +246,10 @@ namespace WeaponSystem.Managers
         }
 
         #endregion
-        
+
+        public void Dispose()
+        {
+            UnsubscribeToActions();
+        }
     }
 }

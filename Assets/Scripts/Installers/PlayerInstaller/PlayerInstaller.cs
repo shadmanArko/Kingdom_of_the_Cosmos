@@ -1,4 +1,5 @@
 ﻿using Player.Controllers;
+using Player.Services;
 using Player.Signals.BattleSceneSignals;
 using Player.Views;
 using UnityEngine;
@@ -15,6 +16,9 @@ namespace Installers.PlayerInstaller
         {
             Container.BindInterfacesAndSelfTo<PlayerController>().AsSingle().NonLazy();
             Container.Bind<PlayerView>().FromComponentInNewPrefab(playerView).AsSingle();
+            
+            //Services
+            Container.BindInterfacesAndSelfTo<WeaponThrowService>().AsSingle();
 
             Container.DeclareSignal<PlayerMovementSignal>();
             Container.DeclareSignal<CancelHeavyAttackSignal>();

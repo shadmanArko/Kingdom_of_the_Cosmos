@@ -37,7 +37,7 @@ namespace Enemy.Manager
         private float enemySpawningInterval = 1f;
         private float nextEnemySpawnTime;
         private EnemyData[] enemyDataArray;
-        public float moveSpeed = 1f;
+        public float moveSpeed = 0.25f;
         public float obstacleAvoidanceRadius = 1f;
         public float neighborAvoidanceRadius = 1f;
         public float collisionDistance = 1f;

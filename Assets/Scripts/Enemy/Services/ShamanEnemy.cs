@@ -22,8 +22,29 @@ namespace Enemy.Services
 
         public override void Attack(PlayerView target)
         {
-            Debug.Log("Shaman Attacked");
             isAttacking = false;
+        }
+
+        public override void MoveTowardsTarget(Transform targetTransform)
+        {
+            _rigidbody2D.linearVelocity = Vector2.zero;
+            var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
+            DistanceToPlayer = distanceToPlayer;
+
+            if (distanceToPlayer > MinDistanceToPlayer)
+            {
+                // Move towards player if too far
+                transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, MoveSpeed * Time.deltaTime);
+            }
+            if (distanceToPlayer < MinDistanceToPlayer && !isAttacking)
+            {
+                // Backtrack when player is too close
+                Vector3 backtrackDirection = transform.position - targetTransform.position;
+                transform.position = Vector3.MoveTowards(transform.position, transform.position + backtrackDirection, MoveSpeed * Time.deltaTime);
+                Debug.DrawRay(transform.position, targetTransform.position, Color.red);
+            }
+
+            Position = transform.position;
         }
 
         private void Update()

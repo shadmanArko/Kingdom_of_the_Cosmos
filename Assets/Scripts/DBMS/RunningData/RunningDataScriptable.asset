@@ -12,12 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7964aca377fbc4f48a134f1fff852df6, type: 3}
   m_Name: RunningDataScriptable
   m_EditorClassIdentifier: 
-  attackDirection: {x: -0.81236666, y: -0.58314705}
+  playerController:
+    MoveSpeed: 5
+    _canAttack: 1
+    _canPerformHeavyAttack: 1
+    _isHeavyAttackCharging: 0
+    _heavyAttackChargeMeter: 0
+    _heavyAttackTimer: 0
+  attackDirection: {x: -0.74920064, y: -0.42142516}
   attackAnglePoints:
-  - {x: -30.485338, y: -11.614241}
-  - {x: -33.58397, y: -16.300495}
-  - {x: -35.916557, y: -13.051029}
-  attackAngle: -234.32782
-  isAutoAttacking: 1
-  playerAttackAnglePosition: {x: -30.485338, y: -11.614241, z: 0}
-  closestEnemyToPlayer: {x: -31.018389, y: -13.607506, z: 0}
+  - {x: -18.30724, y: -24.193474}
+  - {x: -21.929726, y: -27.952143}
+  - {x: -23.40051, y: -25.337416}
+  attackAngle: -240.64226
+  playerAttackAnglePosition: {x: -18.30724, y: -24.193474, z: 0}
+  closestEnemyToPlayer: {x: -17.708933, y: -22.77212, z: 0}

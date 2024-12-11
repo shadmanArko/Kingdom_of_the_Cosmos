@@ -140,7 +140,14 @@ namespace WeaponSystem.Managers
             _activeControlledWeapon.Activate();
         }
 
-        public bool TriggerControlledWeapon()
+        public bool TriggerControlledWeaponLightAttack()
+        {
+            if(!_controlledWeapons[_currentControlledIndex].CanAttack()) return false;
+            _controlledWeapons[_currentControlledIndex].TriggerAttack();
+            return true;
+        }
+        
+        public bool TriggerControlledWeaponHeavyAttack()
         {
             if(!_controlledWeapons[_currentControlledIndex].CanAttack()) return false;
             _controlledWeapons[_currentControlledIndex].TriggerAttack();

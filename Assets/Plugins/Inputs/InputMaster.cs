@@ -31,7 +31,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""name"": ""MeleeAttack"",
                     ""type"": ""Button"",
                     ""id"": ""50d5c34e-a230-4b7b-89a8-dca173943c8e"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -55,12 +55,12 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Reload"",
+                    ""name"": ""HeavyAttack"",
                     ""type"": ""Button"",
                     ""id"": ""7d18a066-85e8-4e6c-9133-6cac944db393"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=0.1,pressPoint=0.1)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -185,7 +185,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Reload"",
+                    ""action"": ""HeavyAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -282,7 +282,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_PlayerControl_MeleeAttack = m_PlayerControl.FindAction("MeleeAttack", throwIfNotFound: true);
         m_PlayerControl_Movement = m_PlayerControl.FindAction("Movement", throwIfNotFound: true);
         m_PlayerControl_MousePosition = m_PlayerControl.FindAction("MousePosition", throwIfNotFound: true);
-        m_PlayerControl_Reload = m_PlayerControl.FindAction("Reload", throwIfNotFound: true);
+        m_PlayerControl_HeavyAttack = m_PlayerControl.FindAction("HeavyAttack", throwIfNotFound: true);
         m_PlayerControl_SwitchWeapon = m_PlayerControl.FindAction("SwitchWeapon", throwIfNotFound: true);
         m_PlayerControl_Dash = m_PlayerControl.FindAction("Dash", throwIfNotFound: true);
         m_PlayerControl_WeaponThrow = m_PlayerControl.FindAction("WeaponThrow", throwIfNotFound: true);
@@ -356,7 +356,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerControl_MeleeAttack;
     private readonly InputAction m_PlayerControl_Movement;
     private readonly InputAction m_PlayerControl_MousePosition;
-    private readonly InputAction m_PlayerControl_Reload;
+    private readonly InputAction m_PlayerControl_HeavyAttack;
     private readonly InputAction m_PlayerControl_SwitchWeapon;
     private readonly InputAction m_PlayerControl_Dash;
     private readonly InputAction m_PlayerControl_WeaponThrow;
@@ -368,7 +368,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @MeleeAttack => m_Wrapper.m_PlayerControl_MeleeAttack;
         public InputAction @Movement => m_Wrapper.m_PlayerControl_Movement;
         public InputAction @MousePosition => m_Wrapper.m_PlayerControl_MousePosition;
-        public InputAction @Reload => m_Wrapper.m_PlayerControl_Reload;
+        public InputAction @HeavyAttack => m_Wrapper.m_PlayerControl_HeavyAttack;
         public InputAction @SwitchWeapon => m_Wrapper.m_PlayerControl_SwitchWeapon;
         public InputAction @Dash => m_Wrapper.m_PlayerControl_Dash;
         public InputAction @WeaponThrow => m_Wrapper.m_PlayerControl_WeaponThrow;
@@ -391,9 +391,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @MousePosition.started += instance.OnMousePosition;
             @MousePosition.performed += instance.OnMousePosition;
             @MousePosition.canceled += instance.OnMousePosition;
-            @Reload.started += instance.OnReload;
-            @Reload.performed += instance.OnReload;
-            @Reload.canceled += instance.OnReload;
+            @HeavyAttack.started += instance.OnHeavyAttack;
+            @HeavyAttack.performed += instance.OnHeavyAttack;
+            @HeavyAttack.canceled += instance.OnHeavyAttack;
             @SwitchWeapon.started += instance.OnSwitchWeapon;
             @SwitchWeapon.performed += instance.OnSwitchWeapon;
             @SwitchWeapon.canceled += instance.OnSwitchWeapon;
@@ -419,9 +419,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @MousePosition.started -= instance.OnMousePosition;
             @MousePosition.performed -= instance.OnMousePosition;
             @MousePosition.canceled -= instance.OnMousePosition;
-            @Reload.started -= instance.OnReload;
-            @Reload.performed -= instance.OnReload;
-            @Reload.canceled -= instance.OnReload;
+            @HeavyAttack.started -= instance.OnHeavyAttack;
+            @HeavyAttack.performed -= instance.OnHeavyAttack;
+            @HeavyAttack.canceled -= instance.OnHeavyAttack;
             @SwitchWeapon.started -= instance.OnSwitchWeapon;
             @SwitchWeapon.performed -= instance.OnSwitchWeapon;
             @SwitchWeapon.canceled -= instance.OnSwitchWeapon;
@@ -483,7 +483,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnMeleeAttack(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
-        void OnReload(InputAction.CallbackContext context);
+        void OnHeavyAttack(InputAction.CallbackContext context);
         void OnSwitchWeapon(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnWeaponThrow(InputAction.CallbackContext context);

@@ -13,20 +13,20 @@ using Vector2 = UnityEngine.Vector2;
 
 namespace Player.Controllers
 {
+    [Serializable]
     public class PlayerController : IInitializable, IFixedTickable, IDisposable 
     {
         private CinemachineVirtualCamera _cineMachineVirtualCamera;
-        private WeaponManager _weaponManager;
+        private readonly WeaponManager _weaponManager;
         private EnemyManager _enemyManager;
-        private RunningDataScriptable _runningDataScriptable;
-        private PlayerView _playerView;
-        private SignalBus _signalBus;
+        private readonly RunningDataScriptable _runningDataScriptable;
+        private readonly PlayerView _playerView;
+        private readonly SignalBus _signalBus;
         
-        public float speed = 5f;
-
         #region Player Settings Variables
 
-        public bool isAutoAttacking;
+        private bool _isAutoAttacking;
+        private float _speed = 5f;
 
         #endregion
 
@@ -63,8 +63,8 @@ namespace Player.Controllers
 
         #region Attack Variables
 
-        private readonly float _attackInterval = 1;
-        private float _attackTimer;
+        private readonly float _lightAttackCooldownTimer = 1f;
+        private float _lightAttackTimer;
 
         #endregion
 
@@ -89,10 +89,11 @@ namespace Player.Controllers
             _canAttack = true;
             _isDashing = false;
             _canDash = true;
-            speed = MoveSpeed;
+            _speed = MoveSpeed;
 
             _dashCooldownDuration = 2f;
             _totalDashCount = 2;
+            _runningDataScriptable.playerController = this;
         }
 
         #region Subscribe and Unsubscribe
@@ -103,6 +104,8 @@ namespace Player.Controllers
             _signalBus.Subscribe<StopDashSignal>(() => { });
             _signalBus.Subscribe<ToggleAutoAttackSignal>(ToggleAutoAttack);
             _signalBus.Subscribe<PlayerMovementSignal>(Move);
+            _signalBus.Subscribe<StartHeavyAttackSignal>(CheckHeavyAttackEligibility);
+            _signalBus.Subscribe<StopHeavyAttackSignal>(StopHeavyAttack);
         }
         
         private void UnsubscribeToActions()
@@ -110,6 +113,8 @@ namespace Player.Controllers
             _signalBus.Unsubscribe<StartDashSignal>(StartDash);
             _signalBus.Unsubscribe<ToggleAutoAttackSignal>(ToggleAutoAttack);
             _signalBus.Unsubscribe<PlayerMovementSignal>(Move);
+            _signalBus.Unsubscribe<StartHeavyAttackSignal>(CheckHeavyAttackEligibility);
+            _signalBus.Unsubscribe<StopHeavyAttackSignal>(StopHeavyAttack);
         }
 
         #endregion
@@ -118,12 +123,17 @@ namespace Player.Controllers
         
         public void FixedTick()
         {
-            if (_attackTimer > 0)
-                _attackTimer -= Time.fixedDeltaTime;
-            else if(isAutoAttacking) 
+            if (_lightAttackTimer > 0)
+                _lightAttackTimer -= Time.fixedDeltaTime;
+            else if(_isAutoAttacking) 
                 AutoAttack();
+            
+            if(_isHeavyAttackCharging)
+                ChargeHeavyAttackMeter();
         }
-        
+
+        #region Player Movement
+
         private void Move(PlayerMovementSignal playerMovementSignal)
         {
             if(!_canMove) return;
@@ -133,13 +143,13 @@ namespace Player.Controllers
             if (!_isDashing)
             {
                 _movement = direction.normalized;
-                _playerView.rb.linearVelocity = _movement * speed;
+                _playerView.rb.linearVelocity = _movement * _speed;
             }
             else
             {
                 Debug.Log("Dashing...");
                 _dashDirection = _isRollDashing ? direction.normalized : _dashDirection;
-                _playerView.rb.linearVelocity = _dashDirection * speed;
+                _playerView.rb.linearVelocity = _dashDirection * _speed;
             }
 
             if (_playerView.rb.linearVelocity.magnitude > 0)
@@ -164,28 +174,95 @@ namespace Player.Controllers
             // }
         }
 
+        #endregion
+
         #region Attack
 
-        private bool _canAttack;
+        public bool _canAttack;
         private void Attack()
         {
             if(!_canAttack) return;
-            if(_attackTimer > 0) return;
-            if (!_weaponManager.TriggerControlledWeapon()) return;
+            if(_lightAttackTimer > 0) return;
+            if (!_weaponManager.TriggerControlledWeaponLightAttack()) return;
             _playerView.playerAnimationController.PlayAnimation("attack");
-            _attackTimer = _attackInterval;
+            _lightAttackTimer = _lightAttackCooldownTimer;
         }
 
         #endregion
 
+        #region Heavy Attack
+
+        public bool _canPerformHeavyAttack = true;
+        public bool _isHeavyAttackCharging;
+        
+        public float _heavyAttackChargeMeter = 0.1f;
+        public float _heavyAttackTimer;
+        
+        public const float HeavyAttackMaxChargeLimit = 4f;
+        public const float HeavyAttackCooldownTimer = 3f;
+        private void CheckHeavyAttackEligibility()
+        {
+            if(!_canAttack) return;
+            if(!_canPerformHeavyAttack) return;
+            if(_isHeavyAttackCharging) return;
+            if(_heavyAttackTimer > 0) return;
+            InitiateHeavyAttackCharge();
+        }
+
+        private void InitiateHeavyAttackCharge()
+        {
+            _canMove = false;
+            _canPerformHeavyAttack = false;
+            _heavyAttackChargeMeter = 0f;
+            _isHeavyAttackCharging = true;
+            Debug.LogWarning($"heavy attack Charging: {_isHeavyAttackCharging}");
+        }
+
+        private void ChargeHeavyAttackMeter()
+        {
+            //TODO: Check for heavy attack cancellations
+            if (_heavyAttackChargeMeter < HeavyAttackMaxChargeLimit)
+            {
+                _heavyAttackChargeMeter += Time.fixedDeltaTime;
+                _heavyAttackChargeMeter = Mathf.Clamp(_heavyAttackChargeMeter, 0, HeavyAttackMaxChargeLimit);
+                _signalBus.Fire(new HeavyAttackAngleIncrementSignal(20, _heavyAttackChargeMeter * 5)); // meter increasing
+                return;
+            }
+            
+            _signalBus.Fire(new HeavyAttackAngleIncrementSignal(20, HeavyAttackMaxChargeLimit * 5));   // meter max
+            PerformHeavyAttack();
+        }
+        
+        private void PerformHeavyAttack()
+        {
+            if(!_canAttack) return;
+            
+            if (!_weaponManager.TriggerControlledWeaponHeavyAttack()) return;
+            _playerView.playerAnimationController.PlayAnimation("attack");
+            _heavyAttackTimer = HeavyAttackCooldownTimer;
+        }
+        
+        private void StopHeavyAttack()
+        {
+            if(!_isHeavyAttackCharging) return;
+            _isHeavyAttackCharging = false;
+            _canMove = true;
+            _heavyAttackChargeMeter = 0f;
+            _heavyAttackTimer = 0f;
+            _signalBus.Fire(new HeavyAttackAngleIncrementSignal(3, 5));   // meter back to normal
+            _canPerformHeavyAttack = true;
+        }
+        
+        #endregion
+
         #region Auto Attack
 
-        private void ToggleAutoAttack() => isAutoAttacking = !isAutoAttacking;
+        private void ToggleAutoAttack() => _isAutoAttacking = !_isAutoAttacking;
 
         private void AutoAttack()
         {
-            if(_attackTimer > 0) return;
-            //TODO: GET CLOSEST ENEMY AND DIRECT THE
+            if(!_canAttack) return;
+            if(_lightAttackTimer > 0) return;
             var closestEnemyPosition = _runningDataScriptable.closestEnemyToPlayer;
             var direction = (_playerView.transform.position - closestEnemyPosition).normalized * -1;
             _runningDataScriptable.attackDirection = direction;
@@ -196,7 +273,6 @@ namespace Player.Controllers
             var angle = Mathf.Atan2(playerAttackAngleDirection.y, playerAttackAngleDirection.x) * Mathf.Rad2Deg - 90;
             _runningDataScriptable.attackAngle = angle;
             Attack();
-            Debug.Log("Playing auto attack");
         }
         
         #endregion
@@ -205,6 +281,7 @@ namespace Player.Controllers
         
         private void StartDash()
         {
+            if(!_canMove) return;
             if(!_canDash) return;
             if(_isDashing) return;
             if(_dashCount <= 0) return;
@@ -222,7 +299,7 @@ namespace Player.Controllers
                 _isDashing = true;
                 _dashDirection = _movement.normalized;
                 _isLungeDashing = true;
-                speed = _lungeDashSpeed;
+                _speed = _lungeDashSpeed;
                 Debug.Log($"Lunge Dashing direction: {_dashDirection}");
                 await Task.Delay(Mathf.CeilToInt(_lungeDashDuration * 1000));
                 _isLungeDashing = false;
@@ -241,7 +318,7 @@ namespace Player.Controllers
             {
                 _dashDirection = _movement.normalized;
                 _isRollDashing = true;
-                speed = _rollDashSpeed;
+                _speed = _rollDashSpeed;
                 Debug.Log($"Roll Dashing direction: {_dashDirection}");
                 await Task.Delay(Mathf.CeilToInt(_rollDashDuration * 1000));
                 _isRollDashing = false;
@@ -259,7 +336,7 @@ namespace Player.Controllers
         {
             if(!_isDashing) return;
             Debug.Log("Stop Dash called");
-            speed = MoveSpeed;
+            _speed = MoveSpeed;
             _canAttack = true;
             _isDashing = false;
         }
@@ -282,7 +359,6 @@ namespace Player.Controllers
         #endregion
         
         
-
         public void Dispose()
         {
             UnsubscribeToActions();

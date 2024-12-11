@@ -19,6 +19,9 @@ namespace Installers.Weapon
         
             Container.DeclareSignal<AutomaticWeaponTriggerSignal>();
             Container.DeclareSignal<MeleeAttackSignal>();
+            Container.DeclareSignal<StartHeavyAttackSignal>();
+            Container.DeclareSignal<StopHeavyAttackSignal>();
+            Container.DeclareSignal<HeavyAttackAngleIncrementSignal>();
             Container.DeclareSignal<MouseMovementSignal>();
             Container.DeclareSignal<ReloadSignal>();
             Container.DeclareSignal<SwitchControlledWeaponSignal>();

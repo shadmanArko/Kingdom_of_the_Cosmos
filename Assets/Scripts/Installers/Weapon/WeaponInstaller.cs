@@ -1,4 +1,5 @@
 using DBMS.WeaponsData;
+using Player.Services;
 using Player.Signals.BattleSceneSignals;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,10 +14,14 @@ namespace Installers.Weapon
     {
         [FormerlySerializedAs("weaponDataScriptable")] [SerializeField] private WeaponDatabaseScriptable weaponDatabaseScriptable;
         [SerializeField] private RicochetWeaponSystem.RicochetSystem _ricochetSystem;
+
+        [SerializeField] private GameObject throwablePrefab;
+            
         public override void InstallBindings()
         {
             SignalBusInstaller.Install(Container);
         
+            //Signals
             Container.DeclareSignal<AutomaticWeaponTriggerSignal>();
             Container.DeclareSignal<MeleeAttackSignal>();
             Container.DeclareSignal<StartHeavyAttackSignal>();
@@ -34,11 +39,17 @@ namespace Installers.Weapon
             Container.Bind<WeaponManager>().AsSingle().NonLazy();
             Container.Bind<WeaponDataLoader>().AsSingle().NonLazy();
 
-            Container.Bind<RicochetWeaponSystem.RicochetSystem>().FromComponentInNewPrefab(_ricochetSystem).AsSingle()
-                .NonLazy();
+            //Systems
+            Container.Bind<RicochetWeaponSystem.RicochetSystem>().FromComponentInNewPrefab(_ricochetSystem).AsSingle().NonLazy();
+            
+            //Services
+            Container.BindInterfacesAndSelfTo<WeaponThrowService>().AsSingle().WithArguments(throwablePrefab);
         
-        
+            //Scriptables
             Container.Bind<WeaponDatabaseScriptable>().FromScriptableObject(weaponDatabaseScriptable).AsSingle().NonLazy();
+
+            //Prefabs
+            // Container.Bind<GameObject>().FromComponentInNewPrefab(throwablePrefab).AsSingle();
         }
     }
 }

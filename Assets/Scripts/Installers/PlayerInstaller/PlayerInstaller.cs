@@ -18,7 +18,6 @@ namespace Installers.PlayerInstaller
             Container.Bind<PlayerView>().FromComponentInNewPrefab(playerView).AsSingle();
             
             //Services
-            Container.BindInterfacesAndSelfTo<WeaponThrowService>().AsSingle();
 
             Container.DeclareSignal<PlayerMovementSignal>();
             Container.DeclareSignal<CancelHeavyAttackSignal>();

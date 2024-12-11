@@ -121,8 +121,8 @@ namespace Player.Controllers
             _signalBus.Subscribe<StartHeavyAttackSignal>(CheckHeavyAttackEligibility);
             _signalBus.Subscribe<StopHeavyAttackSignal>(StopHeavyAttack);
             _signalBus.Subscribe<CancelHeavyAttackSignal>(CancelHeavyAttackWithDash);
-            _signalBus.Subscribe<WeaponThrowStartSignal>(CancelHeavyAttackWithDash);
-            _signalBus.Subscribe<CancelHeavyAttackSignal>(CancelHeavyAttackWithDash);
+            _signalBus.Subscribe<WeaponThrowStartSignal>(CheckWeaponThrowEligibility);
+            _signalBus.Subscribe<WeaponThrowStopSignal>(StopWeaponThrow);
         }
         
         private void UnsubscribeToActions()
@@ -344,7 +344,6 @@ namespace Player.Controllers
                 _dashDirection = movement.normalized;
                 _isLungeDashing = true;
                 _speed = _lungeDashSpeed;
-                Debug.Log($"Lunge Dashing direction: {_dashDirection}");
                 await Task.Delay(Mathf.CeilToInt(_lungeDashDuration * 1000));
                 _isLungeDashing = false;
             
@@ -363,7 +362,6 @@ namespace Player.Controllers
                 _dashDirection = movement.normalized;
                 _isRollDashing = true;
                 _speed = _rollDashSpeed;
-                Debug.Log($"Roll Dashing direction: {_dashDirection}");
                 await Task.Delay(Mathf.CeilToInt(_rollDashDuration * 1000));
                 _isRollDashing = false;
             
@@ -379,7 +377,6 @@ namespace Player.Controllers
         private void StopDash()
         {
             if(!_isDashing) return;
-            Debug.Log("Stop Dash called");
             _speed = moveSpeed;
             canAttack = true;
             _isDashing = false;
@@ -404,7 +401,7 @@ namespace Player.Controllers
 
         #region Weapon Throw
 
-        public bool canThrowWeapon; 
+        public bool canThrowWeapon = true; 
         private void CheckWeaponThrowEligibility()
         {
             if(!canThrowWeapon) return;
@@ -414,8 +411,7 @@ namespace Player.Controllers
         private void InitiateWeaponThrow()
         {
             var weaponThrowEligible = _weaponManager.CheckEquippedWeaponThrowEligibility();
-            if(weaponThrowEligible)
-                _weaponThrowService.
+            
                 
         }
 

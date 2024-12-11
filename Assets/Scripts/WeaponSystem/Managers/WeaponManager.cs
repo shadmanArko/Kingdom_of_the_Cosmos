@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DBMS.RunningData;
 using DBMS.WeaponsData;
+using Player.Services;
 using Player.Signals.BattleSceneSignals;
 using Player.Views;
 using RicochetWeaponSystem;
@@ -24,6 +25,8 @@ namespace WeaponSystem.Managers
         private WeaponDataLoader _weaponDataLoader;
         private PlayerView _playerView;
 
+        private readonly WeaponThrowService _weaponThrowService;
+
         private List<IWeapon> _controlledWeapons = new();
         private List<IWeapon> automaticWeapons = new();
 
@@ -38,7 +41,7 @@ namespace WeaponSystem.Managers
         {
             _signalBus.Subscribe<ReloadSignal>(Reload);
             _signalBus.Subscribe<SwitchControlledWeaponSignal>(HandleControlledWeaponSwitch);
-            _signalBus.Subscribe<WeaponThrowStartSignal>(StartWeaponThrow);
+            // _signalBus.Subscribe<WeaponThrowStartSignal>(StartWeaponThrow);
             _signalBus.Subscribe<WeaponThrowStopSignal>(StopWeaponThrow);
             _signalBus.Subscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
         }
@@ -47,7 +50,7 @@ namespace WeaponSystem.Managers
         {
             _signalBus.Unsubscribe<ReloadSignal>(Reload);
             _signalBus.Unsubscribe<SwitchControlledWeaponSignal>(HandleControlledWeaponSwitch);
-            _signalBus.Unsubscribe<WeaponThrowStartSignal>(StartWeaponThrow);
+            // _signalBus.Unsubscribe<WeaponThrowStartSignal>(StartWeaponThrow);
             _signalBus.Unsubscribe<WeaponThrowStopSignal>(StopWeaponThrow);
             _signalBus.Unsubscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
         }
@@ -57,14 +60,22 @@ namespace WeaponSystem.Managers
         #region Initializers
 
         [Inject]
-        public WeaponManager(SignalBus signalBus, WeaponDatabaseScriptable weaponDatabaseScriptable, WeaponDataLoader weaponDataLoader, RunningDataScriptable runningDataScriptable, RicochetSystem ricochetSystem, PlayerView playerView)
+        public WeaponManager(SignalBus signalBus, 
+            WeaponDatabaseScriptable weaponDatabaseScriptable, 
+            WeaponDataLoader weaponDataLoader, 
+            RunningDataScriptable runningDataScriptable, 
+            RicochetSystem ricochetSystem, 
+            PlayerView playerView,
+            WeaponThrowService weaponThrowService)
         {
             _signalBus = signalBus;
             _weaponDatabaseScriptable = weaponDatabaseScriptable;
             _runningDataScriptable = runningDataScriptable;
             _weaponDataLoader = weaponDataLoader;
             _ricochetSystem = ricochetSystem;
-            _playerView = playerView; 
+            _playerView = playerView;
+            _weaponThrowService = weaponThrowService;
+            
             SubscribeToActions();
             Start();
         }
@@ -186,6 +197,7 @@ namespace WeaponSystem.Managers
             //TODO: check if the currently active weapon can be thrown
             //TODO: remove the equipped weapon from list of controlled weapons
             //TODO: switch secondary weapon as equipped
+            _weaponThrowService.StartWeaponThrow(_activeControlledWeapon);
             return true;
         }
 
@@ -219,26 +231,26 @@ namespace WeaponSystem.Managers
             Debug.Log("Unsubscribe melee weapon");
         }
 
-        [SerializeField] private List<DummyEnemy> enemies;
-        private void StartWeaponThrow()
-        {
-            var mouseDirection = _runningDataScriptable.attackDirection;
-            List<RicochetHitInfo> hits = _ricochetSystem.CalculateRicochetPath(_playerView.transform.position, mouseDirection);
-            Debug.Log("Casting Ray");
-            Debug.Log($"Hit count: {hits.Count}");
-            foreach (var hit in hits)
-            {
-                if (!hit.HitDummyEnemy.IsShielded)
-                {
-                    //TODO: Apply Damage
-                    Debug.Log("Targeting non-shielded enemy");
-                }
-                else
-                {
-                    Debug.Log("RICOCHET");
-                }
-            }
-        }
+        // [SerializeField] private List<DummyEnemy> enemies;
+        // private void StartWeaponThrow()
+        // {
+        //     var mouseDirection = _runningDataScriptable.attackDirection;
+        //     List<RicochetHitInfo> hits = _ricochetSystem.CalculateRicochetPath(_playerView.transform.position, mouseDirection);
+        //     Debug.Log("Casting Ray");
+        //     Debug.Log($"Hit count: {hits.Count}");
+        //     foreach (var hit in hits)
+        //     {
+        //         if (!hit.HitDummyEnemy.IsShielded)
+        //         {
+        //             //TODO: Apply Damage
+        //             Debug.Log("Targeting non-shielded enemy");
+        //         }
+        //         else
+        //         {
+        //             Debug.Log("RICOCHET");
+        //         }
+        //     }
+        // }
 
         private void StopWeaponThrow()
         {

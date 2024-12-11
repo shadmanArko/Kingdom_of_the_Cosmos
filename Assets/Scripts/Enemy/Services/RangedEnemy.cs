@@ -36,7 +36,7 @@ namespace Enemy.Services
             await Task.Delay(500);
             _animationController.PlayAnimation("run");
             isAttacking = false;
-            Debug.Log("Ranged attack occured");           
+            // Debug.Log("Ranged attack occured");           
         }
     }
 }

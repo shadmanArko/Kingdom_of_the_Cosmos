@@ -1,7 +1,7 @@
 ﻿using System;
 using DBMS.RunningData;
+using Player.Signals.BattleSceneSignals;
 using Player.Views;
-using Unity.Mathematics;
 using UnityEngine;
 using WeaponSystem.Services.Interfaces;
 using Zenject;
@@ -12,28 +12,50 @@ namespace Player.Services
     {
         private readonly RunningDataScriptable _runningDataScriptable;
         private readonly PlayerView _playerView;
+        private readonly SignalBus _signalBus;
 
         private bool _isWeaponThrowCharging;
         private bool _isThrowingWeapon;
+        private bool _isPerformingWeaponThrow;
 
         private float _throwDistance = 1f;
-        private float _throwDistanceLimit = 30f;
+        private float _throwDistanceThreshold = 3f;
+        private readonly float _throwDistanceLimit = 15f;
 
-        private GameObject _throwableObject;
+        private ThrowableWeaponView _throwableWeaponView;
         private LineRenderer _lineRenderer;
 
-        public WeaponThrowService(RunningDataScriptable runningDataScriptable, GameObject throwableObject, PlayerView playerView)
+        private Vector2 startPos;
+        private Vector2 endPos;
+
+        public WeaponThrowService(RunningDataScriptable runningDataScriptable, ThrowableWeaponView throwableWeaponView, PlayerView playerView, SignalBus signalBus)
         {
             _runningDataScriptable = runningDataScriptable;
-            _throwableObject = GameObject.Instantiate(throwableObject, Vector3.zero, quaternion.identity);
+            _throwableWeaponView = throwableWeaponView;
             _playerView = playerView;
+            _signalBus = signalBus;
         }
+
+        #region Subscribe and Unsubscribe
+
+        private void SubscribeToActions()
+        {
+            _signalBus.Subscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+        }
+
+        private void UnsubscribeToActions()
+        {
+            _signalBus.Unsubscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+        }
+
+        #endregion
 
         public void Initialize()
         {
-            _throwableObject.transform.parent = _playerView.transform;
+            SubscribeToActions();
+            _throwableWeaponView.transform.parent = _playerView.transform;
 
-            _lineRenderer = _throwableObject.AddComponent<LineRenderer>();
+            _lineRenderer = _throwableWeaponView.gameObject.AddComponent<LineRenderer>();
             SetupLineRenderer();
 
             _isThrowingWeapon = false;
@@ -42,8 +64,8 @@ namespace Player.Services
         
         private void SetupLineRenderer()
         {
-            _lineRenderer.startWidth = 1f;
-            _lineRenderer.endWidth = 1f;
+            _lineRenderer.startWidth = 0.2f;
+            _lineRenderer.endWidth = 0.2f;
             _lineRenderer.positionCount = 2;
             _lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
             _lineRenderer.startColor = Color.red;
@@ -56,14 +78,15 @@ namespace Player.Services
         public void FixedTick()
         {
             if (_isWeaponThrowCharging)
-            {
                 ChargeWeaponThrow();
-            }
+            
+            if(_isPerformingWeaponThrow)
+                MoveWeaponToEndPosition();
         }
 
         public void Dispose()
         {
-            
+            UnsubscribeToActions();
         }
 
         public void StartWeaponThrow(IWeapon weapon)
@@ -85,34 +108,75 @@ namespace Player.Services
                 _throwDistance += Time.deltaTime;
                 _throwDistance = Mathf.Clamp(_throwDistance, 1f, _throwDistanceLimit);
                 UpdateThrowLine(throwDirection);
+                return;
             }
             
             PerformWeaponThrow();
         }
         
-        private void UpdateThrowLine(Vector2 throwDirection)
-        {
-            var startPos = _playerView.rb.position;
-            var endPos = (startPos + throwDirection).normalized * _throwDistance;
-            
-            // _lineRenderer.startColor = new Color(1, 0, 0, 1);  // Red (R,G,B,Alpha)
-            // _lineRenderer.endColor = new Color(0, 0, 1, 0.5f); // Blue with 50% transparency
-            //
-            // _lineRenderer.startWidth = 0.1f;  // Width at start point
-            // _lineRenderer.endWidth = 0.1f;
-
-            _lineRenderer.SetPosition(0, startPos);
-            _lineRenderer.SetPosition(1, endPos);
-        }
-
         private void PerformWeaponThrow()
         {
-            
+            //TODO: throw weapon to endPos
+            _isWeaponThrowCharging = false;
+            _lineRenderer.enabled = false;
+            _isPerformingWeaponThrow = true;
         }
 
         private void StopWeaponThrow()
         {
+            if(!_isThrowingWeapon) return;
+            if(!_isWeaponThrowCharging) return;
+            if (_throwDistance > _throwDistanceThreshold)
+            {
+                PerformWeaponThrow();
+                return;
+            }
             
+            _throwDistance = 1f;
+            endPos = startPos;
+            
+            _isWeaponThrowCharging = false;
+            _lineRenderer.enabled = false;
+            _isThrowingWeapon = false;
+        }
+        
+        private void UpdateThrowLine(Vector2 throwDirection)
+        {
+            startPos = _playerView.rb.position;
+            endPos = startPos + throwDirection.normalized * _throwDistance;
+
+            _lineRenderer.SetPosition(0, startPos);
+            _lineRenderer.SetPosition(1, endPos);
+        }
+        
+        private float currentSpeed = 0f;
+        private float acceleration = 10f;
+        private float maxSpeed = 20f;
+        
+        private void MoveWeaponToEndPosition()
+        {
+            float distanceToTarget = Vector2.Distance(_throwableWeaponView.transform.position, endPos);
+        
+            if (distanceToTarget > 0.1f)  // Still need to move
+            {
+                // Increase speed
+                currentSpeed = Mathf.Min(currentSpeed + acceleration * Time.deltaTime, maxSpeed);
+            
+                // Calculate direction and move
+                var throwableWeaponPos = _throwableWeaponView.transform.position;
+                var direction = (new Vector3(endPos.x, endPos.y, 0) - throwableWeaponPos).normalized;
+                var newPos = direction * currentSpeed * Time.deltaTime;
+                _throwableWeaponView.transform.position += newPos;
+            }
+            else  // Reached target
+            {
+                _throwableWeaponView.transform.position = endPos; // Snap to final position
+                currentSpeed = 0f;
+                
+                _isPerformingWeaponThrow = false;
+                _throwDistance = 1f;
+                StopWeaponThrow();
+            }
         }
     }
 }

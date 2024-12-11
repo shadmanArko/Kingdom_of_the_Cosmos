@@ -41,9 +41,10 @@ namespace Installers.Weapon
 
             //Systems
             Container.Bind<RicochetWeaponSystem.RicochetSystem>().FromComponentInNewPrefab(_ricochetSystem).AsSingle().NonLazy();
-            
+
+            Container.Bind<ThrowableWeaponView>().FromComponentInNewPrefab(throwablePrefab).AsSingle();
             //Services
-            Container.BindInterfacesAndSelfTo<WeaponThrowService>().AsSingle().WithArguments(throwablePrefab);
+            Container.BindInterfacesAndSelfTo<WeaponThrowService>().AsSingle();
         
             //Scriptables
             Container.Bind<WeaponDatabaseScriptable>().FromScriptableObject(weaponDatabaseScriptable).AsSingle().NonLazy();

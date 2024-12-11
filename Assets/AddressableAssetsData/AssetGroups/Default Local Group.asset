@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: Default Local Group
   m_EditorClassIdentifier: 
   m_GroupName: Default Local Group
-  m_Data:
-    m_SerializedData: []
   m_GUID: ade4f0413065a53489ddea98b9777bf7
   m_SerializeEntries:
   - m_GUID: 0bf7a42bf25120d4ea33dc6d331ccaf7

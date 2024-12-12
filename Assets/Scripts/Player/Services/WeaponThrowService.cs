@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DBMS.RunningData;
 using Player.Signals.BattleSceneSignals;
 using Player.Views;
+using Unity.Mathematics;
 using UnityEngine;
 using WeaponSystem.Services.Interfaces;
 using Zenject;
 
 namespace Player.Services
 {
+    [Serializable]
     public class WeaponThrowService : IInitializable, IFixedTickable, IDisposable
     {
         private readonly RunningDataScriptable _runningDataScriptable;
@@ -20,7 +23,7 @@ namespace Player.Services
 
         private float _throwDistance = 1f;
         private float _throwDistanceThreshold = 3f;
-        private readonly float _throwDistanceLimit = 15f;
+        private readonly float _throwDistanceLimit = 10f;
 
         private ThrowableWeaponView _throwableWeaponView;
         private LineRenderer _lineRenderer;
@@ -53,9 +56,10 @@ namespace Player.Services
         public void Initialize()
         {
             SubscribeToActions();
+            _runningDataScriptable.weaponThrowService = this;
             _throwableWeaponView.transform.parent = _playerView.transform;
 
-            _lineRenderer = _throwableWeaponView.gameObject.AddComponent<LineRenderer>();
+            _lineRenderer = _throwableWeaponView.GetComponent<LineRenderer>();
             SetupLineRenderer();
 
             _isThrowingWeapon = false;
@@ -95,6 +99,8 @@ namespace Player.Services
             if(_isThrowingWeapon) return;
             if(_isWeaponThrowCharging) return;
             
+            _throwableWeaponView.transform.position = _playerView.transform.position;
+            _throwableWeaponView.throwable.transform.rotation = quaternion.identity;
             _isThrowingWeapon = true;
             _isWeaponThrowCharging = true;
             _lineRenderer.enabled = true;
@@ -103,39 +109,37 @@ namespace Player.Services
         private void ChargeWeaponThrow()
         {
             var throwDirection = _runningDataScriptable.attackDirection;
-            if (_throwDistance <= _throwDistanceLimit)
+            if (_throwDistance < _throwDistanceLimit)
             {
-                _throwDistance += Time.deltaTime;
+                _throwDistance += Time.deltaTime * 5;
                 _throwDistance = Mathf.Clamp(_throwDistance, 1f, _throwDistanceLimit);
                 UpdateThrowLine(throwDirection);
                 return;
             }
             
-            PerformWeaponThrow();
+            StopWeaponThrow();
         }
         
         private void PerformWeaponThrow()
         {
-            //TODO: throw weapon to endPos
             _isWeaponThrowCharging = false;
             _lineRenderer.enabled = false;
             _isPerformingWeaponThrow = true;
+            _finalEndPos = endPos;
+            _throwDistance = 1f;
         }
 
         private void StopWeaponThrow()
         {
             if(!_isThrowingWeapon) return;
             if(!_isWeaponThrowCharging) return;
+            _isWeaponThrowCharging = false;
             if (_throwDistance > _throwDistanceThreshold)
-            {
                 PerformWeaponThrow();
-                return;
-            }
             
             _throwDistance = 1f;
             endPos = startPos;
             
-            _isWeaponThrowCharging = false;
             _lineRenderer.enabled = false;
             _isThrowingWeapon = false;
         }
@@ -149,29 +153,29 @@ namespace Player.Services
             _lineRenderer.SetPosition(1, endPos);
         }
         
-        private float currentSpeed = 0f;
-        private float acceleration = 10f;
-        private float maxSpeed = 20f;
-        
+        private float _currentSpeed;
+        private const float Acceleration = 20f;
+        private const float MaxSpeed = 30f;
+        private Vector2 _finalEndPos;
+        public float rotationSpeed = 45f;
         private void MoveWeaponToEndPosition()
         {
-            float distanceToTarget = Vector2.Distance(_throwableWeaponView.transform.position, endPos);
+            var distanceToTarget = Vector2.Distance(_throwableWeaponView.transform.position, _finalEndPos);
         
-            if (distanceToTarget > 0.1f)  // Still need to move
+            if (distanceToTarget > 0.3f)
             {
-                // Increase speed
-                currentSpeed = Mathf.Min(currentSpeed + acceleration * Time.deltaTime, maxSpeed);
-            
-                // Calculate direction and move
+                _currentSpeed = Mathf.Min(_currentSpeed + Acceleration * Time.fixedDeltaTime, MaxSpeed);
+                
                 var throwableWeaponPos = _throwableWeaponView.transform.position;
-                var direction = (new Vector3(endPos.x, endPos.y, 0) - throwableWeaponPos).normalized;
-                var newPos = direction * currentSpeed * Time.deltaTime;
+                var direction = (new Vector3(_finalEndPos.x, _finalEndPos.y, 0) - throwableWeaponPos).normalized;
+                var newPos = direction * (_currentSpeed * Time.fixedDeltaTime);
                 _throwableWeaponView.transform.position += newPos;
+                _throwableWeaponView.throwable.transform.Rotate(0f, 0f, rotationSpeed);
             }
-            else  // Reached target
+            else 
             {
-                _throwableWeaponView.transform.position = endPos; // Snap to final position
-                currentSpeed = 0f;
+                _throwableWeaponView.transform.position = _finalEndPos;
+                _currentSpeed = 0f;
                 
                 _isPerformingWeaponThrow = false;
                 _throwDistance = 1f;

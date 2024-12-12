@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Player.Controllers;
+using Player.Services;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -17,5 +18,8 @@ namespace DBMS.RunningData
         
         
         public Vector3 closestEnemyToPlayer;
+        
+        //For test! Will be removed later
+        public WeaponThrowService weaponThrowService;
     }
 }

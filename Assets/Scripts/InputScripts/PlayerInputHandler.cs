@@ -170,12 +170,12 @@ namespace InputScripts
         private void StartDash()
         {
             _signalBus.Fire<CancelHeavyAttackSignal>();
-            _signalBus.Fire<StartDashSignal>();
+            _signalBus.Fire<DashInputStartSignal>();
         }
         
         private void StopDash()
         {
-            _signalBus.Fire<StopDashSignal>();
+            _signalBus.Fire<DashInputStopSignal>();
         }
 
         #endregion

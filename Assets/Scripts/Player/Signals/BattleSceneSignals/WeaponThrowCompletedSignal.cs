@@ -1,6 +1,6 @@
 ﻿namespace Player.Signals.BattleSceneSignals
 {
-    public class StopDashSignal
+    public class WeaponThrowCompletedSignal
     {
         
     }

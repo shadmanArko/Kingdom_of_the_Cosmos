@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using DBMS.RunningData;
 using Player.Signals.BattleSceneSignals;
 using Player.Views;
@@ -44,11 +43,13 @@ namespace Player.Services
         private void SubscribeToActions()
         {
             _signalBus.Subscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+            _signalBus.Subscribe<DashPerformSignal>(CancelWeaponThrow);
         }
 
         private void UnsubscribeToActions()
         {
             _signalBus.Unsubscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+            _signalBus.Unsubscribe<DashPerformSignal>(CancelWeaponThrow);
         }
 
         #endregion
@@ -56,14 +57,16 @@ namespace Player.Services
         public void Initialize()
         {
             SubscribeToActions();
+            Debug.LogWarning("Initialize called in weapon throw service");
             _runningDataScriptable.weaponThrowService = this;
-            _throwableWeaponView.transform.parent = _playerView.transform;
+            _throwableWeaponView.transform.SetParent(_playerView.transform,false);
 
             _lineRenderer = _throwableWeaponView.GetComponent<LineRenderer>();
             SetupLineRenderer();
 
             _isThrowingWeapon = false;
             _isWeaponThrowCharging = false;
+            _throwableWeaponView.rb.simulated = false;
         }
         
         private void SetupLineRenderer()
@@ -101,9 +104,11 @@ namespace Player.Services
             
             _throwableWeaponView.transform.position = _playerView.transform.position;
             _throwableWeaponView.throwable.transform.rotation = quaternion.identity;
+            _throwableWeaponView.rb.simulated = false;
             _isThrowingWeapon = true;
             _isWeaponThrowCharging = true;
             _lineRenderer.enabled = true;
+            _signalBus.Fire<WeaponThrowChargeSignal>();
         }
 
         private void ChargeWeaponThrow()
@@ -143,7 +148,19 @@ namespace Player.Services
             _lineRenderer.enabled = false;
             _isThrowingWeapon = false;
         }
-        
+
+        private void CancelWeaponThrow()
+        {
+            if(!_isWeaponThrowCharging) return;
+            _weaponThrowSpeed = 0f;
+                
+            _isPerformingWeaponThrow = false;
+            _throwDistance = 1f;
+            StopWeaponThrow();
+        }
+
+        #region Helper Functions
+
         private void UpdateThrowLine(Vector2 throwDirection)
         {
             startPos = _playerView.rb.position;
@@ -153,7 +170,7 @@ namespace Player.Services
             _lineRenderer.SetPosition(1, endPos);
         }
         
-        private float _currentSpeed;
+        private float _weaponThrowSpeed;
         private const float Acceleration = 20f;
         private const float MaxSpeed = 30f;
         private Vector2 _finalEndPos;
@@ -164,23 +181,27 @@ namespace Player.Services
         
             if (distanceToTarget > 0.3f)
             {
-                _currentSpeed = Mathf.Min(_currentSpeed + Acceleration * Time.fixedDeltaTime, MaxSpeed);
+                _weaponThrowSpeed = Mathf.Min(_weaponThrowSpeed + Acceleration * Time.fixedDeltaTime, MaxSpeed);
                 
                 var throwableWeaponPos = _throwableWeaponView.transform.position;
                 var direction = (new Vector3(_finalEndPos.x, _finalEndPos.y, 0) - throwableWeaponPos).normalized;
-                var newPos = direction * (_currentSpeed * Time.fixedDeltaTime);
+                var newPos = direction * (_weaponThrowSpeed * Time.fixedDeltaTime);
                 _throwableWeaponView.transform.position += newPos;
                 _throwableWeaponView.throwable.transform.Rotate(0f, 0f, rotationSpeed);
             }
             else 
             {
                 _throwableWeaponView.transform.position = _finalEndPos;
-                _currentSpeed = 0f;
+                _weaponThrowSpeed = 0f;
                 
                 _isPerformingWeaponThrow = false;
                 _throwDistance = 1f;
                 StopWeaponThrow();
+                _signalBus.Fire<WeaponThrowCompletedSignal>();
+                _throwableWeaponView.rb.simulated = true;
             }
         }
+
+        #endregion
     }
 }

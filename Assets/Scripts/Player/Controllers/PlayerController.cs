@@ -114,8 +114,8 @@ namespace Player.Controllers
 
         private void SubscribeToActions()
         {
-            _signalBus.Subscribe<StartDashSignal>(StartDash);
-            _signalBus.Subscribe<StopDashSignal>(() => { });
+            _signalBus.Subscribe<DashInputStartSignal>(StartDash);
+            _signalBus.Subscribe<DashInputStopSignal>(() => { });
             _signalBus.Subscribe<ToggleAutoAttackSignal>(ToggleAutoAttack);
             _signalBus.Subscribe<PlayerMovementSignal>(Move);
             _signalBus.Subscribe<StartHeavyAttackSignal>(CheckHeavyAttackEligibility);
@@ -127,7 +127,7 @@ namespace Player.Controllers
         
         private void UnsubscribeToActions()
         {
-            _signalBus.Unsubscribe<StartDashSignal>(StartDash);
+            _signalBus.Unsubscribe<DashInputStartSignal>(StartDash);
             _signalBus.Unsubscribe<ToggleAutoAttackSignal>(ToggleAutoAttack);
             _signalBus.Unsubscribe<PlayerMovementSignal>(Move);
             _signalBus.Unsubscribe<StartHeavyAttackSignal>(CheckHeavyAttackEligibility);
@@ -185,7 +185,7 @@ namespace Player.Controllers
 
         #endregion
 
-        #region Attack
+        #region Light Attack
 
         public bool canPerformLightAttack;
         private readonly float _lightAttackCooldownTimer = 1f;
@@ -333,6 +333,7 @@ namespace Player.Controllers
             canAttack = false;
             _isDashing = true;
             
+            _signalBus.Fire<DashPerformSignal>();
             LungeDash();
         }
         

@@ -27,8 +27,8 @@ namespace Player.Services
         private ThrowableWeaponView _throwableWeaponView;
         private LineRenderer _lineRenderer;
 
-        private Vector2 startPos;
-        private Vector2 endPos;
+        private Vector2 _startPos;
+        private Vector2 _endPos;
 
         public WeaponThrowService(RunningDataScriptable runningDataScriptable, ThrowableWeaponView throwableWeaponView, PlayerView playerView, SignalBus signalBus)
         {
@@ -57,7 +57,6 @@ namespace Player.Services
         public void Initialize()
         {
             SubscribeToActions();
-            Debug.LogWarning("Initialize called in weapon throw service");
             _runningDataScriptable.weaponThrowService = this;
             _throwableWeaponView.transform.SetParent(_playerView.transform,false);
 
@@ -75,7 +74,7 @@ namespace Player.Services
             _lineRenderer.endWidth = 0.2f;
             _lineRenderer.positionCount = 2;
             _lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-            _lineRenderer.startColor = Color.red;
+            _lineRenderer.startColor = Color.blue;
             _lineRenderer.endColor = Color.blue;
             _lineRenderer.enabled = false;
             
@@ -98,7 +97,6 @@ namespace Player.Services
 
         public void StartWeaponThrow(IWeapon weapon)
         {
-            Debug.LogWarning("Weapon Throw is called");
             if(_isThrowingWeapon) return;
             if(_isWeaponThrowCharging) return;
             
@@ -130,7 +128,7 @@ namespace Player.Services
             _isWeaponThrowCharging = false;
             _lineRenderer.enabled = false;
             _isPerformingWeaponThrow = true;
-            _finalEndPos = endPos;
+            _finalEndPos = _endPos;
             _throwDistance = 1f;
         }
 
@@ -143,7 +141,7 @@ namespace Player.Services
                 PerformWeaponThrow();
             
             _throwDistance = 1f;
-            endPos = startPos;
+            _endPos = _startPos;
             
             _lineRenderer.enabled = false;
             _isThrowingWeapon = false;
@@ -163,11 +161,11 @@ namespace Player.Services
 
         private void UpdateThrowLine(Vector2 throwDirection)
         {
-            startPos = _playerView.rb.position;
-            endPos = startPos + throwDirection.normalized * _throwDistance;
+            _startPos = _playerView.rb.position;
+            _endPos = _startPos + throwDirection.normalized * _throwDistance;
 
-            _lineRenderer.SetPosition(0, startPos);
-            _lineRenderer.SetPosition(1, endPos);
+            _lineRenderer.SetPosition(0, _startPos);
+            _lineRenderer.SetPosition(1, _endPos);
         }
         
         private float _weaponThrowSpeed;

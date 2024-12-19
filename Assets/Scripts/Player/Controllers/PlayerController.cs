@@ -5,6 +5,7 @@ using DBMS.RunningData;
 using Enemy.Manager;
 using Player.Services;
 using Player.Signals.BattleSceneSignals;
+using Player.Signals.HealthSignals;
 using Player.Views;
 using Unity.Mathematics;
 using UnityEngine;
@@ -26,7 +27,7 @@ namespace Player.Controllers
         private readonly WeaponManager _weaponManager;
         private EnemyManager _enemyManager;
         
-        private readonly WeaponThrowService _weaponThrowService;
+        
         
         #region Player Settings Variables
 
@@ -72,21 +73,36 @@ namespace Player.Controllers
 
         #endregion
 
+        #region Damage
+        
+        private bool _canTakeDamage;
+
+        private bool CheckTakeDamageEligibility()
+        {
+            return true;
+        }
+        
+        private void TakeDamage()
+        {
+            if(!CheckTakeDamageEligibility()) return;
+            _signalBus.Fire(new PlayerHealthReduceSignal(1.5f));
+        }
+
+        #endregion
+
         #region Initializers
         
         private PlayerController (CinemachineVirtualCamera cineMachineVirtualCamera,
             RunningDataScriptable runningDataScriptable, 
             WeaponManager weaponManager, 
             SignalBus signalBus, 
-            PlayerView playerView,
-            WeaponThrowService weaponThrowService)
+            PlayerView playerView)
         {
             _cineMachineVirtualCamera = cineMachineVirtualCamera;
             _runningDataScriptable = runningDataScriptable;
             _weaponManager = weaponManager;
             _signalBus = signalBus;
             _playerView = playerView;
-            _weaponThrowService = weaponThrowService;
             
             _cineMachineVirtualCamera.Follow = playerView.transform;
         }

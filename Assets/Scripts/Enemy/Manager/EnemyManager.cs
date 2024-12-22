@@ -168,7 +168,7 @@ namespace Enemy.Manager
                     ReleaseEnemy(enemy);
                 }else{
                     // StartKnockback(enemy, playerPos, knockBackStrength);
-                    enemy.TakeKnockBack(_playerTransform, knockBackStrength, 0.2f);
+                    enemy.TakeKnockBack(_playerTransform);
                 }
             }
         }

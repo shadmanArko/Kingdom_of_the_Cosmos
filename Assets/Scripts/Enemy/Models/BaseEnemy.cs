@@ -112,7 +112,7 @@ namespace Enemy.Models
             Debug.Log($"Took Damage {amount}, health {MaxHealth} is alive: {IsAlive}");
         }
 
-        public void TakeKnockBack(Transform fromTransform, float strength, float duration)
+        public void TakeKnockBack(Transform fromTransform, float duration = 0.2f, float strength = 10f)
         {
             canMove = false;
             Vector3 direction = (transform.position - fromTransform.position).normalized;

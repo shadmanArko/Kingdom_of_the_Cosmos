@@ -8,35 +8,39 @@ namespace Enemy.Services
     {
         private float _damage;
         private float _speed;
-        private Transform _target;
+        private Vector2 _targetPosition;
         private EnemyProjectilePoolManager _enemyProjectilePoolManager;
+        private bool _canMove = false;
         
-        public void SetStats(float damage, float speed, Transform target, EnemyProjectilePoolManager enemyProjectilePoolManager)
+        public void SetStats(float damage, float speed, Vector2 targetPosition, EnemyProjectilePoolManager enemyProjectilePoolManager)
         {
             _damage = damage;
             _speed = speed;
-            _target = target;
+            _targetPosition = targetPosition;
             _enemyProjectilePoolManager = enemyProjectilePoolManager;
+            _canMove = true;
         }
         private void Update()
         {
             // Example movement logic
-            if (_target != null)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
 
-                if (Vector3.Distance(transform.position, _target.position) < 0.1f)
+            if (_canMove)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);
+
+                if (Vector3.Distance(transform.position, _targetPosition) < 0.1f)
                 {
                     OnHit();
                 }
             }
+            
         }
         
         private void OnHit()
         {
             // Logic for impact
             Debug.Log($"Projectile hit with {_damage} damage!");
-            _target = null;
+            _canMove = false;
 
             // Return to pool
             //FindObjectOfType<ProjectileSpawner>().ReturnProjectile(gameObject);

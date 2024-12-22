@@ -9,5 +9,6 @@ namespace Enemy.Models
         public List<MeleeEnemyData> MeleeEnemyDatas;
         public List<MeleeShieldedEnemyData> MeleeShieldedEnemyDatas;
         public List<RangedEnemyData> RangedEnemyDatas;
+        public List<ShamanEnemyData> ShamanEnemyDatas;
     }
 }

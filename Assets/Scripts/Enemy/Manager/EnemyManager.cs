@@ -26,6 +26,7 @@ namespace Enemy.Manager
         private readonly MeleeEnemyPool _meleeEnemyPool;
         private readonly MeleeShieldedEnemyPool _meleeShieldedEnemyPool;
         private readonly RangedEnemyPool _rangedEnemyPool;
+        private readonly ShamanEnemyPool _shamanEnemyPool;
         private readonly SignalBus _signalBus;
 
         private Transform _playerTransform;
@@ -52,6 +53,7 @@ namespace Enemy.Manager
             MeleeEnemyPool meleeEnemyMeleeEnemyPool,
             MeleeShieldedEnemyPool meleeShieldedEnemyPool,
             RangedEnemyPool rangedEnemyPool,
+            ShamanEnemyPool shamanEnemyPool,
             GameDataScriptable gameDataScriptable,
             RunningDataScriptable runningDataScriptable,
             SignalBus signalBus,
@@ -61,6 +63,7 @@ namespace Enemy.Manager
             _enemyComputeShader = enemyComputeShader;
             _meleeEnemyPool = meleeEnemyMeleeEnemyPool;
             _rangedEnemyPool = rangedEnemyPool;
+            _shamanEnemyPool = shamanEnemyPool;
             _meleeShieldedEnemyPool = meleeShieldedEnemyPool;
             _gameDataScriptable = gameDataScriptable;
             _runningDataScriptable = runningDataScriptable;
@@ -101,12 +104,19 @@ namespace Enemy.Manager
             var rangedEnemyData = _enemies.RangedEnemyDatas.FirstOrDefault(data => data.Id == "1");
             _rangedEnemyPool.CreateRangeEnemy(rangedEnemyData);
         }
+
+        private void CreateEnemyFromShamanEnemyPool()
+        {
+            var shamanEnemyData = _enemies.ShamanEnemyDatas.FirstOrDefault(data => data.Id == "1");
+            _shamanEnemyPool.CreateShamanEnemy(shamanEnemyData);
+        }
         public void Tick()
         {
             HandleKnockBack();
             HandleEnemySpawning();
             _activeEnemies = _meleeEnemyPool.activeEnemies.Concat(_meleeShieldedEnemyPool.activeEnemies).ToList();
             _activeEnemies = _activeEnemies.Concat(_rangedEnemyPool.activeEnemies).ToList();
+            _activeEnemies = _activeEnemies.Concat(_shamanEnemyPool.activeEnemies).ToList();
             if (_activeEnemies.Count > 0)
             {
                 UpdateBuffers();
@@ -157,7 +167,8 @@ namespace Enemy.Manager
                 {
                     ReleaseEnemy(enemy);
                 }else{
-                    StartKnockback(enemy, playerPos, knockBackStrength);
+                    // StartKnockback(enemy, playerPos, knockBackStrength);
+                    enemy.TakeKnockBack(_playerTransform, knockBackStrength, 0.2f);
                 }
             }
         }
@@ -174,6 +185,10 @@ namespace Enemy.Manager
             if (enemy.GetComponent<RangedEnemy>())
             {
                 _rangedEnemyPool.ReleaseEnemy(enemy);
+            }
+            if (enemy.GetComponent<ShamanEnemy>())
+            {
+                _shamanEnemyPool.ReleaseEnemy(enemy);
             }
         }
 
@@ -205,7 +220,7 @@ namespace Enemy.Manager
                 StunDuration = 0.2f // Knockback duration
             });
         }
-
+        
         private void RemoveFromActiveEnemies(BaseEnemy enemy)
         {
             if (enemy.GetComponent<MeleeShieldedEnemy>())
@@ -220,6 +235,10 @@ namespace Enemy.Manager
             if (enemy.GetComponent<RangedEnemy>())
             {
                 _rangedEnemyPool.RemoveFromActiveEnemies(enemy);
+            }
+            if (enemy.GetComponent<ShamanEnemy>())
+            {
+                _shamanEnemyPool.RemoveFromActiveEnemies(enemy);
             }
         }
         private void AddToActiveEnemies(BaseEnemy enemy)
@@ -236,6 +255,10 @@ namespace Enemy.Manager
             if (enemy.GetComponent<RangedEnemy>())
             {
                 _rangedEnemyPool.AddToActiveEnemies(enemy);
+            }
+            if (enemy.GetComponent<ShamanEnemy>())
+            {
+                _shamanEnemyPool.AddToActiveEnemies(enemy);
             }
         }
 
@@ -315,18 +338,26 @@ namespace Enemy.Manager
             return (u >= 0) && (v >= 0) && (u + v <= 1);
         }
 
-        private int _numberOfMeleeEnemies = 2;
+        private int _numberOfMeleeEnemies = 20;
+        private int _numberOfShamanEnemies = 1;
         private int _numberOfShieldedMeleeEnemies = 3;
         private int _countOfMeleeEnemies;
         private int _countOfShieldedMeleeEnemies;
+        private int _countOfShamanEnemies;
         private void HandleEnemySpawning()
         {
         
             if (nextEnemySpawnTime < Time.time )
             {
-                if (_countOfShieldedMeleeEnemies >= _numberOfShieldedMeleeEnemies)
+                if (_countOfShamanEnemies >= _numberOfShamanEnemies)
                 {
                     CreateEnemyFromRangedEnemyPool();
+                    // CreateEnemyFromMeleeEnemyPool();
+                }
+                else if (_countOfShieldedMeleeEnemies >= _numberOfShieldedMeleeEnemies)
+                {
+                    _countOfShamanEnemies++;
+                    CreateEnemyFromShamanEnemyPool();
                 }
                 else if (_countOfMeleeEnemies >= _numberOfMeleeEnemies)
                 {

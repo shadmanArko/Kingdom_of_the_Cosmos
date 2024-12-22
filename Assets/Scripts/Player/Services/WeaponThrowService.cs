@@ -16,6 +16,8 @@ namespace Player.Services
         private readonly PlayerView _playerView;
         private readonly SignalBus _signalBus;
 
+        private IWeapon _currentThrowableWeapon;
+
         private bool _isWeaponThrowCharging;
         private bool _isThrowingWeapon;
         private bool _isPerformingWeaponThrow;
@@ -130,6 +132,9 @@ namespace Player.Services
             _isPerformingWeaponThrow = true;
             _finalEndPos = _endPos;
             _throwDistance = 1f;
+            
+            _throwableWeaponView.weaponData = _currentThrowableWeapon.GetWeaponData();
+            _throwableWeaponView.isBeingThrown = true;
         }
 
         private void StopWeaponThrow()
@@ -197,6 +202,7 @@ namespace Player.Services
                 StopWeaponThrow();
                 _signalBus.Fire<WeaponThrowCompletedSignal>();
                 _throwableWeaponView.rb.simulated = true;
+                _throwableWeaponView.isBeingThrown = false;
             }
         }
 

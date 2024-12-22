@@ -42,5 +42,10 @@ namespace WeaponSystem.Services.Bases
         {
             return weaponData.name;
         }
+
+        public WeaponData GetWeaponData()
+        {
+            return weaponData;
+        }
     }
 }

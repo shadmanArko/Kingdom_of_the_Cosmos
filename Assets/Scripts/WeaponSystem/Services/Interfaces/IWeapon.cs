@@ -1,4 +1,6 @@
-﻿namespace WeaponSystem.Services.Interfaces
+﻿using WeaponSystem.Models;
+
+namespace WeaponSystem.Services.Interfaces
 {
     public interface IWeapon
     {
@@ -9,5 +11,6 @@
         void TriggerAttack();
         void UpgradeWeapon(int newDamage, float newCooldown);
         string GetName();
+        WeaponData GetWeaponData();
     }
 }

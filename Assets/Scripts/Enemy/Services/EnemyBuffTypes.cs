@@ -3,6 +3,7 @@
     public enum EnemyBuffTypes
     {
         Movement,
-        AttackRange
+        AttackRange,
+        Projectile
     }
 }

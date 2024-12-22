@@ -28,8 +28,10 @@ namespace Enemy.Models
         [SerializeField] protected Slider HealthSlider;
         protected Rigidbody2D _rigidbody2D;
         protected bool isAttacking;
+        protected bool canMove = true;
         protected float lastAttackTime;
         protected bool canGetBuff = true;
+        protected bool hasShaman = false;
         protected virtual void Start()
         {
         
@@ -42,6 +44,8 @@ namespace Enemy.Models
 
         public virtual void MoveTowardsTarget(Transform targetTransform)
         {
+             if (!canGetBuff) return;
+             
             _rigidbody2D.linearVelocity = Vector2.zero;
             var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
             DistanceToPlayer = distanceToPlayer;
@@ -68,6 +72,7 @@ namespace Enemy.Models
 
             Position = transform.position;
         }
+        
 
         public virtual void Initialize()
         {
@@ -107,26 +112,32 @@ namespace Enemy.Models
             Debug.Log($"Took Damage {amount}, health {MaxHealth} is alive: {IsAlive}");
         }
 
-        public void GetBuff(EnemyBuffTypes buffType, float amount, float duration)
+        public void TakeKnockBack(Transform fromTransform, float strength, float duration)
+        {
+            canMove = false;
+            Vector3 direction = (transform.position - fromTransform.position).normalized;
+            StartCoroutine(ApplyKnockBack(direction, strength, duration));
+            
+        }
+        private IEnumerator ApplyKnockBack(Vector3 direction, float strength, float duration)
+        {
+            float elapsedTime = 0f;
+
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                transform.position += direction * (strength * Time.deltaTime);
+                yield return null;
+            }
+
+            canMove = true;
+        }
+        public virtual void GetBuff(EnemyBuffTypes buffType, float amount, float duration)
         {
             if (!canGetBuff) return; // Prevent stacking buffs
-
-            StartCoroutine(ApplyTemporaryBuff(amount, duration));
+            
         }
-
-        private IEnumerator ApplyTemporaryBuff(float amount, float duration)
-        {
-            // Apply the buff
-            MoveSpeed += amount;
-            canGetBuff = false;
-
-            // Wait for the specified duration
-            yield return new WaitForSeconds(duration);
-
-            // Remove the buff
-            MoveSpeed -= amount;
-            canGetBuff = true;
-        }
+        
 
         protected virtual void Die()
         {

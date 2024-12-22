@@ -167,7 +167,8 @@ namespace Enemy.Manager
                 {
                     ReleaseEnemy(enemy);
                 }else{
-                    StartKnockback(enemy, playerPos, knockBackStrength);
+                    // StartKnockback(enemy, playerPos, knockBackStrength);
+                    enemy.TakeKnockBack(_playerTransform, knockBackStrength, 0.2f);
                 }
             }
         }
@@ -337,7 +338,7 @@ namespace Enemy.Manager
             return (u >= 0) && (v >= 0) && (u + v <= 1);
         }
 
-        private int _numberOfMeleeEnemies = 2;
+        private int _numberOfMeleeEnemies = 20;
         private int _numberOfShamanEnemies = 1;
         private int _numberOfShieldedMeleeEnemies = 3;
         private int _countOfMeleeEnemies;
@@ -351,6 +352,7 @@ namespace Enemy.Manager
                 if (_countOfShamanEnemies >= _numberOfShamanEnemies)
                 {
                     CreateEnemyFromRangedEnemyPool();
+                    // CreateEnemyFromMeleeEnemyPool();
                 }
                 else if (_countOfShieldedMeleeEnemies >= _numberOfShieldedMeleeEnemies)
                 {

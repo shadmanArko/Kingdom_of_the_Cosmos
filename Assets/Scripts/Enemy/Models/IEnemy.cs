@@ -12,6 +12,7 @@ namespace Enemy.Models
           void MoveTowardsTarget(Transform targetTransform);
           void Attack(PlayerView target);
           void TakeDamage(float amount);
+          void TakeKnockBack(Transform fromTransform, float strength, float duration);
           void GetBuff(EnemyBuffTypes buffType, float amount, float duration);
      }
 }

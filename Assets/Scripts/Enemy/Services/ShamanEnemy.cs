@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Enemy.Models;
 using Player;
@@ -11,7 +14,10 @@ namespace Enemy.Services
         [SerializeField] private PlayerAnimationController playerAnimationController;
         public float shamanRadius = 5f; // Radius of buff effect
         public float shamanInterval = 5f; // Cooldown between buffs
-        
+        public List<Transform> shamanPoints = new List<Transform>();
+        [SerializeField] private Transform shamanPointsHolder;
+        private List<BaseEnemy> _enemiesProtectingShaman = new List<BaseEnemy>();
+        private int _numberOfEnemiesProtectingShaman = 3;
         private float lastBuffTime;
 
         protected override void Start()
@@ -31,6 +37,10 @@ namespace Enemy.Services
             var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
             DistanceToPlayer = distanceToPlayer;
 
+            var direction = targetTransform.position - transform.position;
+            var rotationZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            shamanPointsHolder.rotation = Quaternion.Euler(0, 0, rotationZ);
+            
             if (distanceToPlayer > MinDistanceToPlayer)
             {
                 // Move towards player if too far
@@ -52,6 +62,13 @@ namespace Enemy.Services
             // Check if enough time has passed since last buff
             if (Time.time - lastBuffTime >= shamanInterval)
             {
+                foreach (var enemy in _enemiesProtectingShaman.ToList())
+                {
+                    if (!enemy.isActiveAndEnabled)
+                    {
+                        _enemiesProtectingShaman.Remove(enemy);
+                    }
+                }
                 ApplyShamanBuff();
             }
         }
@@ -63,7 +80,7 @@ namespace Enemy.Services
                 transform.position, 
                 shamanRadius// Ensure you have an "Enemy" layer
             );
-
+            
             foreach (Collider2D enemyCollider in nearbyEnemies)
             {
                 // Skip self
@@ -85,7 +102,25 @@ namespace Enemy.Services
         private void ApplyBuff(BaseEnemy enemy)
         {
             Debug.Log($"ApplyBuff to {enemy.name}");
-            enemy.GetBuff(EnemyBuffTypes.Movement, 10, 5); 
+            if (enemy.GetComponent<MeleeEnemy>())
+            { 
+                enemy.GetBuff(EnemyBuffTypes.Movement, 3, 5); 
+            }else if (enemy.GetComponent<RangedEnemy>())
+            {
+                enemy.GetBuff(EnemyBuffTypes.Projectile, 3, 5);
+                if (_enemiesProtectingShaman.Count < _numberOfEnemiesProtectingShaman)
+                {
+                    AddEnemyToProtectShaman(enemy.GetComponent<RangedEnemy>());
+                }
+            }
+        }
+
+        private void AddEnemyToProtectShaman(RangedEnemy enemy)
+        {
+            _enemiesProtectingShaman.Add(enemy);
+            
+            enemy.shamanProtectingPosition = shamanPoints[_enemiesProtectingShaman.Count - 1];
+            enemy.selectedForProtectingShaman = true;
         }
 
         // Optional: Visualize buff radius in editor

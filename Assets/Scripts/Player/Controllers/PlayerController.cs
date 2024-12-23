@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Cinemachine;
 using DBMS.RunningData;
 using Enemy.Manager;
-using Player.Services;
 using Player.Signals.BattleSceneSignals;
 using Player.Signals.HealthSignals;
 using Player.Views;
@@ -22,6 +21,8 @@ namespace Player.Controllers
         
         private readonly RunningDataScriptable _runningDataScriptable;
         private readonly PlayerView _playerView;
+        private readonly PlayerHealthView _playerHealthView;
+        
         private readonly SignalBus _signalBus;
         
         private readonly WeaponManager _weaponManager;
@@ -72,37 +73,22 @@ namespace Player.Controllers
         public bool canAttack;
 
         #endregion
-
-        #region Damage
         
-        private bool _canTakeDamage;
-
-        private bool CheckTakeDamageEligibility()
-        {
-            return true;
-        }
-        
-        private void TakeDamage()
-        {
-            if(!CheckTakeDamageEligibility()) return;
-            _signalBus.Fire(new PlayerHealthReduceSignal(1.5f));
-        }
-
-        #endregion
-
         #region Initializers
         
         private PlayerController (CinemachineVirtualCamera cineMachineVirtualCamera,
             RunningDataScriptable runningDataScriptable, 
             WeaponManager weaponManager, 
             SignalBus signalBus, 
-            PlayerView playerView)
+            PlayerView playerView,
+            PlayerHealthView playerHealthView)
         {
             _cineMachineVirtualCamera = cineMachineVirtualCamera;
             _runningDataScriptable = runningDataScriptable;
             _weaponManager = weaponManager;
             _signalBus = signalBus;
             _playerView = playerView;
+            _playerHealthView = playerHealthView;
             
             _cineMachineVirtualCamera.Follow = playerView.transform;
         }
@@ -439,6 +425,23 @@ namespace Player.Controllers
 
         #endregion
         
+        #region Damage
+        
+        private bool _canTakeDamage;
+
+        private bool CheckTakeDamageEligibility()
+        {
+            return true;
+        }
+        
+        private void TakeDamage()
+        {
+            if(!CheckTakeDamageEligibility()) return;
+            _signalBus.Fire(new PlayerHealthReduceSignal(1.5f));
+        }
+
+        #endregion
+
         
         public void Dispose()
         {

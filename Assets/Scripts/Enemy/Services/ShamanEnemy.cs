@@ -14,6 +14,7 @@ namespace Enemy.Services
         [SerializeField] private PlayerAnimationController playerAnimationController;
         public float shamanRadius = 5f; // Radius of buff effect
         public float shamanInterval = 5f; // Cooldown between buffs
+        public float maxDistanceToPlayer = 25f; // Cooldown between buffs
         public List<Transform> shamanPoints = new List<Transform>();
         [SerializeField] private Transform shamanPointsHolder;
         private List<BaseEnemy> _enemiesProtectingShaman = new List<BaseEnemy>();
@@ -41,18 +42,18 @@ namespace Enemy.Services
             var rotationZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             shamanPointsHolder.rotation = Quaternion.Euler(0, 0, rotationZ);
             
-            if (distanceToPlayer > MinDistanceToPlayer)
+            if (distanceToPlayer > maxDistanceToPlayer)
             {
                 // Move towards player if too far
                 transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, MoveSpeed * Time.deltaTime);
             }
-            if (distanceToPlayer < MinDistanceToPlayer && !isAttacking)
-            {
-                // Backtrack when player is too close
-                Vector3 backtrackDirection = transform.position - targetTransform.position;
-                transform.position = Vector3.MoveTowards(transform.position, transform.position + backtrackDirection, MoveSpeed * Time.deltaTime);
-                Debug.DrawRay(transform.position, targetTransform.position, Color.red);
-            }
+            // if (distanceToPlayer < MinDistanceToPlayer && !isAttacking)
+            // {
+            //     // Backtrack when player is too close
+            //     Vector3 backtrackDirection = transform.position - targetTransform.position;
+            //     transform.position = Vector3.MoveTowards(transform.position, transform.position + backtrackDirection, MoveSpeed * Time.deltaTime);
+            //     Debug.DrawRay(transform.position, targetTransform.position, Color.red);
+            // }
 
             Position = transform.position;
         }

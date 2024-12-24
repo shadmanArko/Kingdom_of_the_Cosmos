@@ -85,7 +85,7 @@ namespace Enemy.Models
             AttackSpeed = 2f;
             DistanceToPlayer = 999f;
             Stuckness = 0.5f;
-            AttackRange = 2f;
+            AttackRange = 4f;
         }
 
         public virtual void SetStat(EnemyData data)

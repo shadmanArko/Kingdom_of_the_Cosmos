@@ -1,7 +1,5 @@
 ﻿using Enemy.Services;
-using Player;
-using Player.Controllers;
-using Player.Views;
+using PlayerSystem.Views;
 using UnityEngine;
 
 namespace Enemy.Models

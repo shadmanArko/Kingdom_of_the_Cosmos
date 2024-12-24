@@ -5,10 +5,9 @@ using DBMS.GameData;
 using DBMS.RunningData;
 using Enemy.Models;
 using Enemy.Services;
-using Player;
-using Player.Controllers;
-using Player.Signals.BattleSceneSignals;
-using Player.Views;
+using PlayerSystem.Controllers;
+using PlayerSystem.Signals.BattleSceneSignals;
+using PlayerSystem.Views;
 using UnityEngine;
 using Zenject;
 using IInitializable = Zenject.IInitializable;
@@ -148,12 +147,12 @@ namespace Enemy.Manager
 
         private List<KnockbackData> _enemiesBeingKnockedBack = new List<KnockbackData>();
     
-        private void OnMeleeAttack()
+        private void OnMeleeAttack(MeleeAttackSignal meleeAttackSignal)
         {
             Debug.Log("Melee Attack occured");
             var playerPos = _playerView.transform.position;
-            var knockBackStrength = 10;
-            var damageValue = 10;
+            var knockBackStrength = meleeAttackSignal.weaponData.knockBackStrength;
+            var damageValue = meleeAttackSignal.weaponData.damage;
             var p0 = _runningDataScriptable.attackAnglePoints[0];
             var p1 = _runningDataScriptable.attackAnglePoints[1];
             var p2 =  _runningDataScriptable.attackAnglePoints[2];

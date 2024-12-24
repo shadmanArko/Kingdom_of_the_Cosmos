@@ -1,8 +1,7 @@
 using System.Threading.Tasks;
 using DBMS.RunningData;
 using ObjectPoolScripts;
-using Player;
-using Player.Controllers;
+using PlayerSystem.Controllers;
 using UnityEngine;
 using Zenject;
 

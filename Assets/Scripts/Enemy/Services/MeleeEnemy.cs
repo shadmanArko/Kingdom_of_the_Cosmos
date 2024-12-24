@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Threading.Tasks;
 using Enemy.Models;
-using Player;
-using Player.Controllers;
-using Player.Views;
+using PlayerSystem;
+using PlayerSystem.Views;
 using UnityEngine;
 
 namespace Enemy.Services

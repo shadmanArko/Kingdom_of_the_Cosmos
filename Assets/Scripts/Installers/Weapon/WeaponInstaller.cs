@@ -1,6 +1,7 @@
 using DBMS.WeaponsData;
-using Player.Services;
-using Player.Signals.BattleSceneSignals;
+using PlayerSystem.Services;
+using PlayerSystem.Signals.BattleSceneSignals;
+using PlayerSystem.Signals.InputSignals;
 using UnityEngine;
 using UnityEngine.Serialization;
 using WeaponSystem.Managers;
@@ -12,7 +13,7 @@ namespace Installers.Weapon
     [CreateAssetMenu(fileName = "WeaponInstaller", menuName = "Installers/WeaponInstaller")]
     public class WeaponInstaller : ScriptableObjectInstaller<WeaponInstaller>
     {
-        [FormerlySerializedAs("weaponDataScriptable")] [SerializeField] private WeaponDatabaseScriptable weaponDatabaseScriptable;
+        [SerializeField] private WeaponDatabaseScriptable weaponDatabaseScriptable;
         [SerializeField] private RicochetWeaponSystem.RicochetSystem _ricochetSystem;
 
         [SerializeField] private GameObject throwablePrefab;
@@ -23,7 +24,8 @@ namespace Installers.Weapon
         
             //Signals
             Container.DeclareSignal<AutomaticWeaponTriggerSignal>();
-            
+
+            Container.DeclareSignal<LightAttackInputSignal>();
             Container.DeclareSignal<MeleeAttackSignal>();
             
             Container.DeclareSignal<StartHeavyAttackSignal>();

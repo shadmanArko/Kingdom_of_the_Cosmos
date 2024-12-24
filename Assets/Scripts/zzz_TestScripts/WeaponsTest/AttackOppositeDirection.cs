@@ -1,7 +1,6 @@
 using DBMS.RunningData;
 using ObjectPoolScripts;
-using Player;
-using Player.Controllers;
+using PlayerSystem.Controllers;
 using UnityEngine;
 
 namespace zzz_TestScripts.WeaponsTest

@@ -1,4 +1,4 @@
-﻿using Player.Signals.BattleSceneSignals;
+﻿using PlayerSystem.Signals.BattleSceneSignals;
 using UnityEngine;
 using WeaponSystem.Models;
 using WeaponSystem.Services.Bases;
@@ -8,17 +8,17 @@ namespace WeaponSystem.Services.Sub_Services.ControlledWeapon
 {
     public class MeleeWeapon : WeaponBase
     {
-        private SignalBus _signalBus;
+        private readonly SignalBus _signalBus;
+        private readonly MeleeAttackSignal _meleeAttackSignal;
 
         public MeleeWeapon(WeaponData data, SignalBus signalBus) : base(data)
         {
             _signalBus = signalBus;
+            _meleeAttackSignal = new MeleeAttackSignal(data);
         }
         
         public override bool CanActivate()
         {
-            // For controlled weapons, check input
-            // return Input.GetKeyDown(KeyCode.Space); // Example key
             return true;
         }
 
@@ -46,7 +46,7 @@ namespace WeaponSystem.Services.Sub_Services.ControlledWeapon
         public override void TriggerAttack()
         {
             Debug.Log($"Attacked with Weapon {weaponData.name}");
-            _signalBus.Fire<MeleeAttackSignal>();
+            _signalBus.Fire(_meleeAttackSignal);
         }
     }
 }

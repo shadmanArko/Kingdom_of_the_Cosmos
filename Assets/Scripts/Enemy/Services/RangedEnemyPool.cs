@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using Enemy.Models;
-using Player;
-using Player.Controllers;
-using Player.Views;
+using PlayerSystem.Controllers;
+using PlayerSystem.Views;
 using UnityEngine;
 using UnityEngine.Pool;
 using Zenject;

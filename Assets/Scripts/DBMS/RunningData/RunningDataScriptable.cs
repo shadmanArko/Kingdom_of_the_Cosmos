@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Player.Controllers;
-using Player.Services;
+using PlayerSystem.Controllers;
+using PlayerSystem.Services;
 using UnityEngine;
 using UnityEngine.Serialization;
 

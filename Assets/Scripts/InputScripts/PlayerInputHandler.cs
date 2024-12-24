@@ -1,6 +1,7 @@
 using DBMS.RunningData;
-using Player.Signals.BattleSceneSignals;
-using Player.Views;
+using PlayerSystem.Signals.BattleSceneSignals;
+using PlayerSystem.Signals.InputSignals;
+using PlayerSystem.Views;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
@@ -143,7 +144,7 @@ namespace InputScripts
         private void MeleeAttackInput()
         {
             if(!_canTakeAttackInput) return;
-            _signalBus.Fire<MeleeAttackSignal>();
+            _signalBus.Fire<LightAttackInputSignal>();
         }
         
         private void SwitchWeapon()

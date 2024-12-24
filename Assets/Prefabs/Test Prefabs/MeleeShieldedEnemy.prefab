@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 7384028251061610236}
   - component: {fileID: 2878330234239903299}
   - component: {fileID: -8219800820364334471}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MeleeShieldedEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -315,6 +315,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -362,16 +365,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce1d50ea82b0d6649bbe9b710bb19945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Position:
-    x: 0
-    y: 0
+  Position: {x: 0, y: 0}
   Velocity:
     x: 0
     y: 0
   MoveSpeed: 0
+  AttackSpeed: 0
   MaxHealth: 0
   Stuckness: 0
   Damage: 0
+  AttackRange: 0
   DistanceToPlayer: 0
   MinDistanceToPlayer: 0
   IsAlive: 1
@@ -381,7 +384,7 @@ MonoBehaviour:
   maxShieldHealth: 20
 --- !u!50 &2878330234239903299
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -392,8 +395,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.0001
-  m_LinearDrag: 0
-  m_AngularDrag: 0
+  m_LinearDamping: 0
+  m_AngularDamping: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -414,6 +417,7 @@ CircleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3740269002705187921}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -437,9 +441,9 @@ CircleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
   m_Radius: 0.65625
 --- !u!1 &4419399628978288382
 GameObject:
@@ -492,6 +496,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 2
   m_RendererPriority: 0
   m_Materials:
@@ -529,7 +536,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &9148499802883692513
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -543,6 +550,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -563,8 +571,10 @@ MonoBehaviour:
   spriteRend: {fileID: 8629081834983172719}
   animator: {fileID: 9148499802883692513}
   animationDataScriptable: {fileID: 11400000, guid: 65620abbfde574d41925732368d0ba5e, type: 2}
-  animationData:
+  currentAnimationName: 
+  currentAnimationData:
     stateName: 
+    triggerName: 
     folderPath: 
     animationSprites: []
     speed: 0

@@ -3,11 +3,9 @@ using System.Threading.Tasks;
 using Cinemachine;
 using DBMS.RunningData;
 using Enemy.Manager;
-using PlayerSystem.Models;
 using PlayerSystem.PlayerSO;
 using PlayerSystem.Services.HealthService;
 using PlayerSystem.Signals.BattleSceneSignals;
-using PlayerSystem.Signals.HealthSignals;
 using PlayerSystem.Signals.InputSignals;
 using PlayerSystem.Views;
 using Unity.Mathematics;
@@ -125,6 +123,7 @@ namespace PlayerSystem.Controllers
             _totalDashCount = 2;
             _runningDataScriptable.playerController = this;
             
+            SetHealthAndShield();
             _signalBus.Fire(new HeavyAttackChargeMeterSignal(3, 3));   // setting initial height to 4
         }
 
@@ -142,6 +141,8 @@ namespace PlayerSystem.Controllers
             _signalBus.Subscribe<CancelHeavyAttackSignal>(CancelHeavyAttackWithDash);
             _signalBus.Subscribe<WeaponThrowStartSignal>(CheckWeaponThrowEligibility);
             _signalBus.Subscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+            
+            _signalBus.Subscribe<LightAttackInputSignal>(DamageTest);
         }
         
         private void UnsubscribeToActions()
@@ -158,6 +159,17 @@ namespace PlayerSystem.Controllers
         #endregion
         
         #endregion
+
+        private void SetHealthAndShield()
+        {
+            _playerHealthService.SetHealth(_playerScriptableObject.player, _playerScriptableObject.player.maxHealth);
+            _playerHealthService.SetShield(_playerScriptableObject.player, _playerScriptableObject.player.maxShield);
+            
+            _playerHealthView.maxHealthBar = _playerScriptableObject.player.maxHealth;
+            _playerHealthView.maxShieldBar = _playerScriptableObject.player.maxShield;
+            _playerHealthView.HealthBar = _playerScriptableObject.player.health;
+            _playerHealthView.ShieldBar = _playerScriptableObject.player.shield;
+        }
         
         public void FixedTick()
         {
@@ -453,8 +465,8 @@ namespace PlayerSystem.Controllers
         public void Damage(float damageAmount)
         {
             _playerHealthService.TakeDamage(_playerScriptableObject, damageAmount);
-            //TODO: update health and shield for view
-            _playerHealthView.HealthBar = _playerScriptableObject.player.Health;
+            _playerHealthView.ShieldBar = _playerScriptableObject.player.shield;
+            _playerHealthView.HealthBar = _playerScriptableObject.player.health;
         }
 
         #endregion
@@ -464,5 +476,15 @@ namespace PlayerSystem.Controllers
         {
             UnsubscribeToActions();
         }
+
+        #region Test
+
+        private float _testDamageValue = 30f;
+        public void DamageTest()
+        {
+            Damage(_testDamageValue);
+        }
+
+        #endregion
     }
 }

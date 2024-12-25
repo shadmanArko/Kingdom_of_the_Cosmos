@@ -5,7 +5,7 @@
       "weapons": [
         {
           "name": "Standard Pistol",
-          "damage": 50,
+          "damage": 20,
           "cooldown": 0.5,
           "type": "Controlled",
           "triggerCondition": "ThreeRoundBurst",

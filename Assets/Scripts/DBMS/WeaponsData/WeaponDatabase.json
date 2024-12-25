@@ -10,7 +10,7 @@
           "type": "Controlled",
           "triggerCondition": "ThreeRoundBurst",
           "knockBackStrength": 20,
-          "knockBackDuration": 0.5
+          "knockBackDuration": 1
         },
         {
           "name": "Burst Pistol",

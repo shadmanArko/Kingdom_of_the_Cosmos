@@ -63,15 +63,5 @@ namespace PlayerSystem.Services
             baseEnemy.TakeDamage(weaponData.damage);
             baseEnemy.TakeKnockBack(transform, weaponData.knockBackStrength, weaponData.knockBackDuration);
         }
-        
-        // private void OnTriggerStay2D(Collider2D other)
-        // {
-        //     Debug.LogWarning($"Staying in trigger with: {other.gameObject.name}");
-        // }
-        //
-        // private void OnTriggerExit2D(Collider2D other)
-        // {
-        //     Debug.LogWarning($"Exiting trigger with: {other.gameObject.name}");
-        // }
     }
 }

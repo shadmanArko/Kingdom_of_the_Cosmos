@@ -136,6 +136,7 @@ namespace PlayerSystem.Services
             
             _throwableWeaponView.weaponData = _currentThrowableWeapon.GetWeaponData();
             _throwableWeaponView.isBeingThrown = true;
+            _throwableWeaponView.rb.simulated = true;
         }
 
         private void StopWeaponThrow()
@@ -175,10 +176,10 @@ namespace PlayerSystem.Services
         }
         
         private float _weaponThrowSpeed;
-        private const float Acceleration = 5f;
-        private const float MaxSpeed = 10f;
+        private const float Acceleration = 20f;
+        private const float MaxSpeed = 50f;
         private Vector2 _finalEndPos;
-        public float rotationSpeed = 45f;
+        public float rotationSpeed = 20f;
         private void MoveWeaponToEndPosition()
         {
             var distanceToTarget = Vector2.Distance(_throwableWeaponView.transform.position, _finalEndPos);

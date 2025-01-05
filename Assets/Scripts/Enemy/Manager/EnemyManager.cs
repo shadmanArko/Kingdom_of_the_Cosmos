@@ -18,6 +18,7 @@ namespace Enemy.Manager
     public class EnemyManager : IInitializable, ITickable, IDisposable
     {
         public static Action<int> EnemyCountUpdated;
+        public static Action<BaseEnemy> OnEnemyDied;
    
 
         private readonly PlayerController _playerController;
@@ -79,6 +80,7 @@ namespace Enemy.Manager
             nextEnemySpawnTime = enemySpawningInterval + Time.time;
             _enemies = _gameDataScriptable.gameData.enemies;
             _signalBus.Subscribe<MeleeAttackSignal>(OnMeleeAttack);
+            OnEnemyDied += ReleaseEnemy;
             Debug.Log("Enemy Manager Started.");
             if (_enemyComputeShader != null)
             {
@@ -163,13 +165,7 @@ namespace Enemy.Manager
             foreach (var enemy in enemiesWithinArea)
             {
                 enemy.TakeDamage(damageValue);
-                if (!enemy.IsAlive)
-                {
-                    ReleaseEnemy(enemy);
-                }else{
-                    // StartKnockback(enemy, playerPos, knockBackStrength);
-                    enemy.TakeKnockBack(_playerTransform);
-                }
+                enemy.TakeKnockBack(_playerTransform);
             }
         }
 
@@ -507,6 +503,8 @@ namespace Enemy.Manager
             {
                 _obstacleBuffer.Release();
             }
+            OnEnemyDied -= ReleaseEnemy;
+
         }
     }
 }

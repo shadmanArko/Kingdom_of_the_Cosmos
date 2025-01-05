@@ -107,8 +107,8 @@ TextureImporter:
         y: 0
         width: 1846
         height: 923
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 95f5eec0e1d78a944aaaff18ed80e682
     internalID: 0
     vertices: []
     indices: 
@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Half-Circle-PNG-Photo_0: 4017662710266852670
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

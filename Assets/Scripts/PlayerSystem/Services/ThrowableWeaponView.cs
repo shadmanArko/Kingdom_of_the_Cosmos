@@ -17,26 +17,6 @@ namespace PlayerSystem.Services
         {
             isBeingThrown = false;
         }
-
-        // private void OnTriggerEnter2D(Collider2D other)
-        // {
-        //     Debug.LogWarning("this method being called");
-        //     if(!isBeingThrown) return;
-        //     if (!other.gameObject.CompareTag("Enemy"))
-        //     {
-        //         Debug.LogWarning("other is not enemy");
-        //         return;
-        //     }
-        //     var baseEnemy = other.gameObject.GetComponent<BaseEnemy>();
-        //     if (baseEnemy == null)
-        //     {
-        //         Debug.LogWarning("base enemy is null");
-        //         return;
-        //     }
-        //     Debug.LogWarning($"Enemy Hit! enemy damaged by {weaponData.damage}");
-        //     baseEnemy.TakeDamage(weaponData.damage);
-        //     baseEnemy.TakeKnockBack(transform, weaponData.knockBackStrength, weaponData.knockBackDuration);
-        // }
         
         private void OnTriggerEnter2D(Collider2D other)
         {

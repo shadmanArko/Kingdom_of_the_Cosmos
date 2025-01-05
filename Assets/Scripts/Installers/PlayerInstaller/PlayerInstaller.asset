@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerScriptableObject: {fileID: 11400000, guid: 45e7a4cc4b39f994ebcb1fd0392b7f5f, type: 2}
   playerView: {fileID: 7256200811749845537, guid: d6ae14d1606a5884bb3a62e8302004b8, type: 3}
-  playerHealthView: {fileID: 7257885204564399075, guid: 943a54f7ad7759645a9aab57fdcb8aa0, type: 3}
+  playerHealthView: {fileID: -8486752118049363234, guid: 943a54f7ad7759645a9aab57fdcb8aa0, type: 3}

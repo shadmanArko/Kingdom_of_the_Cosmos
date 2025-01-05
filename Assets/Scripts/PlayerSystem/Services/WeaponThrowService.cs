@@ -108,6 +108,7 @@ namespace PlayerSystem.Services
             _throwableWeaponView.rb.simulated = false;
             _isThrowingWeapon = true;
             _isWeaponThrowCharging = true;
+            // _endPos = _startPos;
             _lineRenderer.enabled = true;
             // _signalBus.Fire<WeaponThrowChargeSignal>();
         }

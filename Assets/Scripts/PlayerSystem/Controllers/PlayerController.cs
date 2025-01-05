@@ -141,8 +141,6 @@ namespace PlayerSystem.Controllers
             _signalBus.Subscribe<CancelHeavyAttackSignal>(CancelHeavyAttackWithDash);
             _signalBus.Subscribe<WeaponThrowStartSignal>(CheckWeaponThrowEligibility);
             _signalBus.Subscribe<WeaponThrowStopSignal>(StopWeaponThrow);
-            
-            _signalBus.Subscribe<LightAttackInputSignal>(DamageTest);
         }
         
         private void UnsubscribeToActions()

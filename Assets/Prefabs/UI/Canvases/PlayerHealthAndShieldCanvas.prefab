@@ -640,7 +640,7 @@ GameObject:
   - component: {fileID: 3953645177052621850}
   - component: {fileID: 4237159518341313348}
   - component: {fileID: 3181012398479034574}
-  - component: {fileID: 7257885204564399075}
+  - component: {fileID: -8486752118049363234}
   m_Layer: 5
   m_Name: PlayerHealthAndShieldCanvas
   m_TagString: Untagged
@@ -732,7 +732,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &7257885204564399075
+--- !u!114 &-8486752118049363234
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -744,8 +744,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a302ec7e988a4c6db860f51111e1e7e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealthBar: 0
-  maxShieldBar: 0
+  maxHealthBar: 100
+  maxShieldBar: 100
   healthSlider: {fileID: 9074946172016277335}
   shieldSlider: {fileID: 8786037969112646053}
 --- !u!1 &8122662016182922632

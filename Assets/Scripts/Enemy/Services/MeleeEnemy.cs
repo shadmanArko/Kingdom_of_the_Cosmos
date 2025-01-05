@@ -11,7 +11,11 @@ namespace Enemy.Services
     {
         [SerializeField] private PlayerAnimationController _animationController;
         private bool _attacking = false;
-
+        [SerializeField] private GameObject warningIndicator; // Assign your sprite GameObject in inspector
+        [SerializeField] private float warningDuration = 0.5f;
+        [SerializeField] private float warningRadius = 2.0f;
+    
+        private bool isWarningActive;
         protected override void Start()
         {
             base.Start();
@@ -20,6 +24,7 @@ namespace Enemy.Services
 
         public override void MoveTowardsTarget(Transform targetTransform)
         {
+            if (!canMove) return;
             _rigidbody2D.linearVelocity = Vector2.zero;
             var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
             DistanceToPlayer = distanceToPlayer;
@@ -98,12 +103,48 @@ namespace Enemy.Services
         {
             if (_attacking) return;
             _attacking = true;
-            // Debug.Log($"{gameObject.name} Damaged Player from distance {_meleeAttackerStats.DistanceToPlayer}");
+            isWarningActive = true;
+            canMove = false;
+            // Show warning indicator at target position
+            Vector3 attackPosition = target.transform.position;
+            var warningIndicatorObj = Instantiate(warningIndicator);
+            warningIndicatorObj.transform.position = attackPosition;
+            warningIndicatorObj.SetActive(true);
+        
+            // Wait for warning duration
+            await Task.Delay((int)(warningDuration * 1000));
             _animationController.PlayAnimation("attack");
-            await Task.Delay((1000));
+            warningIndicatorObj.SetActive(false);
+            await Task.Delay(1000);
+            // // Check if player is still in attack range
+            // if (isWarningActive && IsPlayerInWarningArea(target.transform.position))
+            // {
+            //     
+            // }
+        
+            // Hide warning indicator and reset state
+            Destroy(warningIndicatorObj);
             _attacking = false;
             isAttacking = false;
+            isWarningActive = false;
+            canMove = true;
             _animationController.PlayAnimation("run");
+        }
+    
+        private bool IsPlayerInWarningArea(Vector3 playerPosition)
+        {
+            Vector3 warningCenter = warningIndicator.transform.position;
+            float distance = Vector2.Distance(
+                new Vector2(warningCenter.x, warningCenter.z),
+                new Vector2(playerPosition.x, playerPosition.z)
+            );
+            return distance <= warningRadius;
+        }
+
+        public void CancelAttack()
+        {
+            isWarningActive = false;
+            warningIndicator.SetActive(false);
         }
     }
 }

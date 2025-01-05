@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using Enemy.Manager;
 using Enemy.Services;
 using PlayerSystem.Views;
 using Unity.Mathematics;
@@ -7,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Enemy.Models
 {
-    public abstract class BaseEnemy: MonoBehaviour, IEnemy 
+    public abstract class BaseEnemy: MonoBehaviour, IEnemy
     {
         [Header("Basic Enemy Stats")]
         public Vector2 Position;
@@ -83,7 +85,7 @@ namespace Enemy.Models
             AttackSpeed = 2f;
             DistanceToPlayer = 999f;
             Stuckness = 0.5f;
-            AttackRange = 2f;
+            AttackRange = 4f;
         }
 
         public virtual void SetStat(EnemyData data)
@@ -112,6 +114,8 @@ namespace Enemy.Models
 
         public void TakeKnockBack(Transform fromTransform, float duration = 0.2f, float strength = 10f)
         {
+            if (!IsAlive) return;
+            
             canMove = false;
             Vector3 direction = (transform.position - fromTransform.position).normalized;
             StartCoroutine(ApplyKnockBack(direction, strength, duration));
@@ -140,6 +144,7 @@ namespace Enemy.Models
         protected virtual void Die()
         {
             IsAlive = false;
+            EnemyManager.OnEnemyDied?.Invoke(this);
         }
     }
 }

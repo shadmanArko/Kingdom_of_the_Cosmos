@@ -78,7 +78,7 @@ namespace Enemy.Manager
             _playerTransform = _playerView.transform;
             nextEnemySpawnTime = enemySpawningInterval + Time.time;
             _enemies = _gameDataScriptable.gameData.enemies;
-            _signalBus.Subscribe<MeleeAttackSignal>(OnMeleeAttack);
+            _signalBus.Subscribe<MeleeLightAttackSignal>(OnMeleeAttack);
             OnEnemyDied += ReleaseEnemy;
             Debug.Log("Enemy Manager Started.");
             if (_enemyComputeShader != null)
@@ -149,12 +149,12 @@ namespace Enemy.Manager
 
         private List<KnockbackData> _enemiesBeingKnockedBack = new List<KnockbackData>();
     
-        private void OnMeleeAttack(MeleeAttackSignal meleeAttackSignal)
+        private void OnMeleeAttack(MeleeLightAttackSignal meleeLightAttackSignal)
         {
             Debug.Log("Melee Attack occured");
             var playerPos = _playerView.transform.position;
-            var knockBackStrength = meleeAttackSignal.weaponData.knockBackStrength;
-            var damageValue = meleeAttackSignal.weaponData.damage;
+            var knockBackStrength = meleeLightAttackSignal.weaponData.knockBackStrength;
+            var damageValue = meleeLightAttackSignal.weaponData.damage;
             var p0 = _runningDataScriptable.attackAnglePoints[0];
             var p1 = _runningDataScriptable.attackAnglePoints[1];
             var p2 =  _runningDataScriptable.attackAnglePoints[2];

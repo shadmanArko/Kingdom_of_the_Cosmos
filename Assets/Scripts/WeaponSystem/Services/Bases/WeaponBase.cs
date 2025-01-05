@@ -11,7 +11,7 @@ namespace WeaponSystem.Services.Bases
 
         public WeaponBase(WeaponData data)
         {
-            this.weaponData = data;
+            weaponData = data;
         }
 
         public virtual void Activate()
@@ -24,7 +24,12 @@ namespace WeaponSystem.Services.Bases
             Debug.Log(weaponData.name + " deactivated!");
         }
 
-        public virtual void TriggerAttack()
+        public virtual void TriggerLightAttack()
+        {
+            
+        }
+
+        public virtual void TriggerHeavyAttack()
         {
             
         }

@@ -149,19 +149,19 @@ namespace InputScripts
         
         private void SwitchWeapon()
         {
-            _signalBus.Fire<SwitchControlledWeaponSignal>();
+            _signalBus.Fire<SwitchControlledWeaponInputSignal>();
         }
 
         #region Heavy Attack
 
         private void StartHeavyAttackInput()
         {
-            _signalBus.Fire<StartHeavyAttackSignal>();
+            _signalBus.Fire<StartHeavyAttackInputSignal>();
         }
 
         private void StopHeavyAttackInput()
         {
-            _signalBus.Fire<StopHeavyAttackSignal>();
+            _signalBus.Fire<StopHeavyAttackInputSignal>();
         }
 
         #endregion
@@ -171,12 +171,12 @@ namespace InputScripts
         private void StartDash()
         {
             _signalBus.Fire<CancelHeavyAttackSignal>();
-            _signalBus.Fire<DashInputStartSignal>();
+            _signalBus.Fire<DashStartInputSignal>();
         }
         
         private void StopDash()
         {
-            _signalBus.Fire<DashInputStopSignal>();
+            _signalBus.Fire<DashStopInputSignal>();
         }
 
         #endregion
@@ -202,11 +202,11 @@ namespace InputScripts
 
         private void StartWeaponThrow()
         {
-            _signalBus.Fire<WeaponThrowStartSignal>();
+            _signalBus.Fire<WeaponThrowStartInputSignal>();
         }
         private void StopWeaponThrow()
         {
-            _signalBus.Fire<WeaponThrowStopSignal>();
+            _signalBus.Fire<WeaponThrowStopInputSignal>();
         }
 
         #endregion
@@ -216,7 +216,7 @@ namespace InputScripts
         private void ToggleAutoAttack()
         {
             _canTakeAttackInput = !_canTakeAttackInput;
-            _signalBus.Fire<ToggleAutoAttackSignal>();
+            _signalBus.Fire<ToggleAutoAttackInputSignal>();
         }
 
         #endregion

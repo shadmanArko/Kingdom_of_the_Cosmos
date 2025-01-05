@@ -131,26 +131,26 @@ namespace PlayerSystem.Controllers
 
         private void SubscribeToActions()
         {
-            _signalBus.Subscribe<DashInputStartSignal>(StartDash);
-            _signalBus.Subscribe<DashInputStopSignal>(() => { });
-            _signalBus.Subscribe<ToggleAutoAttackSignal>(ToggleAutoAttack);
+            _signalBus.Subscribe<DashStartInputSignal>(StartDash);
+            _signalBus.Subscribe<DashStopInputSignal>(() => { });
+            _signalBus.Subscribe<ToggleAutoAttackInputSignal>(ToggleAutoAttack);
             _signalBus.Subscribe<PlayerMovementSignal>(Move);
             _signalBus.Subscribe<LightAttackInputSignal>(Attack);
-            _signalBus.Subscribe<StartHeavyAttackSignal>(CheckHeavyAttackEligibility);
-            _signalBus.Subscribe<StopHeavyAttackSignal>(StopHeavyAttack);
+            _signalBus.Subscribe<StartHeavyAttackInputSignal>(CheckHeavyAttackEligibility);
+            _signalBus.Subscribe<StopHeavyAttackInputSignal>(StopHeavyAttack);
             _signalBus.Subscribe<CancelHeavyAttackSignal>(CancelHeavyAttackWithDash);
-            _signalBus.Subscribe<WeaponThrowStartSignal>(CheckWeaponThrowEligibility);
-            _signalBus.Subscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+            _signalBus.Subscribe<WeaponThrowStartInputSignal>(CheckWeaponThrowEligibility);
+            _signalBus.Subscribe<WeaponThrowStopInputSignal>(StopWeaponThrow);
         }
         
         private void UnsubscribeToActions()
         {
-            _signalBus.Unsubscribe<DashInputStartSignal>(StartDash);
-            _signalBus.Unsubscribe<ToggleAutoAttackSignal>(ToggleAutoAttack);
+            _signalBus.Unsubscribe<DashStartInputSignal>(StartDash);
+            _signalBus.Unsubscribe<ToggleAutoAttackInputSignal>(ToggleAutoAttack);
             _signalBus.Unsubscribe<PlayerMovementSignal>(Move);
             _signalBus.Unsubscribe<LightAttackInputSignal>(Attack);
-            _signalBus.Unsubscribe<StartHeavyAttackSignal>(CheckHeavyAttackEligibility);
-            _signalBus.Unsubscribe<StopHeavyAttackSignal>(StopHeavyAttack);
+            _signalBus.Unsubscribe<StartHeavyAttackInputSignal>(CheckHeavyAttackEligibility);
+            _signalBus.Unsubscribe<StopHeavyAttackInputSignal>(StopHeavyAttack);
             _signalBus.Unsubscribe<CancelHeavyAttackSignal>(CancelHeavyAttackWithDash);
         }
 

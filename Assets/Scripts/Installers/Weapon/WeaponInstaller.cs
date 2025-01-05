@@ -26,27 +26,27 @@ namespace Installers.Weapon
             Container.DeclareSignal<AutomaticWeaponTriggerSignal>();
 
             Container.DeclareSignal<LightAttackInputSignal>();
-            Container.DeclareSignal<MeleeAttackSignal>();
+            Container.DeclareSignal<MeleeLightAttackSignal>();
             
-            Container.DeclareSignal<StartHeavyAttackSignal>();
-            Container.DeclareSignal<StopHeavyAttackSignal>();
+            Container.DeclareSignal<StartHeavyAttackInputSignal>();
+            Container.DeclareSignal<StopHeavyAttackInputSignal>();
             Container.DeclareSignal<HeavyAttackChargeMeterSignal>();
             
             Container.DeclareSignal<MouseMovementSignal>();
             Container.DeclareSignal<ReloadSignal>();
-            Container.DeclareSignal<SwitchControlledWeaponSignal>();
+            Container.DeclareSignal<SwitchControlledWeaponInputSignal>();
             
-            Container.DeclareSignal<DashInputStartSignal>();
-            Container.DeclareSignal<DashInputStopSignal>();
+            Container.DeclareSignal<DashStartInputSignal>();
+            Container.DeclareSignal<DashStopInputSignal>();
             Container.DeclareSignal<DashPerformSignal>();
             
-            Container.DeclareSignal<WeaponThrowStartSignal>();
-            Container.DeclareSignal<WeaponThrowStopSignal>();
+            Container.DeclareSignal<WeaponThrowStartInputSignal>();
+            Container.DeclareSignal<WeaponThrowStopInputSignal>();
             Container.DeclareSignal<WeaponThrowChargeSignal>();
             Container.DeclareSignal<WeaponThrowCancelSignal>();
             Container.DeclareSignal<WeaponThrowCompletedSignal>();
             
-            Container.DeclareSignal<ToggleAutoAttackSignal>();
+            Container.DeclareSignal<ToggleAutoAttackInputSignal>();
         
             Container.Bind<WeaponManager>().AsSingle().NonLazy();
             Container.Bind<WeaponDataLoader>().AsSingle().NonLazy();

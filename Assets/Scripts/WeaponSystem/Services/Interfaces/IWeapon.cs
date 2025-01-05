@@ -8,7 +8,8 @@ namespace WeaponSystem.Services.Interfaces
         void Deactivate();
         bool CanActivate();
         bool CanAttack();
-        void TriggerAttack();
+        void TriggerLightAttack();
+        void TriggerHeavyAttack();
         void UpgradeWeapon(int newDamage, float newCooldown);
         string GetName();
         WeaponData GetWeaponData();

@@ -1,6 +1,7 @@
 ﻿using System;
 using DBMS.RunningData;
 using PlayerSystem.Signals.BattleSceneSignals;
+using PlayerSystem.Signals.InputSignals;
 using PlayerSystem.Views;
 using Unity.Mathematics;
 using UnityEngine;
@@ -44,13 +45,13 @@ namespace PlayerSystem.Services
 
         private void SubscribeToActions()
         {
-            _signalBus.Subscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+            _signalBus.Subscribe<WeaponThrowStopInputSignal>(StopWeaponThrow);
             _signalBus.Subscribe<DashPerformSignal>(CancelWeaponThrow);
         }
 
         private void UnsubscribeToActions()
         {
-            _signalBus.Unsubscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+            _signalBus.Unsubscribe<WeaponThrowStopInputSignal>(StopWeaponThrow);
             _signalBus.Unsubscribe<DashPerformSignal>(CancelWeaponThrow);
         }
 

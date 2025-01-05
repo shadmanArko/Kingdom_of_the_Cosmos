@@ -5,6 +5,7 @@ using DBMS.RunningData;
 using DBMS.WeaponsData;
 using PlayerSystem.Services;
 using PlayerSystem.Signals.BattleSceneSignals;
+using PlayerSystem.Signals.InputSignals;
 using PlayerSystem.Views;
 using RicochetWeaponSystem;
 using UnityEngine;
@@ -40,18 +41,18 @@ namespace WeaponSystem.Managers
         private void SubscribeToActions()
         {
             _signalBus.Subscribe<ReloadSignal>(Reload);
-            _signalBus.Subscribe<SwitchControlledWeaponSignal>(HandleControlledWeaponSwitch);
+            _signalBus.Subscribe<SwitchControlledWeaponInputSignal>(HandleControlledWeaponSwitch);
             // _signalBus.Subscribe<WeaponThrowStartSignal>(StartWeaponThrow);
-            _signalBus.Subscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+            _signalBus.Subscribe<WeaponThrowStopInputSignal>(StopWeaponThrow);
             _signalBus.Subscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
         }
 
         private void UnsubscribeToActions()
         {
             _signalBus.Unsubscribe<ReloadSignal>(Reload);
-            _signalBus.Unsubscribe<SwitchControlledWeaponSignal>(HandleControlledWeaponSwitch);
+            _signalBus.Unsubscribe<SwitchControlledWeaponInputSignal>(HandleControlledWeaponSwitch);
             // _signalBus.Unsubscribe<WeaponThrowStartSignal>(StartWeaponThrow);
-            _signalBus.Unsubscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+            _signalBus.Unsubscribe<WeaponThrowStopInputSignal>(StopWeaponThrow);
             _signalBus.Unsubscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
         }
 
@@ -162,14 +163,14 @@ namespace WeaponSystem.Managers
         public bool TriggerControlledWeaponLightAttack()
         {
             if(!_controlledWeapons[_currentControlledIndex].CanAttack()) return false;
-            _controlledWeapons[_currentControlledIndex].TriggerAttack();
+            _controlledWeapons[_currentControlledIndex].TriggerLightAttack();
             return true;
         }
         
         public bool TriggerControlledWeaponHeavyAttack()
         {
             if(!_controlledWeapons[_currentControlledIndex].CanAttack()) return false;
-            _controlledWeapons[_currentControlledIndex].TriggerAttack();
+            _controlledWeapons[_currentControlledIndex].TriggerLightAttack();
             return true;
         }
 

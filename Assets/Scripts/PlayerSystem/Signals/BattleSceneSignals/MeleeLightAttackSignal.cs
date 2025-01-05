@@ -2,11 +2,11 @@ using WeaponSystem.Models;
 
 namespace PlayerSystem.Signals.BattleSceneSignals
 {
-    public class MeleeAttackSignal
+    public class MeleeLightAttackSignal
     {
         public WeaponData weaponData;
 
-        public MeleeAttackSignal(WeaponData data)
+        public MeleeLightAttackSignal(WeaponData data)
         {
             weaponData = data;
         }

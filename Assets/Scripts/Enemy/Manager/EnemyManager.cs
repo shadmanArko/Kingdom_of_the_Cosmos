@@ -334,7 +334,7 @@ namespace Enemy.Manager
             return (u >= 0) && (v >= 0) && (u + v <= 1);
         }
 
-        private int _numberOfMeleeEnemies = 20;
+        private int _numberOfMeleeEnemies = 5;
         private int _numberOfShamanEnemies = 1;
         private int _numberOfShieldedMeleeEnemies = 3;
         private int _countOfMeleeEnemies;

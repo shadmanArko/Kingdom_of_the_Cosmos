@@ -207,46 +207,32 @@ namespace PlayerSystem.Controllers
                 {
                     var angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
 
-                    // Based on the angle, determine the appropriate direction and animation
-                    if (angle >= -22.5f && angle < 22.5f)
+                    switch (angle)
                     {
-                        // Right
-                        _playerView.playerAnimationController.PlayAnimation("runRight");
-                    }
-                    else if (angle >= 22.5f && angle < 67.5f)
-                    {
-                        // Up-right
-                        _playerView.playerAnimationController.PlayAnimation("runUpRight");
-                    }
-                    else if (angle >= 67.5f && angle < 112.5f)
-                    {
-                        // Up
-                        _playerView.playerAnimationController.PlayAnimation("runUp");
-                    }
-                    else if (angle >= 112.5f && angle < 157.5f)
-                    {
-                        // Up-left
-                        _playerView.playerAnimationController.PlayAnimation("runUpLeft");
-                    }
-                    else if (angle >= 157.5f || angle < -157.5f)
-                    {
-                        // Left
-                        _playerView.playerAnimationController.PlayAnimation("runLeft");
-                    }
-                    else if (angle >= -157.5f && angle < -112.5f)
-                    {
-                        // Down-left
-                        _playerView.playerAnimationController.PlayAnimation("runDownLeft");
-                    }
-                    else if (angle >= -112.5f && angle < -67.5f)
-                    {
-                        // Down
-                        _playerView.playerAnimationController.PlayAnimation("runDown");
-                    }
-                    else if (angle >= -67.5f && angle < -22.5f)
-                    {
-                        // Down-right
-                        _playerView.playerAnimationController.PlayAnimation("runDownRight");
+                        case >= -22.5f and < 22.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runRight");
+                            break;
+                        case >= 22.5f and < 67.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runUpRight");
+                            break;
+                        case >= 67.5f and < 112.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runUp");
+                            break;
+                        case >= 112.5f and < 157.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runUpLeft");
+                            break;
+                        case >= 157.5f or < -157.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runLeft");
+                            break;
+                        case >= -157.5f and < -112.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runDownLeft");
+                            break;
+                        case >= -112.5f and < -67.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runDown");
+                            break;
+                        case >= -67.5f and < -22.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runDownRight");
+                            break;
                     }
                 }
             }

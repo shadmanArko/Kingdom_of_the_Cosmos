@@ -20,7 +20,6 @@ namespace PlayerSystem.Services
         
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.LogWarning($"Trigger entered by: {other.gameObject.name} at position {other.transform.position}");
             if(!isBeingThrown)
             {
                 Debug.LogWarning("Weapon is not being thrown, ignoring collision");

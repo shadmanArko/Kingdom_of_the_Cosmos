@@ -36,6 +36,12 @@ MonoBehaviour:
       animationSprites:
       - {fileID: 1226259874, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       - {fileID: -608963220, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -608963220, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -608963220, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -608963220, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -608963220, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -608963220, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: -608963220, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       speed: 0
     - stateName: dash
       triggerName: 

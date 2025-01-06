@@ -171,6 +171,8 @@ namespace PlayerSystem.Controllers
         
         public void FixedTick()
         {
+            _runningDataScriptable.playerVelocity = _playerView.rb.linearVelocity;
+            _runningDataScriptable.playerVelocityMagnitude = _playerView.rb.linearVelocity.magnitude;
             if (_lightAttackTimer > 0)
                 _lightAttackTimer -= Time.fixedDeltaTime;
             else if(_isAutoAttacking) 
@@ -190,6 +192,7 @@ namespace PlayerSystem.Controllers
             movement = playerMovementSignal.MovePos.normalized;
             if(!canMove) return;
             _playerView.rb.linearVelocity = movement * _speed;
+            var stateInfo = _playerView.playerAnimationController.animator.GetCurrentAnimatorStateInfo(0);
 
             if (_playerView.rb.linearVelocity.magnitude > 0)
             {
@@ -201,16 +204,56 @@ namespace PlayerSystem.Controllers
                         _playerView.playerAnimationController.PlayAnimation( "roll");
                 }
                 else
-                    _playerView.playerAnimationController.PlayAnimation( "run");
+                {
+                    var angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
+
+                    // Based on the angle, determine the appropriate direction and animation
+                    if (angle >= -22.5f && angle < 22.5f)
+                    {
+                        // Right
+                        _playerView.playerAnimationController.PlayAnimation("runRight");
+                    }
+                    else if (angle >= 22.5f && angle < 67.5f)
+                    {
+                        // Up-right
+                        _playerView.playerAnimationController.PlayAnimation("runUpRight");
+                    }
+                    else if (angle >= 67.5f && angle < 112.5f)
+                    {
+                        // Up
+                        _playerView.playerAnimationController.PlayAnimation("runUp");
+                    }
+                    else if (angle >= 112.5f && angle < 157.5f)
+                    {
+                        // Up-left
+                        _playerView.playerAnimationController.PlayAnimation("runUpLeft");
+                    }
+                    else if (angle >= 157.5f || angle < -157.5f)
+                    {
+                        // Left
+                        _playerView.playerAnimationController.PlayAnimation("runLeft");
+                    }
+                    else if (angle >= -157.5f && angle < -112.5f)
+                    {
+                        // Down-left
+                        _playerView.playerAnimationController.PlayAnimation("runDownLeft");
+                    }
+                    else if (angle >= -112.5f && angle < -67.5f)
+                    {
+                        // Down
+                        _playerView.playerAnimationController.PlayAnimation("runDown");
+                    }
+                    else if (angle >= -67.5f && angle < -22.5f)
+                    {
+                        // Down-right
+                        _playerView.playerAnimationController.PlayAnimation("runDownRight");
+                    }
+                }
             }
-            // else
-            // {
-            //     var stateInfo = _playerView.playerAnimationController.animator.GetCurrentAnimatorStateInfo(0);
-            //     if (stateInfo.length == 0 || stateInfo.normalizedTime >= 1.0f)
-            //     {
-            //         _playerView.playerAnimationController.PlayAnimation("idle");
-            //     }
-            // }
+            else if (stateInfo.length == 0 || stateInfo.normalizedTime >= 1.0f)
+            {
+                _playerView.playerAnimationController.PlayAnimation("idle");
+            }
         }
 
         #endregion

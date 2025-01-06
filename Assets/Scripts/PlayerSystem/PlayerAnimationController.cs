@@ -10,8 +10,7 @@ namespace PlayerSystem
         [SerializeField] public Animator animator;
         
         [SerializeField] private AnimationDataScriptable animationDataScriptable;
-        
-        [SerializeField] private string currentAnimationName;
+
         [SerializeField] private AnimationData currentAnimationData;
         
         #region Current Sprite Index
@@ -37,15 +36,9 @@ namespace PlayerSystem
 
         #endregion
 
-        private void Update()
-        {
-            if(currentAnimationData.stateName != currentAnimationName)
-                LoadSpriteBasedOnCurrentAnimation(currentAnimationName);
-        }
-
         private void LateUpdate()
         {
-            if (currentAnimationData.animationSprites.Count > 0)
+            if (currentAnimationData.animationSprites.Count > 0 && CurrentSpriteIndex < currentAnimationData.animationSprites.Count)
             {
                 spriteRend.sprite = currentAnimationData.animationSprites[currentSpriteIndex];
             }
@@ -54,7 +47,7 @@ namespace PlayerSystem
         public void PlayAnimation(string state)
         {
             if (animator == null || !animator.isActiveAndEnabled) return;
-            currentAnimationName = state;
+            if (currentAnimationData.stateName == state && animator.GetCurrentAnimatorStateInfo(0).length != 0) return;
             LoadSpriteBasedOnCurrentAnimation(state);
             if (currentAnimationData.triggerName != "")
             {
@@ -69,6 +62,7 @@ namespace PlayerSystem
         private void LoadSpriteBasedOnCurrentAnimation(string currentStateName)
         {
             if (currentAnimationData.stateName == currentStateName) return;
+            Debug.Log("Current loaded animation: " + currentAnimationData.stateName);
             
             if (animationDataScriptable.animationDatabases.Count <= 0)
             {
@@ -79,8 +73,10 @@ namespace PlayerSystem
             foreach (var data in animationDataScriptable.animationDatabases[0].animationDatas)
             {
                 if(data.stateName != currentStateName) continue;
-                currentAnimationData = data;
                 CurrentSpriteIndex = 0;
+                spriteRend.flipX = data.flipX;
+                spriteRend.flipY = data.flipY;
+                currentAnimationData = data;
                 return;
             }
             

@@ -21,5 +21,7 @@ namespace DBMS.RunningData
         
         //For test! Will be removed later
         public WeaponThrowService weaponThrowService;
+        public Vector2 playerVelocity;
+        public float playerVelocityMagnitude;
     }
 }

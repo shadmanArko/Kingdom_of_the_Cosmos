@@ -5,12 +5,12 @@
       "weapons": [
         {
           "name": "Standard Pistol",
-          "damage": 20,
+          "damage": 5,
           "cooldown": 0.5,
           "type": "Controlled",
           "triggerCondition": "ThreeRoundBurst",
-          "knockBackStrength": 20,
-          "knockBackDuration": 1
+          "knockBackStrength": 10,
+          "knockBackDuration": 0.2
         },
         {
           "name": "Burst Pistol",

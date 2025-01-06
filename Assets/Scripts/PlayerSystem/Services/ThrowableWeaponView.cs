@@ -38,10 +38,9 @@ namespace PlayerSystem.Services
                 Debug.LogWarning($"No BaseEnemy component on {other.gameObject.name}");
                 return;
             }
-
-            Debug.LogWarning($"Enemy Hit! enemy damaged by {weaponData.damage}");
+            
             baseEnemy.TakeDamage(weaponData.damage);
-            baseEnemy.TakeKnockBack(transform, weaponData.knockBackStrength, weaponData.knockBackDuration);
+            baseEnemy.TakeKnockBack(transform, weaponData.knockBackDuration, weaponData.knockBackStrength);
         }
     }
 }

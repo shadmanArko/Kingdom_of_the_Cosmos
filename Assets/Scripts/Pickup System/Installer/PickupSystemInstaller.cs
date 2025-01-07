@@ -1,10 +1,13 @@
+using Pickup_System.Manager;
 using UnityEngine;
 using Zenject;
 
 namespace Pickup_System
 {
-    public class PickupSystemInstaller : MonoInstaller
+    [CreateAssetMenu(fileName = "PickupSystemInstaller", menuName = "Installers/PickupSystemInstaller")]
+    public class PickupSystemInstaller : ScriptableObjectInstaller<PickupSystemInstaller>
     {
+        [SerializeField] private PickupView pickupView;
         public override void InstallBindings()
         {
             // Core Systems
@@ -19,8 +22,21 @@ namespace Pickup_System
             Container.Bind<IPickupAnimationHandler>().To<DefaultPickupAnimationHandler>().AsSingle();
         
             // Factories
-            //Container.BindFactory<float, float, RuleTile.TilingRuleOutput.Transform, IPickupBehavior, ExpCrystal, ExpCrystal.Factory>();
-            //Container.BindFactory<string, float, Transform, IPickupBehavior, InventoryItem, InventoryItem.Factory>();
+            Container.BindFactory<float, float, Vector3, Quaternion, IPickupBehavior, ExpCrystal, ExpCrystal.Factory>();
+            Container.BindFactory<string, float, Vector3, Quaternion, IPickupBehavior, InventoryItem, InventoryItem.Factory>();
+            
+            
+            // Pool System
+            Container.Bind<IPickupPoolManager>()
+                .To<PickupPoolManager>()
+                .AsSingle()
+                .WithArguments(pickupView);
+
+            // // Initialize pools
+            // var poolManager = Container.Resolve<IPickupPoolManager>();
+            // poolManager.RegisterPool("ExpCrystal", expCrystalPrefab, 20);
+            // poolManager.RegisterPool("InventoryItem", inventoryItemPrefab, 10);
+
         }
     }
 }

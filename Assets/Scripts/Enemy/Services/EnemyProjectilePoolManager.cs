@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
 namespace Enemy.Services
-{
-    public class EnemyProjectilePoolManager
+{    public class EnemyProjectilePoolManager
     {
         private readonly ObjectPool<EnemyProjectile> _objectPool;
 

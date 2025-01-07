@@ -46,9 +46,9 @@ namespace Enemy.Models
 
         public virtual void MoveTowardsTarget(Transform targetTransform)
         {
-             if (!canGetBuff) return;
-             
             _rigidbody2D.linearVelocity = Vector2.zero;
+             if (!canGetBuff || !canMove) return;
+             
             var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
             DistanceToPlayer = distanceToPlayer;
 

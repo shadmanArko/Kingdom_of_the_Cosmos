@@ -25,8 +25,8 @@ namespace Enemy.Services
 
         public override void MoveTowardsTarget(Transform targetTransform)
         {
-            if (!canMove) return;
             _rigidbody2D.linearVelocity = Vector2.zero;
+            if (!canMove) return;
             var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
             DistanceToPlayer = distanceToPlayer;
 

@@ -171,6 +171,8 @@ namespace PlayerSystem.Controllers
         
         public void FixedTick()
         {
+            _runningDataScriptable.playerVelocity = _playerView.rb.linearVelocity;
+            _runningDataScriptable.playerVelocityMagnitude = _playerView.rb.linearVelocity.magnitude;
             if (_lightAttackTimer > 0)
                 _lightAttackTimer -= Time.fixedDeltaTime;
             else if(_isAutoAttacking) 
@@ -190,6 +192,7 @@ namespace PlayerSystem.Controllers
             movement = playerMovementSignal.MovePos.normalized;
             if(!canMove) return;
             _playerView.rb.linearVelocity = movement * _speed;
+            var stateInfo = _playerView.playerAnimationController.animator.GetCurrentAnimatorStateInfo(0);
 
             if (_playerView.rb.linearVelocity.magnitude > 0)
             {
@@ -201,16 +204,42 @@ namespace PlayerSystem.Controllers
                         _playerView.playerAnimationController.PlayAnimation( "roll");
                 }
                 else
-                    _playerView.playerAnimationController.PlayAnimation( "run");
+                {
+                    var angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
+
+                    switch (angle)
+                    {
+                        case >= -22.5f and < 22.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runRight");
+                            break;
+                        case >= 22.5f and < 67.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runUpRight");
+                            break;
+                        case >= 67.5f and < 112.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runUp");
+                            break;
+                        case >= 112.5f and < 157.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runUpLeft");
+                            break;
+                        case >= 157.5f or < -157.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runLeft");
+                            break;
+                        case >= -157.5f and < -112.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runDownLeft");
+                            break;
+                        case >= -112.5f and < -67.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runDown");
+                            break;
+                        case >= -67.5f and < -22.5f:
+                            _playerView.playerAnimationController.PlayAnimation("runDownRight");
+                            break;
+                    }
+                }
             }
-            // else
-            // {
-            //     var stateInfo = _playerView.playerAnimationController.animator.GetCurrentAnimatorStateInfo(0);
-            //     if (stateInfo.length == 0 || stateInfo.normalizedTime >= 1.0f)
-            //     {
-            //         _playerView.playerAnimationController.PlayAnimation("idle");
-            //     }
-            // }
+            else if (stateInfo.length == 0 || stateInfo.normalizedTime >= 1.0f)
+            {
+                _playerView.playerAnimationController.PlayAnimation("idle");
+            }
         }
 
         #endregion

@@ -11,6 +11,9 @@ namespace zzz_TestScripts.AnimationSystemTest
         public string triggerName;
         public string folderPath;
         public List<Sprite> animationSprites;
+        
         public float speed;
+        public bool flipX;
+        public bool flipY;
     }
 }

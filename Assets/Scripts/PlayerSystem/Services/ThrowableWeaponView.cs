@@ -20,7 +20,6 @@ namespace PlayerSystem.Services
         
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.LogWarning($"Trigger entered by: {other.gameObject.name} at position {other.transform.position}");
             if(!isBeingThrown)
             {
                 Debug.LogWarning("Weapon is not being thrown, ignoring collision");
@@ -38,10 +37,9 @@ namespace PlayerSystem.Services
                 Debug.LogWarning($"No BaseEnemy component on {other.gameObject.name}");
                 return;
             }
-
-            Debug.LogWarning($"Enemy Hit! enemy damaged by {weaponData.damage}");
+            
             baseEnemy.TakeDamage(weaponData.damage);
-            baseEnemy.TakeKnockBack(transform, weaponData.knockBackStrength, weaponData.knockBackDuration);
+            baseEnemy.TakeKnockBack(transform, weaponData.knockBackDuration, weaponData.knockBackStrength);
         }
     }
 }

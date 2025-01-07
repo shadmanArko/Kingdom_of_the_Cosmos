@@ -23,20 +23,17 @@ MonoBehaviour:
       - {fileID: 1750589068, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       - {fileID: -2108144712, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       speed: 0
+      flipX: 0
+      flipY: 0
     - stateName: idle
       triggerName: 
       folderPath: 
       animationSprites:
-      - {fileID: -1647433700, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
-      - {fileID: -886500767, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
+      - {fileID: 2339176760461815125, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 2339176760461815125, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
       speed: 0
-    - stateName: run
-      triggerName: runTrigger
-      folderPath: 
-      animationSprites:
-      - {fileID: 362187716, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
-      - {fileID: 1241838891, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
-      speed: 0
+      flipX: 0
+      flipY: 0
     - stateName: roll
       triggerName: 
       folderPath: 
@@ -46,6 +43,8 @@ MonoBehaviour:
       - {fileID: 162197762, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       - {fileID: -311670487, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       speed: 1
+      flipX: 0
+      flipY: 0
     - stateName: dash
       triggerName: dashTrigger
       folderPath: 
@@ -54,4 +53,127 @@ MonoBehaviour:
       - {fileID: -232036141, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       - {fileID: 715258276, guid: 84568e0282e4e0440a9395d9481680a9, type: 3}
       speed: 1
+      flipX: 0
+      flipY: 0
+    - stateName: runLeft
+      triggerName: runTrigger
+      folderPath: 
+      animationSprites:
+      - {fileID: 2946443987987440154, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 444427100291600225, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 3282079491992141294, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -4840554842321581899, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -8715908776549576221, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -2868979288489358022, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 1297265847466468180, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -1628830891874188959, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      speed: 0
+      flipX: 1
+      flipY: 0
+    - stateName: runRight
+      triggerName: runTrigger
+      folderPath: 
+      animationSprites:
+      - {fileID: 2946443987987440154, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 444427100291600225, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 3282079491992141294, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -4840554842321581899, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -8715908776549576221, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -2868979288489358022, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 1297265847466468180, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -1628830891874188959, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      speed: 0
+      flipX: 0
+      flipY: 0
+    - stateName: runDown
+      triggerName: runTrigger
+      folderPath: 
+      animationSprites:
+      - {fileID: 2339176760461815125, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 1584906405468998947, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 438450536938384648, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 746115774788481462, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 1255035946431529713, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 992674967353891908, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 2674745182731686881, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 7622903552672786648, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      speed: 0
+      flipX: 0
+      flipY: 0
+    - stateName: runUp
+      triggerName: runTrigger
+      folderPath: 
+      animationSprites:
+      - {fileID: 2339176760461815125, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 1584906405468998947, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 438450536938384648, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 746115774788481462, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 1255035946431529713, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 992674967353891908, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 2674745182731686881, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 7622903552672786648, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      speed: 0
+      flipX: 0
+      flipY: 1
+    - stateName: runDownRight
+      triggerName: runTrigger
+      folderPath: 
+      animationSprites:
+      - {fileID: -5792631644564812356, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 3013412929853361099, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 3653491987052896483, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -3934704235141421273, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 7775264322922048569, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -96266300685881581, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 6476404970217256648, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 4022304478594483396, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      speed: 0
+      flipX: 0
+      flipY: 0
+    - stateName: runDownLeft
+      triggerName: runTrigger
+      folderPath: 
+      animationSprites:
+      - {fileID: -5792631644564812356, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 3013412929853361099, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 3653491987052896483, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -3934704235141421273, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 7775264322922048569, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -96266300685881581, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 6476404970217256648, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 4022304478594483396, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      speed: 0
+      flipX: 1
+      flipY: 0
+    - stateName: runUpRight
+      triggerName: runTrigger
+      folderPath: 
+      animationSprites:
+      - {fileID: 1816579213371908064, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -8264945479070719202, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -8714255591179396707, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 1877326409166644940, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 5713927951321334695, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -4332686695753771836, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -3545922929407787683, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 6574944061718552991, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      speed: 0
+      flipX: 0
+      flipY: 0
+    - stateName: runUpLeft
+      triggerName: runTrigger
+      folderPath: 
+      animationSprites:
+      - {fileID: 1816579213371908064, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -8264945479070719202, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -8714255591179396707, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 1877326409166644940, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 5713927951321334695, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -4332686695753771836, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: -3545922929407787683, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      - {fileID: 6574944061718552991, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
+      speed: 0
+      flipX: 1
+      flipY: 0
+  - animationDatas: []
   - animationDatas: []

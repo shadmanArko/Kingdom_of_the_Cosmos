@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Zenject;
 
 namespace Pickup_System
@@ -35,6 +36,7 @@ namespace Pickup_System
             {
                 if (ShouldAttemptPickup(pickup))
                 {
+                    Debug.Log("Pick Up In process.....");
                     ProcessPickup(pickup);
                 }
             }

@@ -114,7 +114,7 @@ MonoBehaviour:
       - {fileID: 7622903552672786648, guid: 9e48aca7c2ddb4146a16b0e707705d93, type: 3}
       speed: 0
       flipX: 0
-      flipY: 1
+      flipY: 0
     - stateName: runDownRight
       triggerName: runTrigger
       folderPath: 

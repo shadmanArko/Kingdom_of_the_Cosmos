@@ -518,7 +518,7 @@ namespace PlayerSystem.Controllers
         public Vector3 Position => _playerView.transform.position;
         public bool CanCollectPickup(IPickupable pickup)
         {
-            return false;
+            return true;
         }
 
         public void CollectPickup(IPickupable pickup)

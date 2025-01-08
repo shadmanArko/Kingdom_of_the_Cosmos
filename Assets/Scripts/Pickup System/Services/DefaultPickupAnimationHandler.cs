@@ -7,7 +7,7 @@ namespace Pickup_System
     {
         public UniTask PlayPickupAnimation(Transform pickupTransform)
         {
-            throw new System.NotImplementedException();
+            return new UniTask();
         }
     }
 }

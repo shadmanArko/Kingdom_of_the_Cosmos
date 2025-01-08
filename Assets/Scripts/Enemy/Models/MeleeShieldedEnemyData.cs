@@ -7,6 +7,8 @@ namespace Enemy.Models
     {
         public string Id;
         public float ShieldHealth;
+        public float AttackRange;
+        public float MinimumDistanceToPlayer;
         public float MovementSpeed;
         public float Health;
         public float Damage;

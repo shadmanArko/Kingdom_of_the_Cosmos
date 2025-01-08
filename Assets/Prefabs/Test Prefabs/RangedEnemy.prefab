@@ -818,8 +818,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 8065456931311595634}
     m_Modifications:
     - target: {fileID: 4148716796293271067, guid: b43f3701f68b05f45be05bc3f369c914, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148716796293271067, guid: b43f3701f68b05f45be05bc3f369c914, type: 3}
       propertyPath: m_SortingLayer
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148716796293271067, guid: b43f3701f68b05f45be05bc3f369c914, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4148716796293271067, guid: b43f3701f68b05f45be05bc3f369c914, type: 3}
       propertyPath: m_SortingLayerID

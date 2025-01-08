@@ -8,19 +8,17 @@ Shader "Unlit/AttackPreviewShaderCode"
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" "Queue"="Transparent+10" }
+        Tags { "RenderType"="Transparent" "Queue"="Transparent" }
         LOD 100
-
-        Blend SrcAlpha OneMinusSrcAlpha
-        ZWrite Off // Disable depth writing
-        ZTest LEqual // Ensure depth comparison works correctly
 
         Pass
         {
+            Blend SrcAlpha OneMinusSrcAlpha
+            ZWrite Off
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
 
@@ -33,7 +31,6 @@ Shader "Unlit/AttackPreviewShaderCode"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
             };
 
@@ -46,29 +43,28 @@ Shader "Unlit/AttackPreviewShaderCode"
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv * _MainTex_ST.xy + _MainTex_ST.zw; // Manual UV transformation
-                UNITY_TRANSFER_FOG(o, o.vertex);
+                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
+                // Using your original UV centering which only centers X
                 float2 centeredUV = float2(i.uv.x - 0.5, i.uv.y);
                 float angle = atan2(centeredUV.y, centeredUV.x);
                 float angleDegrees = degrees(angle);
                 angleDegrees = angleDegrees < 0 ? angleDegrees + 360 : angleDegrees;
 
+                // Using your original angle calculation
                 float halfAngle = 90 * (1 - _CutoffValue);
                 float minAngle = 90 - halfAngle;
                 float maxAngle = 90 + halfAngle;
 
-                float cutoff = (angleDegrees >= minAngle && angleDegrees <= maxAngle) ? 1 : 0;
-
-                col *= _Color;
+                float cutoff = (angleDegrees >= minAngle && angleDegrees <= maxAngle) ? 1.0 : 0.0;
+                
+                fixed4 col = _Color;
                 col.a *= cutoff;
-
-                UNITY_APPLY_FOG(i.fogCoord, col);
+                
                 return col;
             }
             ENDCG

@@ -345,6 +345,10 @@ namespace Enemy.Manager
         
             if (nextEnemySpawnTime < Time.time )
             {
+                if (_activeEnemies.Count >= 50)
+                {
+                    return;
+                }
                 if (_countOfShamanEnemies >= _numberOfShamanEnemies)
                 {
                     CreateEnemyFromRangedEnemyPool();

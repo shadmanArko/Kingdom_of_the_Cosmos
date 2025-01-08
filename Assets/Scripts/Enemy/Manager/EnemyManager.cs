@@ -168,7 +168,8 @@ namespace Enemy.Manager
             foreach (var enemy in enemiesWithinArea)
             {
                 enemy.TakeDamage(damageValue);
-                enemy.TakeKnockBack(_playerTransform);
+                var weaponData = meleeLightAttackSignal.weaponData;
+                enemy.TakeKnockBack(_playerTransform, weaponData.knockBackDuration, weaponData.knockBackStrength);
             }
         }
 

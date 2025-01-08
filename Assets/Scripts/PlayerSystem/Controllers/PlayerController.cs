@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Cinemachine;
 using DBMS.RunningData;
 using Enemy.Manager;
+using Pickup_System;
 using PlayerSystem.PlayerSO;
 using PlayerSystem.Services.HealthService;
 using PlayerSystem.Signals.BattleSceneSignals;
@@ -17,7 +18,7 @@ using Vector2 = UnityEngine.Vector2;
 namespace PlayerSystem.Controllers
 {
     [Serializable]
-    public class PlayerController : IInitializable, IFixedTickable, IDisposable 
+    public class PlayerController : IInitializable, IFixedTickable, IDisposable, IPickupCollector
     {
         private CinemachineVirtualCamera _cineMachineVirtualCamera;
         
@@ -513,5 +514,16 @@ namespace PlayerSystem.Controllers
         }
 
         #endregion
+
+        public Vector3 Position => _playerView.transform.position;
+        public bool CanCollectPickup(IPickupable pickup)
+        {
+            return false;
+        }
+
+        public void CollectPickup(IPickupable pickup)
+        {
+            
+        }
     }
 }

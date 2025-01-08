@@ -35,7 +35,7 @@ namespace Pickup_System
                 var view = poolManager.GetFromPool(position, rotation);
                 
                 // Create the model
-                var crystal = new ExpCrystal(expValue, radius, view.transform, behavior);
+                var crystal = new ExpCrystal(expValue, radius, view.gameObject.transform, behavior);
             
                 // Inject dependencies into the view
                 container.Inject(view, new object[] { crystal });

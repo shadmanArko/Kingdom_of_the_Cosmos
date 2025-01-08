@@ -1,4 +1,5 @@
 using Pickup_System.Manager;
+using PlayerSystem.Controllers;
 using UnityEngine;
 using Zenject;
 
@@ -14,6 +15,7 @@ namespace Pickup_System
             Container.BindInterfacesTo<PickupController>().AsSingle();
             Container.Bind<IPickupDistanceCalculator>().To<PickupDistanceCalculator>().AsSingle();
             Container.Bind<PickupSpawner>().AsSingle();
+            Container.Bind<IPickupInputSystem>().To<PickupInputSystem>().AsSingle();
             
             // Pickup Behaviors
             Container.Bind<AutoPickupBehavior>().AsSingle();

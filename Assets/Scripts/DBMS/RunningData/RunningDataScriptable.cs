@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using Player.Controllers;
+using PlayerSystem.Controllers;
+using PlayerSystem.Services;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,6 +10,7 @@ namespace DBMS.RunningData
     public class RunningDataScriptable : ScriptableObject
     {
         public PlayerController playerController;
+        public Vector2 moveDirection;
         public Vector2 attackDirection;
         public List<Vector2> attackAnglePoints;
         public float attackAngle;
@@ -16,5 +18,10 @@ namespace DBMS.RunningData
         
         
         public Vector3 closestEnemyToPlayer;
+        
+        //For test! Will be removed later
+        public WeaponThrowService weaponThrowService;
+        public Vector2 playerVelocity;
+        public float playerVelocityMagnitude;
     }
 }

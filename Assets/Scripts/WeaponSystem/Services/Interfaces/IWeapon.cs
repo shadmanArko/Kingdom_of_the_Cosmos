@@ -1,4 +1,6 @@
-﻿namespace WeaponSystem.Services.Interfaces
+﻿using WeaponSystem.Models;
+
+namespace WeaponSystem.Services.Interfaces
 {
     public interface IWeapon
     {
@@ -6,8 +8,10 @@
         void Deactivate();
         bool CanActivate();
         bool CanAttack();
-        void TriggerAttack();
+        void TriggerLightAttack();
+        void TriggerHeavyAttack();
         void UpgradeWeapon(int newDamage, float newCooldown);
         string GetName();
+        WeaponData GetWeaponData();
     }
 }

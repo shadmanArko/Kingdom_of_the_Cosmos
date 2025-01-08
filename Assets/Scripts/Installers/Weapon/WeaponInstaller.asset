@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponDatabaseScriptable: {fileID: 11400000, guid: e5d2f64ff9a54d04ba4bd2bee7596a97, type: 2}
   _ricochetSystem: {fileID: 5244060017338846078, guid: 58111c381ff5736418c7037696febe68, type: 3}
+  throwablePrefab: {fileID: 2735595036141443785, guid: e461924227009bf46a67066207aa93d0, type: 3}

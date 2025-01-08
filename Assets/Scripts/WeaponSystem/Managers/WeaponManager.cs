@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DBMS.RunningData;
 using DBMS.WeaponsData;
-using Player;
-using Player.Controllers;
-using Player.Signals.BattleSceneSignals;
-using Player.Views;
+using PlayerSystem.Services;
+using PlayerSystem.Signals.BattleSceneSignals;
+using PlayerSystem.Signals.InputSignals;
+using PlayerSystem.Views;
 using RicochetWeaponSystem;
 using UnityEngine;
 using WeaponSystem.Models;
@@ -17,7 +18,7 @@ using Zenject;
 
 namespace WeaponSystem.Managers
 {
-    public class WeaponManager
+    public class WeaponManager : IDisposable
     {
         private SignalBus _signalBus;
         private WeaponDatabaseScriptable _weaponDatabaseScriptable;
@@ -25,44 +26,59 @@ namespace WeaponSystem.Managers
         private WeaponDataLoader _weaponDataLoader;
         private PlayerView _playerView;
 
+        private readonly WeaponThrowService _weaponThrowService;
+
         private List<IWeapon> _controlledWeapons = new();
         private List<IWeapon> automaticWeapons = new();
 
         private IWeapon _activeControlledWeapon;
         private int _currentControlledIndex;
-
-        // private RayCastSystem _rayCastSystem;
-        private RicochetWeaponSystem.RicochetSystem _ricochetSystem;
         
-        [Inject]
-        public WeaponManager(SignalBus signalBus, WeaponDatabaseScriptable weaponDatabaseScriptable, WeaponDataLoader weaponDataLoader, RunningDataScriptable runningDataScriptable, RicochetSystem ricochetSystem, PlayerView playerView)
-        {
-            _signalBus = signalBus;
-            _weaponDatabaseScriptable = weaponDatabaseScriptable;
-            _runningDataScriptable = runningDataScriptable;
-            _weaponDataLoader = weaponDataLoader;
-            _ricochetSystem = ricochetSystem;
-            _playerView = playerView; 
-            SubscribeToActions();
-            Start();
-        }
+        private RicochetSystem _ricochetSystem;
+        
+        #region Subscribe and Unsubscribe
 
         private void SubscribeToActions()
         {
             _signalBus.Subscribe<ReloadSignal>(Reload);
-            _signalBus.Subscribe<SwitchControlledWeaponSignal>(HandleControlledWeaponSwitch);
-            _signalBus.Subscribe<WeaponThrowStartSignal>(StartWeaponThrow);
-            _signalBus.Subscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+            _signalBus.Subscribe<SwitchControlledWeaponInputSignal>(HandleControlledWeaponSwitch);
+            // _signalBus.Subscribe<WeaponThrowStartSignal>(StartWeaponThrow);
+            _signalBus.Subscribe<WeaponThrowStopInputSignal>(StopWeaponThrow);
             _signalBus.Subscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
         }
 
         private void UnsubscribeToActions()
         {
             _signalBus.Unsubscribe<ReloadSignal>(Reload);
-            _signalBus.Unsubscribe<SwitchControlledWeaponSignal>(HandleControlledWeaponSwitch);
-            _signalBus.Unsubscribe<WeaponThrowStartSignal>(StartWeaponThrow);
-            _signalBus.Unsubscribe<WeaponThrowStopSignal>(StopWeaponThrow);
+            _signalBus.Unsubscribe<SwitchControlledWeaponInputSignal>(HandleControlledWeaponSwitch);
+            // _signalBus.Unsubscribe<WeaponThrowStartSignal>(StartWeaponThrow);
+            _signalBus.Unsubscribe<WeaponThrowStopInputSignal>(StopWeaponThrow);
             _signalBus.Unsubscribe<AutomaticWeaponTriggerSignal>(OnAutomaticWeaponTrigger);
+        }
+
+        #endregion
+        
+        #region Initializers
+
+        [Inject]
+        public WeaponManager(SignalBus signalBus, 
+            WeaponDatabaseScriptable weaponDatabaseScriptable, 
+            WeaponDataLoader weaponDataLoader, 
+            RunningDataScriptable runningDataScriptable, 
+            RicochetSystem ricochetSystem, 
+            PlayerView playerView,
+            WeaponThrowService weaponThrowService)
+        {
+            _signalBus = signalBus;
+            _weaponDatabaseScriptable = weaponDatabaseScriptable;
+            _runningDataScriptable = runningDataScriptable;
+            _weaponDataLoader = weaponDataLoader;
+            _ricochetSystem = ricochetSystem;
+            _playerView = playerView;
+            _weaponThrowService = weaponThrowService;
+            
+            SubscribeToActions();
+            Start();
         }
 
         private void Start()
@@ -72,6 +88,8 @@ namespace WeaponSystem.Managers
 
             _currentControlledIndex = 0;
         }
+
+        #endregion
 
         public void AddNewWeapon(WeaponData weaponData)
         {
@@ -131,7 +149,9 @@ namespace WeaponSystem.Managers
         }
 
         #endregion
-        
+
+        #region Controlled Weapon
+
         private void HandleControlledWeaponSwitch()
         {
             _activeControlledWeapon.Deactivate();
@@ -143,16 +163,20 @@ namespace WeaponSystem.Managers
         public bool TriggerControlledWeaponLightAttack()
         {
             if(!_controlledWeapons[_currentControlledIndex].CanAttack()) return false;
-            _controlledWeapons[_currentControlledIndex].TriggerAttack();
+            _controlledWeapons[_currentControlledIndex].TriggerLightAttack();
             return true;
         }
         
         public bool TriggerControlledWeaponHeavyAttack()
         {
             if(!_controlledWeapons[_currentControlledIndex].CanAttack()) return false;
-            _controlledWeapons[_currentControlledIndex].TriggerAttack();
+            _controlledWeapons[_currentControlledIndex].TriggerLightAttack();
             return true;
         }
+
+        #endregion
+
+        #region Automatic Weapon
 
         private void OnAutomaticWeaponTrigger(AutomaticWeaponTriggerSignal signal)
         {
@@ -164,6 +188,21 @@ namespace WeaponSystem.Managers
                 }
             }
         }
+
+        #endregion
+
+        #region Throw Weapon
+
+        public bool CheckEquippedWeaponThrowEligibility()
+        {
+            //TODO: check if the currently active weapon can be thrown
+            //TODO: remove the equipped weapon from list of controlled weapons
+            //TODO: switch secondary weapon as equipped
+            _weaponThrowService.StartWeaponThrow(_activeControlledWeapon);
+            return true;
+        }
+
+        #endregion
 
         private void LoadWeaponDataFromJson()
         {
@@ -193,26 +232,26 @@ namespace WeaponSystem.Managers
             Debug.Log("Unsubscribe melee weapon");
         }
 
-        [SerializeField] private List<DummyEnemy> enemies;
-        private void StartWeaponThrow()
-        {
-            var mouseDirection = _runningDataScriptable.attackDirection;
-            List<RicochetHitInfo> hits = _ricochetSystem.CalculateRicochetPath(_playerView.transform.position, mouseDirection);
-            Debug.Log("Casting Ray");
-            Debug.Log($"Hit count: {hits.Count}");
-            foreach (var hit in hits)
-            {
-                if (!hit.HitDummyEnemy.IsShielded)
-                {
-                    //TODO: Apply Damage
-                    Debug.Log("Targeting non-shielded enemy");
-                }
-                else
-                {
-                    Debug.Log("RICOCHET");
-                }
-            }
-        }
+        // [SerializeField] private List<DummyEnemy> enemies;
+        // private void StartWeaponThrow()
+        // {
+        //     var mouseDirection = _runningDataScriptable.attackDirection;
+        //     List<RicochetHitInfo> hits = _ricochetSystem.CalculateRicochetPath(_playerView.transform.position, mouseDirection);
+        //     Debug.Log("Casting Ray");
+        //     Debug.Log($"Hit count: {hits.Count}");
+        //     foreach (var hit in hits)
+        //     {
+        //         if (!hit.HitDummyEnemy.IsShielded)
+        //         {
+        //             //TODO: Apply Damage
+        //             Debug.Log("Targeting non-shielded enemy");
+        //         }
+        //         else
+        //         {
+        //             Debug.Log("RICOCHET");
+        //         }
+        //     }
+        // }
 
         private void StopWeaponThrow()
         {
@@ -220,6 +259,10 @@ namespace WeaponSystem.Managers
         }
 
         #endregion
-        
+
+        public void Dispose()
+        {
+            UnsubscribeToActions();
+        }
     }
 }

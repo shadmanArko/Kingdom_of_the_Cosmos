@@ -10,6 +10,7 @@ namespace WeaponSystem.Models
         public float cooldown;
         public string type; // Controlled or Automatic
         public string triggerCondition; // Only for automatic weapons
-    
+        public float knockBackStrength;
+        public float knockBackDuration;
     }
 }

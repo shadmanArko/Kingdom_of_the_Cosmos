@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
 using Enemy.Manager;
 using Enemy.Services;
-using Player;
-using Player.Controllers;
-using Player.Views;
+using PlayerSystem.Views;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -113,16 +112,16 @@ namespace Enemy.Models
             Debug.Log($"Took Damage {amount}, health {MaxHealth} is alive: {IsAlive}");
         }
 
-        public void TakeKnockBack(Transform fromTransform, float duration = 0.2f, float strength = 10f)
+        public async void TakeKnockBack(Transform fromTransform, float duration = 0.2f, float strength = 10f)
         {
             if (!IsAlive) return;
             
             canMove = false;
             Vector3 direction = (transform.position - fromTransform.position).normalized;
-            StartCoroutine(ApplyKnockBack(direction, strength, duration));
+            await ApplyKnockBack(direction, strength, duration);
             
         }
-        private IEnumerator ApplyKnockBack(Vector3 direction, float strength, float duration)
+        private async Task ApplyKnockBack(Vector3 direction, float strength, float duration)
         {
             float elapsedTime = 0f;
 
@@ -130,7 +129,7 @@ namespace Enemy.Models
             {
                 elapsedTime += Time.deltaTime;
                 transform.position += direction * (strength * Time.deltaTime);
-                yield return null;
+                await Task.Yield();  // Equivalent to "yield return null"
             }
 
             canMove = true;

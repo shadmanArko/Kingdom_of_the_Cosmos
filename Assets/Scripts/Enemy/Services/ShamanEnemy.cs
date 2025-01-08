@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Enemy.Models;
-using Player;
-using Player.Views;
+using PlayerSystem;
+using PlayerSystem.Views;
 
 namespace Enemy.Services
 {

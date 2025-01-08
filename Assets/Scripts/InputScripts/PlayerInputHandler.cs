@@ -1,6 +1,7 @@
 using DBMS.RunningData;
-using Player.Signals.BattleSceneSignals;
-using Player.Views;
+using PlayerSystem.Signals.BattleSceneSignals;
+using PlayerSystem.Signals.InputSignals;
+using PlayerSystem.Views;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
@@ -143,24 +144,24 @@ namespace InputScripts
         private void MeleeAttackInput()
         {
             if(!_canTakeAttackInput) return;
-            _signalBus.Fire<MeleeAttackSignal>();
+            _signalBus.Fire<LightAttackInputSignal>();
         }
         
         private void SwitchWeapon()
         {
-            _signalBus.Fire<SwitchControlledWeaponSignal>();
+            _signalBus.Fire<SwitchControlledWeaponInputSignal>();
         }
 
         #region Heavy Attack
 
         private void StartHeavyAttackInput()
         {
-            _signalBus.Fire<StartHeavyAttackSignal>();
+            _signalBus.Fire<StartHeavyAttackInputSignal>();
         }
 
         private void StopHeavyAttackInput()
         {
-            _signalBus.Fire<StopHeavyAttackSignal>();
+            _signalBus.Fire<StopHeavyAttackInputSignal>();
         }
 
         #endregion
@@ -169,12 +170,13 @@ namespace InputScripts
 
         private void StartDash()
         {
-            _signalBus.Fire<StartDashSignal>();
+            _signalBus.Fire<CancelHeavyAttackSignal>();
+            _signalBus.Fire<DashStartInputSignal>();
         }
         
         private void StopDash()
         {
-            _signalBus.Fire<StopDashSignal>();
+            _signalBus.Fire<DashStopInputSignal>();
         }
 
         #endregion
@@ -200,11 +202,11 @@ namespace InputScripts
 
         private void StartWeaponThrow()
         {
-            _signalBus.Fire<WeaponThrowStartSignal>();
+            _signalBus.Fire<WeaponThrowStartInputSignal>();
         }
         private void StopWeaponThrow()
         {
-            _signalBus.Fire<WeaponThrowStopSignal>();
+            _signalBus.Fire<WeaponThrowStopInputSignal>();
         }
 
         #endregion
@@ -214,7 +216,7 @@ namespace InputScripts
         private void ToggleAutoAttack()
         {
             _canTakeAttackInput = !_canTakeAttackInput;
-            _signalBus.Fire<ToggleAutoAttackSignal>();
+            _signalBus.Fire<ToggleAutoAttackInputSignal>();
         }
 
         #endregion

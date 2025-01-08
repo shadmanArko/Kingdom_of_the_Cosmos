@@ -1,4 +1,4 @@
-﻿using Player.Signals.BattleSceneSignals;
+﻿using PlayerSystem.Signals.BattleSceneSignals;
 using UnityEngine;
 using WeaponSystem.Models;
 using WeaponSystem.Services.Bases;
@@ -8,23 +8,24 @@ namespace WeaponSystem.Services.Sub_Services.ControlledWeapon
 {
     public class MeleeWeapon : WeaponBase
     {
-        private SignalBus _signalBus;
+        private readonly SignalBus _signalBus;
+        private readonly MeleeLightAttackSignal _meleeLightAttackSignal;
+        private readonly MeleeHeavyAttackSignal _meleeHeavyAttackSignal;
 
         public MeleeWeapon(WeaponData data, SignalBus signalBus) : base(data)
         {
             _signalBus = signalBus;
+            _meleeLightAttackSignal = new MeleeLightAttackSignal(data);
+            _meleeHeavyAttackSignal = new MeleeHeavyAttackSignal(data);
         }
         
         public override bool CanActivate()
         {
-            // For controlled weapons, check input
-            // return Input.GetKeyDown(KeyCode.Space); // Example key
             return true;
         }
 
         public override bool CanAttack()
         {
-            
             return true;
         }
 
@@ -32,21 +33,23 @@ namespace WeaponSystem.Services.Sub_Services.ControlledWeapon
 
         public override void Activate()
         {
-            // _signalBus.Subscribe<MeleeAttackSignal>(TriggerAttack);
-            Debug.Log($"Activated weapon: {weaponData.name}");
+            
         }
 
         public override void Deactivate()
         {
-            // _signalBus.Unsubscribe<MeleeAttackSignal>(TriggerAttack);
-            Debug.Log($"Deactivated weapon: {weaponData.name}");
+            
         }
         
         #endregion
-        public override void TriggerAttack()
+        public override void TriggerLightAttack()
         {
-            Debug.Log($"Attacked with Weapon {weaponData.name}");
-            _signalBus.Fire<MeleeAttackSignal>();
+            _signalBus.Fire(_meleeLightAttackSignal);
+        }
+
+        public override void TriggerHeavyAttack()
+        {
+            _signalBus.Fire(_meleeHeavyAttackSignal);
         }
     }
 }

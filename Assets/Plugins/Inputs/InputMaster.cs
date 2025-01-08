@@ -85,7 +85,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""name"": ""WeaponThrow"",
                     ""type"": ""Button"",
                     ""id"": ""21ef5927-0bcb-49e3-a298-530f38fd8ac1"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -215,7 +215,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""0388faa0-8df6-4d8e-b398-fc500d805235"",
                     ""path"": ""<Keyboard>/q"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": ""Hold(duration=0.3,pressPoint=0.2)"",
                     ""processors"": """",
                     ""groups"": ""KeyboardAndMouse"",
                     ""action"": ""WeaponThrow"",

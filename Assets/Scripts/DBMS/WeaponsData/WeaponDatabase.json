@@ -5,17 +5,21 @@
       "weapons": [
         {
           "name": "Standard Pistol",
-          "damage": 15,
+          "damage": 100,
           "cooldown": 0.5,
           "type": "Controlled",
-          "triggerCondition": null
+          "triggerCondition": "ThreeRoundBurst",
+          "knockBackStrength": 30,
+          "knockBackDuration": 0.2
         },
         {
           "name": "Burst Pistol",
-          "damage": 12,
+          "damage": 30,
           "cooldown": 0.3,
           "type": "Automatic",
-          "triggerCondition": "ThreeRoundBurst"
+          "triggerCondition": "ThreeRoundBurst",
+          "knockBackStrength": 5,
+          "knockBackDuration": 0.4
         }
       ]
     },
@@ -27,14 +31,18 @@
           "damage": 25,
           "cooldown": 0.1,
           "type": "Automatic",
-          "triggerCondition": "FullAuto"
+          "triggerCondition": "FullAuto",
+          "knockBackStrength": 13,
+          "knockBackDuration": 0.3
         },
         {
           "name": "Sniper Rifle",
           "damage": 100,
           "cooldown": 2.0,
           "type": "Controlled",
-          "triggerCondition": null
+          "triggerCondition": "ThreeRoundBurst",
+          "knockBackStrength": 8,
+          "knockBackDuration": 0.2
         }
       ]
     },
@@ -46,7 +54,9 @@
           "damage": 150,
           "cooldown": 3.0,
           "type": "Controlled",
-          "triggerCondition": null
+          "triggerCondition": "ThreeRoundBurst",
+          "knockBackStrength": 20,
+          "knockBackDuration": 0.5
         }
       ]
     }

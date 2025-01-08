@@ -5,10 +5,11 @@ using DBMS.GameData;
 using DBMS.RunningData;
 using Enemy.Models;
 using Enemy.Services;
-using Player;
-using Player.Controllers;
-using Player.Signals.BattleSceneSignals;
-using Player.Views;
+using Pickup_System;
+using PlayerSystem.Controllers;
+using PlayerSystem.Signals.BattleSceneSignals;
+using PlayerSystem.Views;
+using Unity.Mathematics;
 using UnityEngine;
 using Zenject;
 using IInitializable = Zenject.IInitializable;
@@ -29,6 +30,7 @@ namespace Enemy.Manager
         private readonly RangedEnemyPool _rangedEnemyPool;
         private readonly ShamanEnemyPool _shamanEnemyPool;
         private readonly SignalBus _signalBus;
+        private readonly PickupSpawner _pickupSpawner;
 
         private Transform _playerTransform;
         private List<BaseEnemy> _activeEnemies = new List<BaseEnemy>();
@@ -39,7 +41,7 @@ namespace Enemy.Manager
         private float enemySpawningInterval = 1f;
         private float nextEnemySpawnTime;
         private EnemyData[] enemyDataArray;
-        public float moveSpeed = 1f;
+        public float moveSpeed = 0.25f;
         public float obstacleAvoidanceRadius = 1f;
         public float neighborAvoidanceRadius = 1f;
         public float collisionDistance = 1f;
@@ -58,7 +60,7 @@ namespace Enemy.Manager
             GameDataScriptable gameDataScriptable,
             RunningDataScriptable runningDataScriptable,
             SignalBus signalBus,
-            PlayerView playerView)
+            PlayerView playerView, PickupSpawner pickupSpawner)
         {
             _playerController = playerController;
             _enemyComputeShader = enemyComputeShader;
@@ -70,6 +72,7 @@ namespace Enemy.Manager
             _runningDataScriptable = runningDataScriptable;
             _signalBus = signalBus;
             _playerView = playerView;
+            _pickupSpawner = pickupSpawner;
             Debug.Log($"Enemy Manager constructor Started. signal bus found {_signalBus!= null}");
 
         }
@@ -79,7 +82,7 @@ namespace Enemy.Manager
             _playerTransform = _playerView.transform;
             nextEnemySpawnTime = enemySpawningInterval + Time.time;
             _enemies = _gameDataScriptable.gameData.enemies;
-            _signalBus.Subscribe<MeleeAttackSignal>(OnMeleeAttack);
+            _signalBus.Subscribe<MeleeLightAttackSignal>(OnMeleeAttack);
             OnEnemyDied += ReleaseEnemy;
             Debug.Log("Enemy Manager Started.");
             if (_enemyComputeShader != null)
@@ -150,12 +153,12 @@ namespace Enemy.Manager
 
         private List<KnockbackData> _enemiesBeingKnockedBack = new List<KnockbackData>();
     
-        private void OnMeleeAttack()
+        private void OnMeleeAttack(MeleeLightAttackSignal meleeLightAttackSignal)
         {
             Debug.Log("Melee Attack occured");
             var playerPos = _playerView.transform.position;
-            var knockBackStrength = 10;
-            var damageValue = 10;
+            var knockBackStrength = meleeLightAttackSignal.weaponData.knockBackStrength;
+            var damageValue = meleeLightAttackSignal.weaponData.damage;
             var p0 = _runningDataScriptable.attackAnglePoints[0];
             var p1 = _runningDataScriptable.attackAnglePoints[1];
             var p2 =  _runningDataScriptable.attackAnglePoints[2];
@@ -165,12 +168,14 @@ namespace Enemy.Manager
             foreach (var enemy in enemiesWithinArea)
             {
                 enemy.TakeDamage(damageValue);
-                enemy.TakeKnockBack(_playerTransform);
+                var weaponData = meleeLightAttackSignal.weaponData;
+                enemy.TakeKnockBack(_playerTransform, weaponData.knockBackDuration, weaponData.knockBackStrength);
             }
         }
 
         private void ReleaseEnemy(BaseEnemy enemy)
         {
+            _pickupSpawner.SpawnExpCrystal(enemy.transform, 10);
             if (enemy.GetComponent<MeleeShieldedEnemy>())
             {
                 _meleeShieldedEnemyPool.ReleaseEnemy(enemy);

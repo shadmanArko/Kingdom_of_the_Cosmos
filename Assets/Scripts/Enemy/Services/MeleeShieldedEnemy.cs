@@ -35,6 +35,7 @@ namespace Enemy.Services
             _shieldHealth = maxShieldHealth;
             _shieldSlider.gameObject.SetActive(true);
             _shieldSlider.value = 1;
+            AttackRange = 4f;
         }
 
         public override void TakeDamage(float amount)
@@ -84,8 +85,10 @@ namespace Enemy.Services
 
                 // Update line end position
                 lineProgress += lineSpeed * Time.deltaTime;
+                startPosition = transform.position;
+                targetPosition = target.transform.position;
                 Vector3 currentEndPosition = Vector3.Lerp(startPosition, targetPosition, lineProgress);
-                _attackHighlightLine.SetPosition(0, transform.position);
+                _attackHighlightLine.SetPosition(0, startPosition);
                 _attackHighlightLine.SetPosition(1, currentEndPosition);
                 
                 await Task.Yield(); // Wait for next frame

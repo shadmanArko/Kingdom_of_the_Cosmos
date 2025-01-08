@@ -423,7 +423,7 @@ namespace Enemy.Manager
                 enemy.SetStat(enemyData);
                 enemy.Move(new Vector2(enemyData.position.x, enemyData.position.y));
                 // _activeEnemies[i].GetComponent<MeleeEnemy>().SetMeleeAttackerStat(enemyStat);
-                if (enemy.DistanceToPlayer < 2f)
+                if (enemy.DistanceToPlayer < enemy.AttackRange)
                 {
                     enemy.Attack(_playerView);
                 }

@@ -25,8 +25,8 @@ namespace Pickup_System
             Container.Bind<IPickupAnimationHandler>().To<DefaultPickupAnimationHandler>().AsSingle();
         
             // Factories
-            Container.BindFactory<float, float, Vector3, Quaternion, IPickupBehavior, ExpCrystal, ExpCrystal.Factory>();
-            Container.BindFactory<string, float, Vector3, Quaternion, IPickupBehavior, InventoryItem, InventoryItem.Factory>();
+            Container.BindFactory<float, float, Transform, IPickupBehavior, ExpCrystal, ExpCrystal.Factory>();
+            Container.BindFactory<string, float, Transform, IPickupBehavior, InventoryItem, InventoryItem.Factory>();
             
             
             // Pool System

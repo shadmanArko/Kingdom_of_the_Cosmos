@@ -25,7 +25,7 @@ namespace Pickup_System
             _pickupSystem = pickupSystem;
         }
 
-        public ExpCrystal SpawnExpCrystal(Vector3 position, Quaternion rotation, float expValue)
+        public ExpCrystal SpawnExpCrystal(Transform transform, float expValue)
         {
             // var tempTransform = new GameObject("TempTransform").transform;
             // tempTransform.position = position;
@@ -33,8 +33,7 @@ namespace Pickup_System
             var crystal = _expCrystalFactory.Create(
                 expValue,
                 2f,
-                position,
-                rotation,
+                transform,
                 _autoPickupBehavior
             );
             
@@ -42,7 +41,7 @@ namespace Pickup_System
             return crystal;
         }
 
-        public InventoryItem SpawnInventoryItem(Vector3 position, Quaternion rotation, string itemId)
+        public InventoryItem SpawnInventoryItem(Transform transform, string itemId)
         {
             // var tempTransform = new GameObject("TempTransform").transform;
             // tempTransform.position = position;
@@ -50,8 +49,7 @@ namespace Pickup_System
             var item = _inventoryItemFactory.Create(
                 itemId,
                 1.5f,
-                position,
-                rotation,
+               transform,
                 _manualPickupBehavior
             );
             

@@ -17,7 +17,7 @@ namespace Pickup_System
             ExpValue = expValue;
         }
         
-        public class Factory : PlaceholderFactory<float, float, Vector3, Quaternion, IPickupBehavior, ExpCrystal>
+        public class Factory : PlaceholderFactory<float, float, Transform, IPickupBehavior, ExpCrystal>
         {
             private readonly IPickupPoolManager poolManager;
             private readonly DiContainer container;
@@ -29,13 +29,13 @@ namespace Pickup_System
                 this.container = container;
             }
 
-            public override ExpCrystal Create(float expValue, float radius, Vector3 position, Quaternion rotation, IPickupBehavior behavior)
+            public override ExpCrystal Create(float expValue, float radius, Transform transform, IPickupBehavior behavior)
             {
                 // Get pooled view
-                var view = poolManager.GetFromPool(position, rotation);
+                var view = poolManager.GetFromPool(transform);
                 
                 // Create the model
-                var crystal = new ExpCrystal(expValue, radius, view.gameObject.transform, behavior);
+                var crystal = new ExpCrystal(expValue, radius, transform, behavior);
             
                 // Inject dependencies into the view
                 container.Inject(view, new object[] { crystal });

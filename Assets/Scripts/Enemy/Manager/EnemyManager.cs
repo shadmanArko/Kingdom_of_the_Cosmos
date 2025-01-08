@@ -174,7 +174,7 @@ namespace Enemy.Manager
 
         private void ReleaseEnemy(BaseEnemy enemy)
         {
-            _pickupSpawner.SpawnExpCrystal(enemy.transform.position, quaternion.identity, 10);
+            _pickupSpawner.SpawnExpCrystal(enemy.transform, 10);
             if (enemy.GetComponent<MeleeShieldedEnemy>())
             {
                 _meleeShieldedEnemyPool.ReleaseEnemy(enemy);

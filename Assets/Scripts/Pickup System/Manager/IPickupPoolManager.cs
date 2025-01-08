@@ -4,7 +4,7 @@ namespace Pickup_System.Manager
 {
     public interface IPickupPoolManager
     {
-        PickupView GetFromPool(Vector3 position, Quaternion rotation);
+        PickupView GetFromPool(Transform transform);
         void ReturnToPool(PickupView pickupView);
     }
 }

@@ -15,9 +15,9 @@ namespace Pickup_System.Factory
             this._container = container;
         }
 
-        public PickupView CreatePickup(Vector3 position, Quaternion rotation)
+        public PickupView CreatePickup(Transform transform)
         {
-            var pickup = _poolManager.GetFromPool(position, rotation);
+            var pickup = _poolManager.GetFromPool(transform);
             // Re-inject dependencies
             _container.Inject(pickup);
             

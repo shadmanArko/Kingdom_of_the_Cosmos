@@ -21,11 +21,11 @@ namespace Pickup_System.Manager
             );
         }
 
-        public PickupView GetFromPool(Vector3 position, Quaternion rotation)
+        public PickupView GetFromPool(Transform transform)
         {
             var obj = _objectPool.Get();
-            obj.transform.position = position;
-            obj.transform.rotation = rotation;
+            obj.transform.position = transform.position;
+            obj.transform.rotation = transform.rotation;
             return obj;
         }
 

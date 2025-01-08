@@ -17,7 +17,7 @@ namespace Pickup_System
             ItemId = itemId;
         }
         
-        public class Factory : PlaceholderFactory<string, float, Vector3 , Quaternion , IPickupBehavior, InventoryItem>
+        public class Factory : PlaceholderFactory<string, float, Transform, IPickupBehavior, InventoryItem>
         {
             private readonly IPickupPoolManager poolManager;
             private readonly DiContainer container;
@@ -29,10 +29,10 @@ namespace Pickup_System
                 this.container = container;
             }
 
-            public override InventoryItem Create(string itemId, float radius, Vector3 position, Quaternion rotation, IPickupBehavior behavior)
+            public override InventoryItem Create(string itemId, float radius, Transform transform, IPickupBehavior behavior)
             {
                 // Get pooled view
-                var view = poolManager.GetFromPool(position, rotation);
+                var view = poolManager.GetFromPool(transform);
 
                 // Create the model
                 var item = new InventoryItem(itemId, radius, view.transform, behavior);

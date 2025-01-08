@@ -19,6 +19,7 @@ namespace Enemy.Manager
     public class EnemyManager : IInitializable, ITickable, IDisposable
     {
         public static Action<int> EnemyCountUpdated;
+        public static Action<float> EnemyDamagedPlayer;
         public static Action<BaseEnemy> OnEnemyDied;
    
 
@@ -84,6 +85,7 @@ namespace Enemy.Manager
             _enemies = _gameDataScriptable.gameData.enemies;
             _signalBus.Subscribe<MeleeLightAttackSignal>(OnMeleeAttack);
             OnEnemyDied += ReleaseEnemy;
+            EnemyDamagedPlayer += EnemyDamagedPlayerHealth;
             Debug.Log("Enemy Manager Started.");
             if (_enemyComputeShader != null)
             {
@@ -92,7 +94,11 @@ namespace Enemy.Manager
             InitializeObstacles();
         }
 
-    
+        private void EnemyDamagedPlayerHealth(float damageAmount)
+        {
+            _playerController.Damage(damageAmount);
+        }
+
 
         private void CreateEnemyFromMeleeEnemyPool()
         {
@@ -513,6 +519,7 @@ namespace Enemy.Manager
                 _obstacleBuffer.Release();
             }
             OnEnemyDied -= ReleaseEnemy;
+            EnemyDamagedPlayer -= EnemyDamagedPlayerHealth;
 
         }
     }

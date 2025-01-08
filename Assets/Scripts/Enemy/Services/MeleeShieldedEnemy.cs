@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Enemy.Manager;
 using Enemy.Models;
 using PlayerSystem;
 using PlayerSystem.Views;
@@ -108,11 +109,13 @@ namespace Enemy.Services
                 transform.position = Vector3.Lerp(originalPosition, targetPosition, lungeProgress);
                 await Task.Yield();
             }
+            EnemyManager.EnemyDamagedPlayer?.Invoke(Damage);
 
             // Perform attack at end of lunge
             // _animationController.PlayAnimation("attack");
             // await Task.Delay(1000);
 
+            
             // Reset line and states
             EndAttack();
         }

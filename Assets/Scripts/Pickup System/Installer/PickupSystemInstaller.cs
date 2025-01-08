@@ -13,7 +13,8 @@ namespace Pickup_System
             // Core Systems
             Container.BindInterfacesTo<PickupController>().AsSingle();
             Container.Bind<IPickupDistanceCalculator>().To<PickupDistanceCalculator>().AsSingle();
-        
+            Container.Bind<PickupSpawner>().AsSingle();
+            
             // Pickup Behaviors
             Container.Bind<AutoPickupBehavior>().AsSingle();
             Container.Bind<ManualPickupBehavior>().AsSingle();

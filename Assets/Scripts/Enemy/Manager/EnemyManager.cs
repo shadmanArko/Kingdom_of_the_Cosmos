@@ -5,9 +5,11 @@ using DBMS.GameData;
 using DBMS.RunningData;
 using Enemy.Models;
 using Enemy.Services;
+using Pickup_System;
 using PlayerSystem.Controllers;
 using PlayerSystem.Signals.BattleSceneSignals;
 using PlayerSystem.Views;
+using Unity.Mathematics;
 using UnityEngine;
 using Zenject;
 using IInitializable = Zenject.IInitializable;
@@ -28,6 +30,7 @@ namespace Enemy.Manager
         private readonly RangedEnemyPool _rangedEnemyPool;
         private readonly ShamanEnemyPool _shamanEnemyPool;
         private readonly SignalBus _signalBus;
+        private readonly PickupSpawner _pickupSpawner;
 
         private Transform _playerTransform;
         private List<BaseEnemy> _activeEnemies = new List<BaseEnemy>();
@@ -57,7 +60,7 @@ namespace Enemy.Manager
             GameDataScriptable gameDataScriptable,
             RunningDataScriptable runningDataScriptable,
             SignalBus signalBus,
-            PlayerView playerView)
+            PlayerView playerView, PickupSpawner pickupSpawner)
         {
             _playerController = playerController;
             _enemyComputeShader = enemyComputeShader;
@@ -69,6 +72,7 @@ namespace Enemy.Manager
             _runningDataScriptable = runningDataScriptable;
             _signalBus = signalBus;
             _playerView = playerView;
+            _pickupSpawner = pickupSpawner;
             Debug.Log($"Enemy Manager constructor Started. signal bus found {_signalBus!= null}");
 
         }
@@ -170,6 +174,7 @@ namespace Enemy.Manager
 
         private void ReleaseEnemy(BaseEnemy enemy)
         {
+            _pickupSpawner.SpawnExpCrystal(enemy.transform.position, quaternion.identity, 10);
             if (enemy.GetComponent<MeleeShieldedEnemy>())
             {
                 _meleeShieldedEnemyPool.ReleaseEnemy(enemy);

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Threading.Tasks;
+using Enemy.Manager;
 using Enemy.Models;
 using PlayerSystem;
 using PlayerSystem.Views;
@@ -24,8 +25,8 @@ namespace Enemy.Services
 
         public override void MoveTowardsTarget(Transform targetTransform)
         {
-            if (!canMove) return;
             _rigidbody2D.linearVelocity = Vector2.zero;
+            if (!canMove) return;
             var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
             DistanceToPlayer = distanceToPlayer;
 
@@ -105,24 +106,46 @@ namespace Enemy.Services
             _attacking = true;
             isWarningActive = true;
             canMove = false;
+
             // Show warning indicator at target position
             Vector3 attackPosition = target.transform.position;
             var warningIndicatorObj = Instantiate(warningIndicator);
             warningIndicatorObj.transform.position = attackPosition;
             warningIndicatorObj.SetActive(true);
-        
-            // Wait for warning duration
-            await Task.Delay((int)(warningDuration * 1000));
-            _animationController.PlayAnimation("attack");
+
+            // Track warning duration using elapsed time
+            float elapsedTime = 0f;
+            bool attackCancelled = false;
+
+            while (elapsedTime < warningDuration)
+            {
+                // Check if player is still in attack range
+                float distanceToPlayer = Vector3.Distance(transform.position, target.transform.position);
+                if (distanceToPlayer > AttackRange)
+                {
+                    // Cancel attack if player moves out of range
+                    attackCancelled = true;
+                    break;
+                }
+
+                elapsedTime += Time.deltaTime;
+                await Task.Yield(); // Wait for next frame
+            }
+
+            if (!attackCancelled)
+            {
+                _animationController.PlayAnimation("attack");
+                // Optionally check range one final time before dealing damage
+                float finalDistance = Vector3.Distance(transform.position, target.transform.position);
+                if (finalDistance <= AttackRange)
+                {
+                    EnemyManager.EnemyDamagedPlayer?.Invoke(Damage);
+                }
+            }
+
+            // Clean up and reset state
             warningIndicatorObj.SetActive(false);
-            await Task.Delay(1000);
-            // // Check if player is still in attack range
-            // if (isWarningActive && IsPlayerInWarningArea(target.transform.position))
-            // {
-            //     
-            // }
-        
-            // Hide warning indicator and reset state
+            await Task.Delay(1000); // Animation cooldown
             Destroy(warningIndicatorObj);
             _attacking = false;
             isAttacking = false;

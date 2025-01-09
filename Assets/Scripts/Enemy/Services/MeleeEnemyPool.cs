@@ -86,7 +86,8 @@ namespace Enemy.Services
             shieldedEnemy.MaxHealth = meleeEnemyData.Health;
             shieldedEnemy.Damage = meleeEnemyData.Damage;
             shieldedEnemy.MinDistanceToPlayer = 1.5f;
-            enemy.Initialize();
+            shieldedEnemy.AttackRange = 2f;
+            shieldedEnemy.Initialize();
             return enemy;
         }
 

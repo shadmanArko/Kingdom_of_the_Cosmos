@@ -12,6 +12,7 @@ namespace Enemy.Services
     public class RangedEnemy : BaseEnemy
     {
         [SerializeField] private PlayerAnimationController _animationController;
+        [SerializeField] private RangedAttackPreview _rangedAttackPreview;
         public EnemyProjectilePoolManager enemyProjectilePoolManager;
         private int _numberOfProjectiles = 1;
         public bool selectedForProtectingShaman = false;
@@ -89,8 +90,12 @@ namespace Enemy.Services
             float spreadAngle = CalculateSpreadAngle(_numberOfProjectiles);
             
             // Calculate the original direction to the target
-            Vector3 directionToTarget = (target.transform.position - transform.position).normalized;
             
+            _rangedAttackPreview.StartPreview();
+            await Task.Delay(500);
+            if (target == null) return;
+            
+            Vector3 directionToTarget = (target.transform.position - transform.position).normalized;
             for (int i = 0; i < _numberOfProjectiles; i++)
             {
                 // Calculate the offset for this specific projectile
@@ -107,7 +112,7 @@ namespace Enemy.Services
                 // Calculate target position along the new direction
                 Vector3 projectileTarget = transform.position + (projectileDirection * Vector3.Distance(transform.position, target.transform.position));
                 
-                projectile.SetStats(20, 20, projectileTarget, enemyProjectilePoolManager);
+                projectile.SetStats(20, 20, target.transform, enemyProjectilePoolManager);
             }
             
             await Task.Delay(500);

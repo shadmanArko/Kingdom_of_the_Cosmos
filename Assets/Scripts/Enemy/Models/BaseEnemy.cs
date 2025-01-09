@@ -45,9 +45,9 @@ namespace Enemy.Models
 
         public virtual void MoveTowardsTarget(Transform targetTransform)
         {
-             if (!canGetBuff) return;
-             
             _rigidbody2D.linearVelocity = Vector2.zero;
+             if (!canGetBuff || !canMove) return;
+             
             var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
             DistanceToPlayer = distanceToPlayer;
 
@@ -86,7 +86,6 @@ namespace Enemy.Models
             AttackSpeed = 2f;
             DistanceToPlayer = 999f;
             Stuckness = 0.5f;
-            AttackRange = 4f;
         }
 
         public virtual void SetStat(EnemyData data)

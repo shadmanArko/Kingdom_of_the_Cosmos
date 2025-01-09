@@ -90,8 +90,10 @@ namespace Enemy.Services
             shieldedEnemy.maxShieldHealth = meleeShieldedEnemyData.ShieldHealth;
             shieldedEnemy.MaxHealth = meleeShieldedEnemyData.Health;
             shieldedEnemy.Damage = meleeShieldedEnemyData.Damage;
-            shieldedEnemy.MinDistanceToPlayer = 1.5f;
-            enemy.Initialize();
+            shieldedEnemy.AttackRange = meleeShieldedEnemyData.AttackRange;
+            shieldedEnemy.MinDistanceToPlayer = meleeShieldedEnemyData.MinimumDistanceToPlayer;
+            
+            shieldedEnemy.Initialize();
             return enemy;
         }
 

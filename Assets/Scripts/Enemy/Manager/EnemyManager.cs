@@ -19,6 +19,7 @@ namespace Enemy.Manager
     public class EnemyManager : IInitializable, ITickable, IDisposable
     {
         public static Action<int> EnemyCountUpdated;
+        public static Action<float> EnemyDamagedPlayer;
         public static Action<BaseEnemy> OnEnemyDied;
    
 
@@ -84,6 +85,7 @@ namespace Enemy.Manager
             _enemies = _gameDataScriptable.gameData.enemies;
             _signalBus.Subscribe<MeleeLightAttackSignal>(OnMeleeAttack);
             OnEnemyDied += ReleaseEnemy;
+            EnemyDamagedPlayer += EnemyDamagedPlayerHealth;
             Debug.Log("Enemy Manager Started.");
             if (_enemyComputeShader != null)
             {
@@ -92,7 +94,11 @@ namespace Enemy.Manager
             InitializeObstacles();
         }
 
-    
+        private void EnemyDamagedPlayerHealth(float damageAmount)
+        {
+            _playerController.Damage(damageAmount);
+        }
+
 
         private void CreateEnemyFromMeleeEnemyPool()
         {
@@ -339,7 +345,7 @@ namespace Enemy.Manager
             return (u >= 0) && (v >= 0) && (u + v <= 1);
         }
 
-        private int _numberOfMeleeEnemies = 20;
+        private int _numberOfMeleeEnemies = 5;
         private int _numberOfShamanEnemies = 1;
         private int _numberOfShieldedMeleeEnemies = 3;
         private int _countOfMeleeEnemies;
@@ -350,6 +356,10 @@ namespace Enemy.Manager
         
             if (nextEnemySpawnTime < Time.time )
             {
+                if (_activeEnemies.Count >= 50)
+                {
+                    return;
+                }
                 if (_countOfShamanEnemies >= _numberOfShamanEnemies)
                 {
                     CreateEnemyFromRangedEnemyPool();
@@ -428,7 +438,7 @@ namespace Enemy.Manager
                 enemy.SetStat(enemyData);
                 enemy.Move(new Vector2(enemyData.position.x, enemyData.position.y));
                 // _activeEnemies[i].GetComponent<MeleeEnemy>().SetMeleeAttackerStat(enemyStat);
-                if (enemy.DistanceToPlayer < 2f)
+                if (enemy.DistanceToPlayer < enemy.AttackRange)
                 {
                     enemy.Attack(_playerView);
                 }
@@ -509,6 +519,7 @@ namespace Enemy.Manager
                 _obstacleBuffer.Release();
             }
             OnEnemyDied -= ReleaseEnemy;
+            EnemyDamagedPlayer -= EnemyDamagedPlayerHealth;
 
         }
     }

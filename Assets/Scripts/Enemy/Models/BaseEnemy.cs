@@ -26,7 +26,8 @@ namespace Enemy.Models
         public bool IsAlive;
         
         protected float health;
-        [SerializeField] protected Slider HealthSlider;
+        // [SerializeField] protected Slider HealthSlider;
+        [SerializeField] protected DamageValueText damageValueText;
         protected Rigidbody2D _rigidbody2D;
         protected bool isAttacking;
         protected bool canMove = true;
@@ -79,7 +80,7 @@ namespace Enemy.Models
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             health = MaxHealth;
-            HealthSlider.value = 1;
+            // HealthSlider.value = 1;
             MoveSpeed = 3f;
             IsAlive = true;
         
@@ -108,7 +109,8 @@ namespace Enemy.Models
             {
                 Die();
             }
-            HealthSlider.value = 1 - (MaxHealth - health)/MaxHealth;
+            // HealthSlider.value = 1 - (MaxHealth - health)/MaxHealth;
+            damageValueText.ShowDamageAnimation(amount, Color.white);
             Debug.Log($"Took Damage {amount}, health {MaxHealth} is alive: {IsAlive}");
         }
 

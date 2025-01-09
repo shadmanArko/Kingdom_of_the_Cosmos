@@ -11,7 +11,7 @@ namespace Enemy.Services
     public class MeleeShieldedEnemy : BaseEnemy
     {
         [SerializeField] private PlayerAnimationController _animationController;
-        [SerializeField] private Slider _shieldSlider;
+        // [SerializeField] private Slider _shieldSlider;
         [SerializeField] private LineRenderer _attackHighlightLine;
         private bool _attacking = false;
         public float maxShieldHealth;
@@ -33,8 +33,8 @@ namespace Enemy.Services
         {
             base.Initialize();
             _shieldHealth = maxShieldHealth;
-            _shieldSlider.gameObject.SetActive(true);
-            _shieldSlider.value = 1;
+            // _shieldSlider.gameObject.SetActive(true);
+            // _shieldSlider.value = 1;
             AttackRange = 4f;
         }
 
@@ -43,11 +43,12 @@ namespace Enemy.Services
             if (_shieldHealth > 0)
             {
                 _shieldHealth -= amount;
-                _shieldSlider.value = 1 - (maxShieldHealth - _shieldHealth) / maxShieldHealth;
+                // _shieldSlider.value = 1 - (maxShieldHealth - _shieldHealth) / maxShieldHealth;
+                damageValueText.ShowDamageAnimation(amount, Color.blue);
                 Debug.Log($"Took shield Damage {amount}");
                 if (_shieldHealth<=0)
                 {
-                    _shieldSlider.gameObject.SetActive(false);
+                    // _shieldSlider.gameObject.SetActive(false);
                 }
             }
             else

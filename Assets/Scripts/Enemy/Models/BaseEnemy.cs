@@ -27,6 +27,7 @@ namespace Enemy.Models
         
         protected float health;
         [SerializeField] protected Slider HealthSlider;
+        [SerializeField] protected DamageValueText damageValueText;
         protected Rigidbody2D _rigidbody2D;
         protected bool isAttacking;
         protected bool canMove = true;
@@ -109,6 +110,7 @@ namespace Enemy.Models
                 Die();
             }
             HealthSlider.value = 1 - (MaxHealth - health)/MaxHealth;
+            damageValueText.ShowDamageAnimation(amount);
             Debug.Log($"Took Damage {amount}, health {MaxHealth} is alive: {IsAlive}");
         }
 

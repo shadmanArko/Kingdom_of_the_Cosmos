@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using PlayerSystem.Controllers;
 using PlayerSystem.Services;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace DBMS.RunningData
 {

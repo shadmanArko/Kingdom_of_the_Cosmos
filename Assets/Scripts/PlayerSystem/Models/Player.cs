@@ -10,6 +10,8 @@ namespace PlayerSystem.Models
         public float expGain;
         public float shield;
         public float maxShield;
+        public float dropCollectionMagnetRadius;
+        public float dropCollectionMagnetStrength;
         public float shieldRegenerationCooldown;
         public float movementSpeed;
         public float heavyAttackChargeTime;

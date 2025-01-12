@@ -516,6 +516,9 @@ namespace PlayerSystem.Controllers
         #endregion
 
         public Vector3 Position => _playerView.transform.position;
+        public float MagnetRadius => _playerScriptableObject.player.dropCollectionMagnetRadius;
+        public float MagnetStrength => _playerScriptableObject.player.dropCollectionMagnetStrength;
+
         public bool CanCollectPickup(IPickupable pickup)
         {
             return true;

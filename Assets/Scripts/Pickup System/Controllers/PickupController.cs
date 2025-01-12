@@ -1,148 +1,95 @@
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using System.Linq;
 using UnityEngine;
 using Zenject;
-using UniRx;
-using System;
 using Pickup_System.Manager;
 
 namespace Pickup_System
 {
-    public class PickupController : ITickable, IPickupSystem, IDisposable
+    public class PickupController : ITickable, IPickupSystem
     {
-      private readonly ConcurrentDictionary<int, IPickupable> activePickups = new ConcurrentDictionary<int, IPickupable>();
+        private readonly List<IPickupable> activePickups = new List<IPickupable>();
         private readonly IPickupCollector collector;
         private readonly IPickupDistanceCalculator distanceCalculator;
         private readonly IPickupPoolManager pickupPoolManager;
         
-        private readonly CompositeDisposable disposables = new CompositeDisposable();
-        private readonly Subject<IPickupable> onPickupProcessed = new Subject<IPickupable>();
-        private CancellationTokenSource cancellationTokenSource;
-        
-        private const int BATCH_SIZE = 32;
-        
         public PickupController(
             IPickupCollector collector,
-            IPickupDistanceCalculator distanceCalculator,
-            IPickupPoolManager pickupPoolManager)
+            IPickupDistanceCalculator distanceCalculator, IPickupPoolManager pickupPoolManager)
         {
             this.collector = collector;
             this.distanceCalculator = distanceCalculator;
             this.pickupPoolManager = pickupPoolManager;
-            
-            cancellationTokenSource = new CancellationTokenSource();
-            InitializeStreams();
-        }
-
-        private void InitializeStreams()
-        {
-            onPickupProcessed
-                .Buffer(TimeSpan.FromMilliseconds(16))
-                .Where(pickups => pickups.Any())
-                .ObserveOnMainThread() // Ensure processing happens on main thread
-                .Subscribe(ProcessPickupBatch)
-                .AddTo(disposables);
         }
 
         public void RegisterPickup(IPickupable pickup)
         {
-            activePickups.TryAdd(pickup.GetHashCode(), pickup);
+            activePickups.Add(pickup);
         }
 
         public void UnregisterPickup(IPickupable pickup)
         {
-            activePickups.TryRemove(pickup.GetHashCode(), out _);
+            activePickups.Remove(pickup);
         }
 
         public void Tick()
         {
-            ProcessPickupsAsync().Forget();
-        }
-
-        private async UniTaskVoid ProcessPickupsAsync()
-        {
-            try
+            foreach (var pickup in activePickups.ToList())
             {
-                // Ensure we're on the main thread when accessing Unity components
-                await UniTask.SwitchToMainThread();
-
-                var pickups = activePickups.Values.ToArray();
-                if (pickups.Length == 0) return;
-
-                // Process in batches
-                for (int i = 0; i < pickups.Length; i += BATCH_SIZE)
+                if (pickup.PickupBehavior is AutoPickupBehavior)
                 {
-                    var batch = pickups.Skip(i).Take(BATCH_SIZE).ToArray();
-                    await ProcessPickupBatchAsync(batch);
+    
+                    // Calculate direction to player in 2D
+                    Vector2 directionToPlayer = ((Vector2)collector.Position - (Vector2)pickup.Position).normalized;
+                    float distance = Vector2.Distance(collector.Position, pickup.Position);
+    
+                    // Calculate pull strength with a higher base value for 2D physics
+                    float pullStrength = Mathf.Lerp(collector.MagnetStrength, 0f, distance / collector.MagnetRadius);
+    
+                    // Get and configure Rigidbody2D
+                    var rb = pickup.PickupView.gameObject.GetComponent<Rigidbody2D>();
+                    if (rb != null)
+                    {
+                        // Make sure the Rigidbody2D is properly configured
+                        rb.bodyType = RigidbodyType2D.Dynamic;
+                        //rb.gravityScale = 1f;
+                        rb.constraints = RigidbodyConstraints2D.None;
+        
+                        // Apply force with ForceMode2D.Force for continuous effect
+                        rb.AddForce(directionToPlayer * pullStrength, ForceMode2D.Force);
+        
+                        // Optional: Add slight upward force to prevent ground sticking
+                        rb.AddForce(Vector2.up * (pullStrength * 0.1f), ForceMode2D.Force);
+                    }
+                    else
+                    {
+                        Debug.LogError("Rigidbody is null");
+                    }
+
+                }
+                if (ShouldAttemptPickup(pickup))
+                {
+                    ProcessPickup(pickup);
                 }
             }
-            catch (Exception e)
-            {
-                Debug.LogError($"Error processing pickups: {e}");
-            }
         }
 
-        private async UniTask ProcessPickupBatchAsync(IPickupable[] pickups)
+        private bool ShouldAttemptPickup(IPickupable pickup)
         {
-            foreach (var pickup in pickups)
-            {
-                if (cancellationTokenSource.Token.IsCancellationRequested) break;
-
-                // Perform distance check on main thread since it might involve Transform
-                if (await CheckPickupDistanceAsync(pickup))
-                {
-                    onPickupProcessed.OnNext(pickup);
-                }
-            }
-        }
-
-        private async UniTask<bool> CheckPickupDistanceAsync(IPickupable pickup)
-        {
-            // Ensure we're on the main thread for Unity operations
-            await UniTask.SwitchToMainThread();
             return distanceCalculator.IsInRange(collector, pickup);
         }
 
-        private void ProcessPickupBatch(IList<IPickupable> pickups)
+        private void ProcessPickup(IPickupable pickup)
         {
-            foreach (var pickup in pickups)
+            if (pickup.CanBePickedUp(collector) && 
+                collector.CanCollectPickup(pickup))
             {
-                if (!activePickups.ContainsKey(pickup.GetHashCode())) continue;
-
-                if (pickup.CanBePickedUp(collector) && collector.CanCollectPickup(pickup))
-                {
-                    ProcessSinglePickup(pickup).Forget();
-                }
-            }
-        }
-
-        private async UniTaskVoid ProcessSinglePickup(IPickupable pickup)
-        {
-            try
-            {
-                // Ensure we're on the main thread for Unity operations
-                await UniTask.SwitchToMainThread();
-
                 pickup.OnPickup(collector);
                 collector.CollectPickup(pickup);
                 pickupPoolManager.ReturnToPool(pickup.PickupView);
                 UnregisterPickup(pickup);
             }
-            catch (Exception e)
-            {
-                Debug.LogError($"Error processing pickup: {e}");
-            }
         }
-
-        public void Dispose()
-        {
-            cancellationTokenSource?.Cancel();
-            cancellationTokenSource?.Dispose();
-            disposables.Dispose();
-            activePickups.Clear();
-        }
+        
     }
 }

@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: PlayerScriptableObject
   m_EditorClassIdentifier: 
   player:
-    health: 0
+    health: 100
     maxHealth: 100
     expGain: 0
-    shield: 0
+    shield: 90
     maxShield: 100
+    dropCollectionMagnetRadius: 10
+    dropCollectionMagnetStrength: 50
     shieldRegenerationCooldown: 0
     movementSpeed: 0
     heavyAttackChargeTime: 0

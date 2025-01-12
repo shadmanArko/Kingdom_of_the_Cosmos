@@ -12,7 +12,8 @@ namespace Pickup_System
             string itemId, 
             float radius, 
             Transform transform,
-            IPickupBehavior behavior) : base(radius, transform, behavior)
+            PickupView pickupView,
+            IPickupBehavior behavior) : base(radius, transform, behavior, pickupView)
         {
             ItemId = itemId;
         }
@@ -35,7 +36,7 @@ namespace Pickup_System
                 var view = poolManager.GetFromPool(transform);
 
                 // Create the model
-                var item = new InventoryItem(itemId, radius, view.transform, behavior);
+                var item = new InventoryItem(itemId, radius, view.transform, view, behavior);
             
                 // Inject dependencies into the view
                 container.Inject(view, new object[] { item });

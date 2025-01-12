@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Pickup_System.Manager;
 using UnityEngine;
 using Zenject;
 
@@ -10,14 +11,16 @@ namespace Pickup_System
         private readonly HashSet<IPickupable> activePickups = new HashSet<IPickupable>();
         private readonly IPickupCollector collector;
         private readonly IPickupDistanceCalculator distanceCalculator;
+        private readonly IPickupPoolManager pickupPoolManager;
 
         [Inject]
         public PickupController(
             IPickupCollector collector,
-            IPickupDistanceCalculator distanceCalculator)
+            IPickupDistanceCalculator distanceCalculator, IPickupPoolManager pickupPoolManager)
         {
             this.collector = collector;
             this.distanceCalculator = distanceCalculator;
+            this.pickupPoolManager = pickupPoolManager;
         }
 
         public void RegisterPickup(IPickupable pickup)
@@ -54,6 +57,7 @@ namespace Pickup_System
             {
                 pickup.OnPickup(collector);
                 collector.CollectPickup(pickup);
+                pickupPoolManager.ReturnToPool(pickup.PickupView);
                 UnregisterPickup(pickup);
             }
         }

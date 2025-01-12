@@ -11,5 +11,6 @@ namespace Pickup_System
         void OnPickup(IPickupCollector collector);
         bool CanBePickedUp(IPickupCollector collector);
         IPickupBehavior PickupBehavior { get; }
+        PickupView PickupView { get; }
     }
 }

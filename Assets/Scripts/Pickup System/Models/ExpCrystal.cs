@@ -12,7 +12,8 @@ namespace Pickup_System
             float expValue, 
             float radius, 
             Transform transform,
-            IPickupBehavior behavior) : base(radius, transform, behavior)
+            PickupView pickupView,
+            IPickupBehavior behavior) : base(radius, transform, behavior, pickupView)
         {
             ExpValue = expValue;
         }
@@ -35,10 +36,10 @@ namespace Pickup_System
                 var view = poolManager.GetFromPool(transform);
                 
                 // Create the model
-                var crystal = new ExpCrystal(expValue, radius, transform, behavior);
+                var crystal = new ExpCrystal(expValue, radius, transform, view, behavior);
             
                 // Inject dependencies into the view
-                container.Inject(view, new object[] { crystal });
+                //container.Inject(view, new object[] { crystal });
 
                 return crystal;
             }

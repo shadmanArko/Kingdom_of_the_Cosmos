@@ -8,12 +8,11 @@ namespace Pickup_System
 {
     public class PickupController : ITickable, IPickupSystem
     {
-        private readonly HashSet<IPickupable> activePickups = new HashSet<IPickupable>();
+        private readonly List<IPickupable> activePickups = new List<IPickupable>();
         private readonly IPickupCollector collector;
         private readonly IPickupDistanceCalculator distanceCalculator;
         private readonly IPickupPoolManager pickupPoolManager;
-
-        [Inject]
+        
         public PickupController(
             IPickupCollector collector,
             IPickupDistanceCalculator distanceCalculator, IPickupPoolManager pickupPoolManager)
@@ -35,11 +34,10 @@ namespace Pickup_System
 
         public void Tick()
         {
-            foreach (var pickup in activePickups.ToArray())
+            foreach (var pickup in activePickups.ToList())
             {
                 if (ShouldAttemptPickup(pickup))
                 {
-                    Debug.Log("Pick Up In process.....");
                     ProcessPickup(pickup);
                 }
             }

@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags:
   - Enemy
   - Wall
@@ -58,6 +58,11 @@ TagManager:
   - name: Player
     uniqueID: 1586970795
     locked: 0
+  - name: Pickup
+    uniqueID: 3691104999
+    locked: 0
   - name: UI
     uniqueID: 12987711
     locked: 0
+  m_RenderingLayers:
+  - Default

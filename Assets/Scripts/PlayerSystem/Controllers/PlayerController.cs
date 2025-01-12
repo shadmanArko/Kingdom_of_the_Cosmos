@@ -521,12 +521,38 @@ namespace PlayerSystem.Controllers
 
         public bool CanCollectPickup(IPickupable pickup)
         {
-            return true;
+            switch (pickup)
+            {
+                case ExpCrystal expCrystal:
+                    return true; // Always can collect exp
+                
+                // case InventoryItem inventoryItem:
+                //     // Check if inventory has space
+                //     return inventorySystem.HasSpaceFor(inventoryItem.ItemId);
+                
+                default:
+                    Debug.LogWarning($"Unknown pickup type: {pickup.GetType()}");
+                    return false;
+            }
         }
 
         public void CollectPickup(IPickupable pickup)
         {
-            
+            switch (pickup)
+            {
+                case ExpCrystal expCrystal:
+                    Debug.Log($"Exp Collected from the Crystal{expCrystal.ExpValue}");
+                    //expSystem.AddExperience(expCrystal.ExpValue);
+                    break;
+                
+                // case InventoryItem inventoryItem:
+                //     inventorySystem.AddItem(inventoryItem.ItemId);
+                //     break;
+                //
+                default:
+                    Debug.LogWarning($"Trying to collect unknown pickup type: {pickup.GetType()}");
+                    return;
+            }
         }
     }
 }

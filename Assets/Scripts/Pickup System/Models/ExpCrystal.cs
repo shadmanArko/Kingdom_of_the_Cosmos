@@ -22,12 +22,17 @@ namespace Pickup_System
         {
             private readonly IPickupPoolManager poolManager;
             private readonly DiContainer container;
+            private readonly PickupView pickupViewPrefab;
 
             [Inject]
-            public Factory(IPickupPoolManager poolManager, DiContainer container)
+            public Factory(
+                IPickupPoolManager poolManager, 
+                DiContainer container,
+                PickupView pickupViewPrefab)  // Add prefab injection
             {
                 this.poolManager = poolManager;
                 this.container = container;
+                this.pickupViewPrefab = pickupViewPrefab;
             }
 
             public override ExpCrystal Create(float expValue, float radius, Transform transform, IPickupBehavior behavior)

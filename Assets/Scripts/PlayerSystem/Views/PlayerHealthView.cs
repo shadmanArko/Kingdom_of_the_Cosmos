@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace PlayerSystem.Views
@@ -10,6 +11,7 @@ namespace PlayerSystem.Views
         
         [SerializeField] private Slider healthSlider;
         [SerializeField] private Slider shieldSlider;
+        [SerializeField] private Slider expSlider;
         
         #region Health Bar
 
@@ -42,11 +44,34 @@ namespace PlayerSystem.Views
 
         #endregion
 
+        #region Experience Bar
 
-        private void Awake()
+        [SerializeField] private TMP_Text level;
+        
+        [SerializeField] private TMP_Text collectedExp;
+        [SerializeField] private TMP_Text maxExp;
+
+        public string Level
         {
-            
+            set => level.SetText($"Level: {value}");
         }
+
+        public string CollectedExp
+        {
+            set => collectedExp.SetText($"{value} /");
+        }
+
+        public string MaxExp
+        {
+            set => maxExp.SetText(value);
+        }
+
+        public float ExpSliderValueInPercentage
+        {
+            set => expSlider.value = value;
+        }
+
+        #endregion
 
         private void Start()
         {

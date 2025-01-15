@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Cinemachine;
 using DBMS.RunningData;
 using Enemy.Manager;
+using Experience;
 using Pickup_System;
 using PlayerSystem.PlayerSO;
 using PlayerSystem.Services.HealthService;
@@ -35,6 +36,8 @@ namespace PlayerSystem.Controllers
         
         private readonly WeaponManager _weaponManager;
         private EnemyManager _enemyManager;
+
+        private readonly ExpController _expController;
         
         
         
@@ -89,7 +92,8 @@ namespace PlayerSystem.Controllers
             PlayerScriptableObject playerScriptableObject,
             PlayerView playerView,
             PlayerHealthView playerHealthView,
-            PlayerHealthService playerHealthService)
+            PlayerHealthService playerHealthService, 
+            ExpController expController)
         {
             _cineMachineVirtualCamera = cineMachineVirtualCamera;
             
@@ -104,7 +108,8 @@ namespace PlayerSystem.Controllers
             _playerHealthView = playerHealthView;
 
             _playerHealthService = playerHealthService;
-            
+            _expController = expController;
+
             _cineMachineVirtualCamera.Follow = playerView.transform;
         }
         
@@ -543,6 +548,7 @@ namespace PlayerSystem.Controllers
                 case ExpCrystal expCrystal:
                     Debug.Log($"Exp Collected from the Crystal{expCrystal.ExpValue}");
                     //expSystem.AddExperience(expCrystal.ExpValue);
+                    _expController.AddExp(expCrystal.ExpValue);
                     break;
                 
                 // case InventoryItem inventoryItem:

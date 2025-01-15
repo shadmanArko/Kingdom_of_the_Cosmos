@@ -29,6 +29,7 @@ namespace Enemy.Manager
         private readonly MeleeEnemyPool _meleeEnemyPool;
         private readonly MeleeShieldedEnemyPool _meleeShieldedEnemyPool;
         private readonly RangedEnemyPool _rangedEnemyPool;
+        private readonly FlyingEnemyPool _flyingEnemyPool;
         private readonly ShamanEnemyPool _shamanEnemyPool;
         private readonly SignalBus _signalBus;
         private readonly PickupSpawner _pickupSpawner;
@@ -61,7 +62,7 @@ namespace Enemy.Manager
             GameDataScriptable gameDataScriptable,
             RunningDataScriptable runningDataScriptable,
             SignalBus signalBus,
-            PlayerView playerView, PickupSpawner pickupSpawner)
+            PlayerView playerView, PickupSpawner pickupSpawner, FlyingEnemyPool flyingEnemyPool)
         {
             _playerController = playerController;
             _enemyComputeShader = enemyComputeShader;
@@ -74,6 +75,7 @@ namespace Enemy.Manager
             _signalBus = signalBus;
             _playerView = playerView;
             _pickupSpawner = pickupSpawner;
+            _flyingEnemyPool = flyingEnemyPool;
             Debug.Log($"Enemy Manager constructor Started. signal bus found {_signalBus!= null}");
 
         }
@@ -114,6 +116,11 @@ namespace Enemy.Manager
         {
             var rangedEnemyData = _enemies.RangedEnemyDatas.FirstOrDefault(data => data.Id == "1");
             _rangedEnemyPool.CreateRangeEnemy(rangedEnemyData);
+        }
+        private void CreateEnemyFromFlyingEnemyPool()
+        {
+            var rangedEnemyData = _enemies.FlyingEnemyDatas.FirstOrDefault(data => data.Id == "1");
+            _flyingEnemyPool.CreateFlyingEnemy(rangedEnemyData);
         }
 
         private void CreateEnemyFromShamanEnemyPool()
@@ -348,8 +355,10 @@ namespace Enemy.Manager
         private int _numberOfMeleeEnemies = 5;
         private int _numberOfShamanEnemies = 1;
         private int _numberOfShieldedMeleeEnemies = 3;
+        private int _numberOfFlyingEnemies = 3;
         private int _countOfMeleeEnemies;
         private int _countOfShieldedMeleeEnemies;
+        private int _countOfFlyingEnemies;
         private int _countOfShamanEnemies;
         private void HandleEnemySpawning()
         {
@@ -360,11 +369,18 @@ namespace Enemy.Manager
                 {
                     return;
                 }
-                if (_countOfShamanEnemies >= _numberOfShamanEnemies)
+                if (_countOfFlyingEnemies >= _numberOfFlyingEnemies)
                 {
                     CreateEnemyFromRangedEnemyPool();
-                    // CreateEnemyFromMeleeEnemyPool();
                 }
+                else if (_countOfShamanEnemies >= _numberOfShamanEnemies)
+                {
+                    // CreateEnemyFromRangedEnemyPool();
+                    // CreateEnemyFromMeleeEnemyPool();
+                    _countOfFlyingEnemies++;
+                    CreateEnemyFromFlyingEnemyPool();
+                }
+                
                 else if (_countOfShieldedMeleeEnemies >= _numberOfShieldedMeleeEnemies)
                 {
                     _countOfShamanEnemies++;

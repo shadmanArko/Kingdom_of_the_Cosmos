@@ -133,38 +133,16 @@
         "AttackRange": 5.0,
         "Damage": 12.0,
         "AttackCooldown": 2.0
-      },
+      }
+    ],
+    "FlyingEnemyDatas": [
       {
-        "Id": "2",
-        "MovementSpeed": 2.9,
-        "Health": 100.0,
-        "AttackRange": 20.0,
-        "Damage": 10.0,
-        "AttackCooldown": 1.8
-      },
-      {
-        "Id": "3",
-        "MovementSpeed": 3.5,
-        "Health": 70.0,
-        "AttackRange": 25.0,
-        "Damage": 15.0,
-        "AttackCooldown": 2.5
-      },
-      {
-        "Id": "4",
-        "MovementSpeed": 3.0,
-        "Health": 90.0,
-        "AttackRange": 18.0,
-        "Damage": 14.0,
-        "AttackCooldown": 2.2
-      },
-      {
-        "Id": "5",
-        "MovementSpeed": 3.8,
-        "Health": 75.0,
-        "AttackRange": 22.0,
-        "Damage": 11.0,
-        "AttackCooldown": 2.1
+        "Id": "1",
+        "MovementSpeed": 2,
+        "Health": 80.0,
+        "AttackRange": 3.5,
+        "Damage": 12.0,
+        "AttackCooldown": 2.0
       }
     ],
     "ShamanEnemyDatas": [

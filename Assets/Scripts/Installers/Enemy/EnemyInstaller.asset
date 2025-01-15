@@ -17,6 +17,7 @@ MonoBehaviour:
   meleeEnemyPool: {fileID: 2383170108146576834, guid: 3ff22cc9f14189940b21e8a73c395cd2, type: 3}
   meleeShieldedEnemyPool: {fileID: 7581579931838258487, guid: d1b0219c740ac9442be0f830ac90a13f, type: 3}
   rangedEnemyPool: {fileID: 6847194376810699582, guid: 0d26a6407ab2a954a9cbe2539dadbb7f, type: 3}
+  flyingEnemyPool: {fileID: -4805962392663143004, guid: 2b0f2249ac4a0d84fb431a8f38c552bf, type: 3}
   shamanEnemyPool: {fileID: 4243657437039915828, guid: 570c6a9748754d044b065e7e5ba139e0, type: 3}
   gameStatUI: {fileID: 1694760451738670377, guid: 9141774e66ada8749882dde7b7e05dd0, type: 3}
   enemyProjectilePrefab: {fileID: 3842052294937295158, guid: 8176ffa6e7c9a2d478c852e997a5c195, type: 3}

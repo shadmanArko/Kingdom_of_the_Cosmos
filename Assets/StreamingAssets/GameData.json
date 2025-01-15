@@ -138,9 +138,9 @@
     "FlyingEnemyDatas": [
       {
         "Id": "1",
-        "MovementSpeed": 2,
+        "MovementSpeed": 0.5,
         "Health": 80.0,
-        "AttackRange": 3.5,
+        "AttackRange": 10,
         "Damage": 12.0,
         "AttackCooldown": 2.0
       }

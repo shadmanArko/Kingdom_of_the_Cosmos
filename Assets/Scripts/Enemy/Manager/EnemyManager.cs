@@ -132,9 +132,7 @@ namespace Enemy.Manager
         {
             HandleKnockBack();
             HandleEnemySpawning();
-            _activeEnemies = _meleeEnemyPool.activeEnemies.Concat(_meleeShieldedEnemyPool.activeEnemies).ToList();
-            _activeEnemies = _activeEnemies.Concat(_rangedEnemyPool.activeEnemies).ToList();
-            _activeEnemies = _activeEnemies.Concat(_shamanEnemyPool.activeEnemies).ToList();
+            GetAllActiveEnemies();
             if (_activeEnemies.Count > 0)
             {
                 UpdateBuffers();
@@ -145,6 +143,14 @@ namespace Enemy.Manager
             // UpdateEnemyPositions();
             UpdateEnemyPositionsWithoutShader();
         
+        }
+
+        private void GetAllActiveEnemies()
+        {
+            _activeEnemies = _meleeEnemyPool.activeEnemies.Concat(_meleeShieldedEnemyPool.activeEnemies).ToList();
+            _activeEnemies = _activeEnemies.Concat(_rangedEnemyPool.activeEnemies).ToList();
+            _activeEnemies = _activeEnemies.Concat(_flyingEnemyPool.activeEnemies).ToList();
+            _activeEnemies = _activeEnemies.Concat(_shamanEnemyPool.activeEnemies).ToList();
         }
 
         private void UpdateEnemyPositionsWithoutShader()
@@ -192,7 +198,11 @@ namespace Enemy.Manager
             if (enemy.GetComponent<MeleeShieldedEnemy>())
             {
                 _meleeShieldedEnemyPool.ReleaseEnemy(enemy);
-            }if (enemy.GetComponent<MeleeEnemy>())
+            }if (enemy.GetComponent<FlyingEnemy>())
+            {
+                _flyingEnemyPool.ReleaseEnemy(enemy);
+            }
+            if (enemy.GetComponent<MeleeEnemy>())
             {
                 _meleeEnemyPool.ReleaseEnemy(enemy);
             }
@@ -265,6 +275,10 @@ namespace Enemy.Manager
             if (enemy.GetComponent<MeleeEnemy>())
             {
                 _meleeEnemyPool.AddToActiveEnemies(enemy);
+            }
+            if (enemy.GetComponent<FlyingEnemy>())
+            {
+                _flyingEnemyPool.AddToActiveEnemies(enemy);
             }
             if (enemy.GetComponent<RangedEnemy>())
             {
@@ -352,10 +366,10 @@ namespace Enemy.Manager
             return (u >= 0) && (v >= 0) && (u + v <= 1);
         }
 
-        private int _numberOfMeleeEnemies = 5;
-        private int _numberOfShamanEnemies = 1;
-        private int _numberOfShieldedMeleeEnemies = 3;
-        private int _numberOfFlyingEnemies = 3;
+        private int _numberOfMeleeEnemies = 0;
+        private int _numberOfShamanEnemies = 0;
+        private int _numberOfShieldedMeleeEnemies = 0;
+        private int _numberOfFlyingEnemies = 10;
         private int _countOfMeleeEnemies;
         private int _countOfShieldedMeleeEnemies;
         private int _countOfFlyingEnemies;

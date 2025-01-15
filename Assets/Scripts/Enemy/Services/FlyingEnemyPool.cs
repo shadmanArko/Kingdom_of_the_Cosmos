@@ -11,7 +11,7 @@ namespace Enemy.Services
     public class FlyingEnemyPool : MonoBehaviour
     {
         [Header("Spawn Settings")]
-        [SerializeField] private RangedEnemy enemyPrefab;
+        [SerializeField] private FlyingEnemy enemyPrefab;
         [SerializeField] private int enemiesPerWave = 10;
         [SerializeField] private int increaseEnemiesPerWave = 3;
         [SerializeField] private float timeBetweenWaves = 5f;

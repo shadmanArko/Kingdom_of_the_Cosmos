@@ -51,11 +51,24 @@ namespace Enemy.Services
             canGetBuff = true;
         }
 
+        private float wobbleTime = 0f;
+        public float verticalWobbleFrequency = 2f;
+        public float horizontalWobbleFrequency = 1.5f;
+        public float verticalWobbleAmplitude = 0.5f;
+        public float horizontalWobbleAmplitude = 0.3f;
+
         public override void MoveTowardsTarget(Transform targetTransform)
         {
-            
             base.MoveTowardsTarget(targetTransform);
-            
+    
+            // Add wobble effect
+            wobbleTime += Time.deltaTime;
+            Vector3 wobbleOffset = new Vector3(
+                Mathf.Sin(wobbleTime * horizontalWobbleFrequency) * horizontalWobbleAmplitude,
+                Mathf.Sin(wobbleTime * verticalWobbleFrequency) * verticalWobbleAmplitude,
+                0
+            );
+            transform.position += wobbleOffset * Time.deltaTime;
         }
 
         public override async void Attack(PlayerView target)

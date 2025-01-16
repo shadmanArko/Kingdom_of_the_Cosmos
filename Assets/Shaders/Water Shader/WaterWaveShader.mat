@@ -49,7 +49,7 @@ Material:
     - _WaveAmplitude: 0.23
     - _WaveFrequency: 16.3
     - _WaveSpeed: 5.3
-    - _WaveStrength: 0.038
+    - _WaveStrength: 0.0837
     m_Colors:
     - _Color: {r: 0, g: 0.29999998, b: 0.5, a: 1}
     - _WaterDirection: {r: 1, g: 1, b: 0, a: 0}

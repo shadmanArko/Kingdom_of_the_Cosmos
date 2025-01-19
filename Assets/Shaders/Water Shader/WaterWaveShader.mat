@@ -27,6 +27,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: a781402b95eb1e844a8295221f1b63f9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _WaterTex:
         m_Texture: {fileID: 2800000, guid: f297c1d697a9dee4b9bcd71cff66cd16, type: 3}
         m_Scale: {x: 1, y: 1}

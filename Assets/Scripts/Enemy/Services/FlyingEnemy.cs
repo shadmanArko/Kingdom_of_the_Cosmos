@@ -13,6 +13,12 @@ namespace Enemy.Services
         [SerializeField] private RangedAttackPreview _rangedAttackPreview;
         public EnemyProjectilePoolManager enemyProjectilePoolManager;
         private int _numberOfProjectiles = 1;
+
+        public float MinimumDistanceForDash = 1.5f;
+        public float DashDistance = 5f;
+        public float DashCooldownTime = 10f;
+        private float lastDashTime = 0f;
+        private bool isDashing = false;
         // [Inject]
         // public void Construct(EnemyProjectilePoolManager enemyProjectilePoolManager)
         // {
@@ -58,18 +64,77 @@ namespace Enemy.Services
         public float horizontalWobbleAmplitude = 0.3f;
 
         public override void MoveTowardsTarget(Transform targetTransform)
+{
+    _rigidbody2D.linearVelocity = Vector2.zero;
+    if (!canGetBuff || !canMove) return;
+     
+    var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
+    DistanceToPlayer = distanceToPlayer;
+
+    if (distanceToPlayer > MinDistanceToPlayer)
+    {
+        // Move towards player if too far
+        transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, MoveSpeed * Time.deltaTime);
+    }
+    else if (distanceToPlayer <= MinDistanceToPlayer && !isAttacking && (Time.time > lastAttackTime + AttackSpeed))
+    {
+        lastAttackTime = Time.time;
+        Attack(targetTransform.GetComponent<PlayerView>());
+        isAttacking = true;
+    }
+
+    if (distanceToPlayer < MinimumDistanceForDash && !isAttacking && !isDashing)
+    {
+        // Check if enough time has passed since last dash
+        if (Time.time > lastDashTime + DashCooldownTime)
         {
-            base.MoveTowardsTarget(targetTransform);
-    
-            // Add wobble effect
-            wobbleTime += Time.deltaTime;
-            Vector3 wobbleOffset = new Vector3(
-                Mathf.Sin(wobbleTime * horizontalWobbleFrequency) * horizontalWobbleAmplitude,
-                Mathf.Sin(wobbleTime * verticalWobbleFrequency) * verticalWobbleAmplitude,
-                0
-            );
-            transform.position += wobbleOffset * Time.deltaTime;
+            // Calculate dash direction AWAY from player
+            Vector3 dashDirection = (transform.position - targetTransform.position).normalized;
+            
+            // Start dash
+            _ = PerformDashAsync(dashDirection);
+            lastDashTime = Time.time;
         }
+    }
+
+    Position = transform.position;
+
+    // Add wobble effect only if not dashing
+    if (!isDashing)
+    {
+        wobbleTime += Time.deltaTime;
+        Vector3 wobbleOffset = new Vector3(
+            Mathf.Sin(wobbleTime * horizontalWobbleFrequency) * horizontalWobbleAmplitude,
+            Mathf.Sin(wobbleTime * verticalWobbleFrequency) * verticalWobbleAmplitude,
+            0
+        );
+        transform.position += wobbleOffset * Time.deltaTime;
+    }
+}
+
+private async Task PerformDashAsync(Vector3 direction)
+{
+    isDashing = true;
+    
+    // Store initial position
+    Vector3 startPosition = transform.position;
+    Vector3 targetPosition = startPosition + direction * DashDistance;
+    
+    float elapsedTime = 0;
+    float dashDuration = 0.7f; // Adjust this value to make dash faster or slower
+    
+    while (elapsedTime < dashDuration)
+    {
+        elapsedTime += Time.deltaTime;
+        float progress = elapsedTime / dashDuration;
+        
+        // Use smooth interpolation for dash movement
+        transform.position = Vector3.Lerp(startPosition, targetPosition, progress);
+        await Task.Yield(); // Wait for next frame
+    }
+    
+    isDashing = false;
+}
 
         public override async void Attack(PlayerView target)
         {

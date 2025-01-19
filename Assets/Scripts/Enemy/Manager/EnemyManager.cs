@@ -367,8 +367,8 @@ namespace Enemy.Manager
         }
 
         private int _numberOfMeleeEnemies = 0;
-        private int _numberOfShamanEnemies = 0;
-        private int _numberOfShieldedMeleeEnemies = 0;
+        private int _numberOfShamanEnemies = 1;
+        private int _numberOfShieldedMeleeEnemies = 5;
         private int _numberOfFlyingEnemies = 10;
         private int _countOfMeleeEnemies;
         private int _countOfShieldedMeleeEnemies;

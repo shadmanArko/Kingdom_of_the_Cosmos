@@ -79,48 +79,20 @@
     "MeleeEnemyDatas": [
       {
         "Id": 1,
-        "MovementSpeed": 3.5,
-        "Health": 30.0,
+        "MovementSpeed": 3,
+        "Health": 80.0,
         "Damage": 10.0,
         "AttackCooldown": 2.0
-      },
-      {
-        "Id": 2,
-        "MovementSpeed": 2.8,
-        "Health": 120.0,
-        "Damage": 8.0,
-        "AttackCooldown": 1.5
-      },
-      {
-        "Id": 3,
-        "MovementSpeed": 4.2,
-        "Health": 80.0,
-        "Damage": 12.0,
-        "AttackCooldown": 1.8
-      },
-      {
-        "Id": 4,
-        "MovementSpeed": 3.0,
-        "Health": 90.0,
-        "Damage": 15.0,
-        "AttackCooldown": 2.5
-      },
-      {
-        "Id": 5,
-        "MovementSpeed": 3.7,
-        "Health": 110.0,
-        "Damage": 9.0,
-        "AttackCooldown": 2.2
       }
     ],
     "MeleeShieldedEnemyDatas": [
       {
         "Id": 1,
-        "ShieldHealth": 20.0,
+        "ShieldHealth": 40.0,
         "AttackRange" : 5.0,
         "MinimumDistanceToPlayer" : 4.0,
         "MovementSpeed": 2.5,
-        "Health": 30.0,
+        "Health": 80.0,
         "Damage": 15.0,
         "AttackCooldown": 2.5
       }
@@ -128,8 +100,8 @@
     "RangedEnemyDatas": [
       {
         "Id": "1",
-        "MovementSpeed": 3.2,
-        "Health": 80.0,
+        "MovementSpeed": 3,
+        "Health": 40.0,
         "AttackRange": 5.0,
         "Damage": 12.0,
         "AttackCooldown": 2.0
@@ -139,7 +111,7 @@
       {
         "Id": "1",
         "MovementSpeed": 0.5,
-        "Health": 80.0,
+        "Health": 60.0,
         "AttackRange": 10,
         "Damage": 12.0,
         "AttackCooldown": 2.0
@@ -148,53 +120,13 @@
     "ShamanEnemyDatas": [
       {
         "Id": "1",
-        "MovementSpeed": 3.2,
-        "Health": 120.0,
+        "MovementSpeed": 2,
+        "Health": 60.0,
         "AttackRange": 10.0,
         "ShamanRadius": 5.0,
         "ShamanInterval": 5.0,
         "Damage": 15.0,
         "AttackCooldown": 3.0
-      },
-      {
-        "Id": "2",
-        "MovementSpeed": 3.0,
-        "Health": 100.0,
-        "AttackRange": 25.0,
-        "ShamanRadius": 8.0,
-        "ShamanInterval": 4.5,
-        "Damage": 12.0,
-        "AttackCooldown": 2.5
-      },
-      {
-        "Id": "3",
-        "MovementSpeed": 2.8,
-        "Health": 140.0,
-        "AttackRange": 30.0,
-        "ShamanRadius": 12.0,
-        "ShamanInterval": 6.0,
-        "Damage": 18.0,
-        "AttackCooldown": 3.5
-      },
-      {
-        "Id": "4",
-        "MovementSpeed": 2.6,
-        "Health": 110.0,
-        "AttackRange": 22.0,
-        "ShamanRadius": 9.0,
-        "ShamanInterval": 5.2,
-        "Damage": 14.0,
-        "AttackCooldown": 3.2
-      },
-      {
-        "Id": "5",
-        "MovementSpeed": 3.2,
-        "Health": 90.0,
-        "AttackRange": 28.0,
-        "ShamanRadius": 11.0,
-        "ShamanInterval": 4.8,
-        "Damage": 10.0,
-        "AttackCooldown": 2.8
       }
     ]
   }

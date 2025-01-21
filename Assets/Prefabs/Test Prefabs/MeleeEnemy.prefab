@@ -120,7 +120,7 @@ MonoBehaviour:
   damageValueText: {fileID: 6131760120524780027}
   _animationController: {fileID: 3873786948047536699}
   warningIndicator: {fileID: 3457532659323405873, guid: 3c91a3ddc286dea429218d37a376ef43, type: 3}
-  warningDuration: 1
+  warningDuration: 0.8
   warningRadius: 2
 --- !u!50 &7805327956686961274
 Rigidbody2D:

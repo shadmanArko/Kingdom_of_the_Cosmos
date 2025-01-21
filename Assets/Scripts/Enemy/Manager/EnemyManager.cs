@@ -187,6 +187,7 @@ namespace Enemy.Manager
             foreach (var enemy in enemiesWithinArea)
             {
                 enemy.TakeDamage(damageValue);
+                Debug.Log($"Got damage value {damageValue}");
                 var weaponData = meleeLightAttackSignal.weaponData;
                 enemy.TakeKnockBack(_playerTransform, weaponData.knockBackDuration, weaponData.knockBackStrength);
             }
@@ -366,10 +367,10 @@ namespace Enemy.Manager
             return (u >= 0) && (v >= 0) && (u + v <= 1);
         }
 
-        private int _numberOfMeleeEnemies = 0;
+        private int _numberOfMeleeEnemies = 3;
         private int _numberOfShamanEnemies = 1;
-        private int _numberOfShieldedMeleeEnemies = 5;
-        private int _numberOfFlyingEnemies = 10;
+        private int _numberOfShieldedMeleeEnemies = 3;
+        private int _numberOfFlyingEnemies = 5;
         private int _countOfMeleeEnemies;
         private int _countOfShieldedMeleeEnemies;
         private int _countOfFlyingEnemies;

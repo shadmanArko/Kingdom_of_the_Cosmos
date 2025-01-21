@@ -123,7 +123,7 @@ namespace Enemy.Services
             _attackHighlightLine.SetPosition(0, startPosition);
             _attackHighlightLine.SetPosition(1, startPosition); // Start both positions at enemy position
 
-            while (lineProgress < 1f)
+            while (lineProgress < 1f)//Todo connect to database
             {
                 // Check if target moved out of range
                 float currentDistance = Vector3.Distance(transform.position, target.transform.position);

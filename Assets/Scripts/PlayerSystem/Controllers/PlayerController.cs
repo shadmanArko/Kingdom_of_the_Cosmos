@@ -44,7 +44,7 @@ namespace PlayerSystem.Controllers
         #region Player Settings Variables
 
         private bool _isAutoAttacking;
-        private float _speed = 5f;
+        public float _speed = 5f;
 
         #endregion
 

@@ -103,9 +103,9 @@ namespace Enemy.Services
         private void ApplyBuff(BaseEnemy enemy)
         {
             Debug.Log($"ApplyBuff to {enemy.name}");
-            if (enemy.GetComponent<MeleeEnemy>())
+            if (enemy.GetComponent<MeleeEnemy>() || enemy.GetComponent<MeleeShieldedEnemy>())
             { 
-                enemy.GetBuff(EnemyBuffTypes.Movement, 3, 5); 
+                enemy.GetBuff(EnemyBuffTypes.Movement, 1, 5); 
             }else if (enemy.GetComponent<RangedEnemy>())
             {
                 enemy.GetBuff(EnemyBuffTypes.Projectile, 3, 5);

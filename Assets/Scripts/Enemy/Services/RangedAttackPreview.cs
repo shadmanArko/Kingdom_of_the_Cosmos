@@ -4,7 +4,7 @@ public class RangedAttackPreview : MonoBehaviour
 {
     private static readonly int CutoffValue = Shader.PropertyToID("_CutoffValue");
     [SerializeField] private GameObject previewArch; // The object displaying the preview.
-    [SerializeField] private float previewTime = 0.5f; // Duration of the preview effect.
+    [SerializeField] private float previewTime = 1f; //todo connect it do data
     private bool _previewActive; // Tracks if the preview is currently active.
     private float _timer; // Tracks time elapsed during the preview.
     private Material _material; // Reference to the material to manipulate.

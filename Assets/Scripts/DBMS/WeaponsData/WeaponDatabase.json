@@ -4,12 +4,12 @@
       "category": "Pistols",
       "weapons": [
         {
-          "name": "Some Charged Gun",
-          "damage": 50,
+          "name": "Standard Pistol",
+          "damage": 40,
           "cooldown": 0.5,
           "type": "Controlled",
           "triggerCondition": "ThreeRoundBurst",
-          "knockBackStrength": 20,
+          "knockBackStrength": 15,
           "knockBackDuration": 0.2
         },
         {

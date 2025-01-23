@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Threading.Tasks;
 using Enemy.Manager;
 using Enemy.Models;
@@ -25,8 +26,35 @@ namespace Enemy.Services
 
         public override void MoveTowardsTarget(Transform targetTransform)
         {
-            
-            base.MoveTowardsTarget(targetTransform);
+            _rigidbody2D.linearVelocity = Vector2.zero;
+            if (!canMove) return;
+            var distanceToPlayer = Vector3.Distance(transform.position, targetTransform.position);
+            DistanceToPlayer = distanceToPlayer;
+            if (hasShaman)
+            {
+                // Circling behavior when shaman buff is active
+                float circleRadius = MinDistanceToPlayer + 1f; // Slightly larger than attack range
+                Vector3 directionToPlayer = (targetTransform.position - transform.position).normalized;
+                Vector3 perpendicular = Vector3.Cross(directionToPlayer, Vector3.forward).normalized;
+
+                // Calculate a point on the circle around the player
+                Vector3 circlingPoint = targetTransform.position + perpendicular * circleRadius;
+
+                // Move towards the circling point
+                transform.position = Vector3.MoveTowards(transform.position, circlingPoint, MoveSpeed * Time.deltaTime);
+
+                // Check for attack when close enough
+                if (distanceToPlayer <= MinDistanceToPlayer && !isAttacking && (Time.time > lastAttackTime + AttackSpeed))
+                {
+                    lastAttackTime = Time.time;
+                    Attack(targetTransform.GetComponent<PlayerView>());
+                    isAttacking = true;
+                }
+            }
+            else
+            {
+                base.MoveTowardsTarget(targetTransform);
+            }
         }
 
         public override void Initialize()
@@ -58,6 +86,28 @@ namespace Enemy.Services
         
         }
 
+        public override void GetBuff(EnemyBuffTypes buffType, float amount, float duration)
+        {
+            base.GetBuff(buffType, amount, duration);
+            if (!canGetBuff) return; // Prevent stacking buffs
+
+            StartCoroutine(ApplyTemporaryBuff(amount, duration));
+        }
+        private IEnumerator ApplyTemporaryBuff(float amount, float duration)
+        {
+            // Apply the buff
+            MoveSpeed += amount;
+            hasShaman = true;
+            canGetBuff = false;
+
+            // Wait for the specified duration
+            yield return new WaitForSeconds(duration);
+
+            // Remove the buff
+            MoveSpeed -= amount;
+            hasShaman = false;
+            canGetBuff = true;
+        }
         public override async void Attack(PlayerView target)
         {
             if (_attacking) return;
@@ -73,7 +123,7 @@ namespace Enemy.Services
             _attackHighlightLine.SetPosition(0, startPosition);
             _attackHighlightLine.SetPosition(1, startPosition); // Start both positions at enemy position
 
-            while (lineProgress < 1f)
+            while (lineProgress < 1f)//Todo connect to database
             {
                 // Check if target moved out of range
                 float currentDistance = Vector3.Distance(transform.position, target.transform.position);

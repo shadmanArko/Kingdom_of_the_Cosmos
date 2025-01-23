@@ -13,6 +13,7 @@ namespace Installers.Enemy
         [SerializeField] private MeleeEnemyPool meleeEnemyPool;
         [SerializeField] private MeleeShieldedEnemyPool meleeShieldedEnemyPool;
         [SerializeField] private RangedEnemyPool rangedEnemyPool;
+        [SerializeField] private FlyingEnemyPool flyingEnemyPool;
         [SerializeField] private ShamanEnemyPool shamanEnemyPool;
         [SerializeField] private GameStatUI gameStatUI;
         [SerializeField] private EnemyProjectile enemyProjectilePrefab;
@@ -27,6 +28,7 @@ namespace Installers.Enemy
             Container.Bind<MeleeEnemyPool>().FromComponentInNewPrefab(meleeEnemyPool).AsSingle().NonLazy();
             Container.Bind<MeleeShieldedEnemyPool>().FromComponentInNewPrefab(meleeShieldedEnemyPool).AsSingle().NonLazy();
             Container.Bind<RangedEnemyPool>().FromComponentInNewPrefab(rangedEnemyPool).AsSingle().NonLazy();
+            Container.Bind<FlyingEnemyPool>().FromComponentInNewPrefab(flyingEnemyPool).AsSingle().NonLazy();
             Container.Bind<ShamanEnemyPool>().FromComponentInNewPrefab(shamanEnemyPool).AsSingle().NonLazy();
             Container.Bind<GameStatUI>().FromComponentInNewPrefab(gameStatUI).AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<EnemyManager>().AsSingle();

@@ -8,6 +8,11 @@ namespace PointOfInterestSystem.Models
     [Serializable]
     public abstract class PointOfInterest : IInteractable
     {
+        //choices 2 to 3
+        //title
+        //description
+        //
+        
         protected PointOfInterestView pointOfInterestView;
         public bool IsInteractable { get; set; }
 

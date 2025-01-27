@@ -1,3 +1,5 @@
+using PlayerSystem.PlayerSO;
+using PlayerSystem.Services.HealthService;
 using UniRx;
 
 namespace Experience
@@ -12,13 +14,18 @@ namespace Experience
 
         private IReactiveProperty<float> _maxExp;
         public IReadOnlyReactiveProperty<float> MaxExp => _maxExp;
+        
+        private readonly PlayerHealthService _playerHealthService;
+        private readonly PlayerScriptableObject _playerScriptableObject;
 
-        public ExpModel()
+        public ExpModel(PlayerHealthService playerHealthService, PlayerScriptableObject playerScriptableObject)
         {
             //TODO: To be changed later
             _level = new ReactiveProperty<float>(0);
             _collectedExp = new ReactiveProperty<float>(0);
             _maxExp = new ReactiveProperty<float>(100);
+            _playerHealthService = playerHealthService;
+            _playerScriptableObject = playerScriptableObject;
         }
 
         public void AddExp(float exp)
@@ -29,6 +36,7 @@ namespace Experience
             _level.Value++;
             _collectedExp.Value = extraExp;
             _maxExp.Value += 20;
+            _playerHealthService.SetShield(_playerScriptableObject.player, _playerScriptableObject.player.maxShield);
         }
 
         public float ExpSliderValueInPercentage() => _collectedExp.Value / _maxExp.Value * 100f;

@@ -19,7 +19,6 @@ namespace PlayerStats.Manager
         public void Tick()
         {
             _playerMod.UpdateTemporaryModifications();
-            Debug.LogWarning($"Movement Speed of player is: {_playerMod.BasePlayer.player.movementSpeed}");
         }
 
         public void ApplySpeedBoost()

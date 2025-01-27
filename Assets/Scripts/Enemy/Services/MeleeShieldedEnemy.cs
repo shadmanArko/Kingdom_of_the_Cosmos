@@ -153,6 +153,8 @@ namespace Enemy.Services
             float lungeProgress = 0f;
             Vector3 originalPosition = transform.position;
 
+            //wait before attacking
+            await Task.Delay(300);
             // Perform lunge movement
             while (lungeProgress < 1f)
             {
@@ -160,7 +162,12 @@ namespace Enemy.Services
                 transform.position = Vector3.Lerp(originalPosition, targetPosition, lungeProgress);
                 await Task.Yield();
             }
-            EnemyManager.EnemyDamagedPlayer?.Invoke(Damage);
+
+            if (Vector3.Distance(targetPosition, target.transform.position) < 1f)
+            {
+                EnemyManager.EnemyDamagedPlayer?.Invoke(Damage);
+            }
+
 
             // Perform attack at end of lunge
             // _animationController.PlayAnimation("attack");

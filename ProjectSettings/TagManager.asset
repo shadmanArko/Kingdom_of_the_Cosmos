@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags:
   - Enemy
   - Wall
@@ -46,11 +46,35 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Water
-    uniqueID: 3383245507
+  - name: UnderWaterLand
+    uniqueID: 3586778553
+    locked: 0
+  - name: UnderWaterObjects
+    uniqueID: 1236683515
     locked: 0
   - name: Ground
     uniqueID: 2743634443
+    locked: 0
+  - name: Water
+    uniqueID: 3383245507
+    locked: 0
+  - name: Wave
+    uniqueID: 4270219025
+    locked: 0
+  - name: Mud
+    uniqueID: 4073931901
+    locked: 0
+  - name: Grass
+    uniqueID: 1957272765
+    locked: 0
+  - name: SecondaryGrass
+    uniqueID: 779843637
+    locked: 0
+  - name: Tree
+    uniqueID: 2502152857
+    locked: 0
+  - name: Log
+    uniqueID: 991464449
     locked: 0
   - name: Enemy
     uniqueID: 2045034985
@@ -58,6 +82,12 @@ TagManager:
   - name: Player
     uniqueID: 1586970795
     locked: 0
+  - name: Pickup
+    uniqueID: 3691104999
+    locked: 0
   - name: UI
     uniqueID: 12987711
     locked: 0
+  m_RenderingLayers:
+  - Default
+  - Layer 1

@@ -174,7 +174,7 @@ namespace Enemy.Manager
     
         private void OnMeleeAttack(MeleeLightAttackSignal meleeLightAttackSignal)
         {
-            Debug.Log("Melee Attack occured");
+            //Debug.Log("Melee Attack occured");
             var playerPos = _playerView.transform.position;
             var knockBackStrength = meleeLightAttackSignal.weaponData.knockBackStrength;
             var damageValue = meleeLightAttackSignal.weaponData.damage;
@@ -182,7 +182,7 @@ namespace Enemy.Manager
             var p1 = _runningDataScriptable.attackAnglePoints[1];
             var p2 =  _runningDataScriptable.attackAnglePoints[2];
             var enemiesWithinArea = GetAllEnemiesWithinAttackArea(p0, p1, p2);
-            Debug.Log($"player pos:{playerPos}, p0: {p0}, p1: {p1}, p2: {p2} enemiesWithinArea: {enemiesWithinArea.Count}");
+            //Debug.Log($"player pos:{playerPos}, p0: {p0}, p1: {p1}, p2: {p2} enemiesWithinArea: {enemiesWithinArea.Count}");
     
             foreach (var enemy in enemiesWithinArea)
             {

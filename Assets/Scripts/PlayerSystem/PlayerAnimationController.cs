@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using zzz_TestScripts.AnimationLoadingFromSpriteSheets;
 using zzz_TestScripts.AnimationSystemTest;
@@ -23,7 +24,7 @@ namespace PlayerSystem
             {
                 if (currentAnimationData.animationSprites.Count > 0)
                 {
-                    currentSpriteIndex = value % currentAnimationData.animationSprites.Count;
+                    currentSpriteIndex = Math.Clamp(value, 0, currentAnimationData.animationSprites.Count - 1);
                     if (currentSpriteIndex < 0)
                         currentSpriteIndex += currentAnimationData.animationSprites.Count;
                 }
@@ -73,10 +74,10 @@ namespace PlayerSystem
             foreach (var data in animationDataScriptable.animationDatabases[0].animationDatas)
             {
                 if(data.stateName != currentStateName) continue;
-                CurrentSpriteIndex = 0;
                 spriteRend.flipX = data.flipX;
                 spriteRend.flipY = data.flipY;
                 currentAnimationData = data;
+                CurrentSpriteIndex = 0;
                 return;
             }
             

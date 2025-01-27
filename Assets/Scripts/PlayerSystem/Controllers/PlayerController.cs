@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Cinemachine;
 using DBMS.RunningData;
 using Enemy.Manager;
+using Experience;
 using Pickup_System;
 using PlayerSystem.PlayerSO;
 using PlayerSystem.Services.HealthService;
@@ -35,13 +36,15 @@ namespace PlayerSystem.Controllers
         
         private readonly WeaponManager _weaponManager;
         private EnemyManager _enemyManager;
+
+        private readonly ExpController _expController;
         
         
         
         #region Player Settings Variables
 
         private bool _isAutoAttacking;
-        private float _speed = 5f;
+        public float _speed = 5f;
 
         #endregion
 
@@ -89,7 +92,8 @@ namespace PlayerSystem.Controllers
             PlayerScriptableObject playerScriptableObject,
             PlayerView playerView,
             PlayerHealthView playerHealthView,
-            PlayerHealthService playerHealthService)
+            PlayerHealthService playerHealthService, 
+            ExpController expController)
         {
             _cineMachineVirtualCamera = cineMachineVirtualCamera;
             
@@ -104,7 +108,8 @@ namespace PlayerSystem.Controllers
             _playerHealthView = playerHealthView;
 
             _playerHealthService = playerHealthService;
-            
+            _expController = expController;
+
             _cineMachineVirtualCamera.Follow = playerView.transform;
         }
         
@@ -516,14 +521,44 @@ namespace PlayerSystem.Controllers
         #endregion
 
         public Vector3 Position => _playerView.transform.position;
+        public float MagnetRadius => _playerScriptableObject.player.dropCollectionMagnetRadius;
+        public float MagnetStrength => _playerScriptableObject.player.dropCollectionMagnetStrength;
+
         public bool CanCollectPickup(IPickupable pickup)
         {
-            return false;
+            switch (pickup)
+            {
+                case ExpCrystal expCrystal:
+                    return true; // Always can collect exp
+                
+                // case InventoryItem inventoryItem:
+                //     // Check if inventory has space
+                //     return inventorySystem.HasSpaceFor(inventoryItem.ItemId);
+                
+                default:
+                    Debug.LogWarning($"Unknown pickup type: {pickup.GetType()}");
+                    return false;
+            }
         }
 
         public void CollectPickup(IPickupable pickup)
         {
-            
+            switch (pickup)
+            {
+                case ExpCrystal expCrystal:
+                    Debug.Log($"Exp Collected from the Crystal{expCrystal.ExpValue}");
+                    //expSystem.AddExperience(expCrystal.ExpValue);
+                    _expController.AddExp(expCrystal.ExpValue);
+                    break;
+                
+                // case InventoryItem inventoryItem:
+                //     inventorySystem.AddItem(inventoryItem.ItemId);
+                //     break;
+                //
+                default:
+                    Debug.LogWarning($"Trying to collect unknown pickup type: {pickup.GetType()}");
+                    return;
+            }
         }
     }
 }

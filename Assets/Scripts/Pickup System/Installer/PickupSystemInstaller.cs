@@ -11,6 +11,9 @@ namespace Pickup_System
         [SerializeField] private PickupView pickupView;
         public override void InstallBindings()
         {
+            // Bind the PickupView prefab
+            Container.Bind<PickupView>().FromInstance(pickupView).AsSingle();
+            
             // Core Systems
             Container.BindInterfacesTo<PickupController>().AsSingle();
             Container.Bind<IPickupDistanceCalculator>().To<PickupDistanceCalculator>().AsSingle();

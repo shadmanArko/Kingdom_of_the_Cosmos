@@ -18,6 +18,8 @@ MonoBehaviour:
     expGain: 0
     shield: 0
     maxShield: 100
+    dropCollectionMagnetRadius: 5
+    dropCollectionMagnetStrength: 25
     shieldRegenerationCooldown: 0
     movementSpeed: 0
     heavyAttackChargeTime: 0

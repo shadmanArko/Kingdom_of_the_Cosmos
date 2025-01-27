@@ -44,6 +44,8 @@ namespace WeaponSystem.Services.Sub_Services.ControlledWeapon
         #endregion
         public override void TriggerLightAttack()
         {
+            Debug.LogWarning($"weapon data: {_meleeLightAttackSignal.weaponData.name}");
+            Debug.LogWarning($"weapon damage: {_meleeLightAttackSignal.weaponData.damage}");
             _signalBus.Fire(_meleeLightAttackSignal);
         }
 

@@ -12,7 +12,8 @@ namespace Pickup_System
             float expValue, 
             float radius, 
             Transform transform,
-            IPickupBehavior behavior) : base(radius, transform, behavior)
+            PickupView pickupView,
+            IPickupBehavior behavior) : base(radius, transform, behavior, pickupView)
         {
             ExpValue = expValue;
         }
@@ -21,12 +22,17 @@ namespace Pickup_System
         {
             private readonly IPickupPoolManager poolManager;
             private readonly DiContainer container;
+            private readonly PickupView pickupViewPrefab;
 
             [Inject]
-            public Factory(IPickupPoolManager poolManager, DiContainer container)
+            public Factory(
+                IPickupPoolManager poolManager, 
+                DiContainer container,
+                PickupView pickupViewPrefab)  // Add prefab injection
             {
                 this.poolManager = poolManager;
                 this.container = container;
+                this.pickupViewPrefab = pickupViewPrefab;
             }
 
             public override ExpCrystal Create(float expValue, float radius, Transform transform, IPickupBehavior behavior)
@@ -35,10 +41,10 @@ namespace Pickup_System
                 var view = poolManager.GetFromPool(transform);
                 
                 // Create the model
-                var crystal = new ExpCrystal(expValue, radius, transform, behavior);
+                var crystal = new ExpCrystal(expValue, radius, view.transform, view, behavior);
             
                 // Inject dependencies into the view
-                container.Inject(view, new object[] { crystal });
+                //container.Inject(view, new object[] { crystal });
 
                 return crystal;
             }

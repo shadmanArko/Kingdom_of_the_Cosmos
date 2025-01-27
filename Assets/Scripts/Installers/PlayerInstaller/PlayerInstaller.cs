@@ -18,7 +18,7 @@ namespace Installers.PlayerInstaller
         [SerializeField] private PlayerScriptableObject playerScriptableObject;
         
         [SerializeField] private GameObject playerView;
-        [SerializeField] private PlayerHealthView playerHealthView;
+        [FormerlySerializedAs("playerHealthView")] [SerializeField] private PlayerStatView playerStatView;
         [SerializeField] private ExpView expView;
 
         public override void InstallBindings()
@@ -30,7 +30,7 @@ namespace Installers.PlayerInstaller
             
             //Views
             Container.Bind<PlayerView>().FromComponentInNewPrefab(playerView).AsSingle();
-            Container.Bind<PlayerHealthView>().FromComponentInNewPrefab(playerHealthView).AsSingle();
+            Container.Bind<PlayerStatView>().FromComponentInNewPrefab(playerStatView).AsSingle();
             // Container.Bind<ExpView>().FromComponentInNewPrefab(expView).AsSingle();
 
             Container.Bind<CompositeDisposable>().AsSingle();

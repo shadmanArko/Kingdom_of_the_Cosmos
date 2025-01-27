@@ -7,7 +7,7 @@ namespace Experience
     {
         private readonly ExpModel _model;
 
-        public ExpController(ExpModel model, PlayerHealthView view, CompositeDisposable disposable)
+        public ExpController(ExpModel model, PlayerStatView view, CompositeDisposable disposable)
         {
             _model = model;
 

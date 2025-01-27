@@ -21,7 +21,7 @@ namespace PointOfInterestSystem.Models
         {
             IsInteractable = false;
             _playerController.moveSpeed += 5;
-            _playerController._speed += 5;
+            _playerController.speed += 5;
             Debug.LogWarning($"player speed increased by 10");
             pointOfInterestView.SetToUninteractable();
         }

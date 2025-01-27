@@ -1,6 +1,9 @@
 ﻿using System;
 using Experience;
+using PlayerStats;
+using PlayerStats.Manager;
 using PlayerSystem.Controllers;
+using PlayerSystem.Models;
 using PlayerSystem.PlayerSO;
 using PlayerSystem.Services.HealthService;
 using PlayerSystem.Signals.BattleSceneSignals;
@@ -24,6 +27,7 @@ namespace Installers.PlayerInstaller
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<PlayerController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<PlayerModManager>().AsSingle().NonLazy();
             
             //Scriptables
             Container.Bind<PlayerScriptableObject>().FromScriptableObject(playerScriptableObject).AsSingle().NonLazy();
@@ -31,8 +35,9 @@ namespace Installers.PlayerInstaller
             //Views
             Container.Bind<PlayerView>().FromComponentInNewPrefab(playerView).AsSingle();
             Container.Bind<PlayerHealthView>().FromComponentInNewPrefab(playerHealthView).AsSingle();
+            
+            
             // Container.Bind<ExpView>().FromComponentInNewPrefab(expView).AsSingle();
-
             Container.Bind<CompositeDisposable>().AsSingle();
             
             //Controllers
@@ -43,6 +48,7 @@ namespace Installers.PlayerInstaller
 
             //Models
             Container.Bind<ExpModel>().AsSingle();
+            Container.Bind<PlayerMod>().AsSingle();
             
             
             //Signals

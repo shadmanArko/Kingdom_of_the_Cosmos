@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
-using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace PlayerSystem.Views
 {
-    public class PlayerStatView : MonoBehaviour
+    public class PlayerStatusUiView : MonoBehaviour
     {
         public float maxHealthBar;
         public float maxShieldBar;
@@ -116,11 +115,13 @@ namespace PlayerSystem.Views
 
         public float PrimaryDashSliderValue
         {
+            get => primaryDashSlider.value;
             set => primaryDashSlider.value = value;
         }
 
         public float SecondaryDashSliderValue
         {
+            get => secondaryDashSlider.value;
             set => secondaryDashSlider.value = value;
         }
 

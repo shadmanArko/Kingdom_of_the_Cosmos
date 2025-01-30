@@ -104,10 +104,6 @@ namespace PlayerStats
         public void UpdateTemporaryModifications()
         {
             var currentTime = Time.time;
-            
-            var firstKeyValuePair = _temporaryModifications.First();
-            List<TemporaryModification> firstList = firstKeyValuePair.Value;
-//            Debug.LogWarning($"current time is {currentTime} and mod expires is {firstList[0].ExpirationTime}");
 
             foreach (var statModifications in _temporaryModifications)
             {

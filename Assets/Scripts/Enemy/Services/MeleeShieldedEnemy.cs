@@ -126,6 +126,8 @@ namespace Enemy.Services
             while (lineProgress < 1f)//Todo connect to database
             {
                 // Check if target moved out of range
+                if (this == null || target == null) return;
+                
                 float currentDistance = Vector3.Distance(transform.position, target.transform.position);
                 if (currentDistance > attackRange)
                 {
@@ -159,6 +161,7 @@ namespace Enemy.Services
             while (lungeProgress < 1f)
             {
                 lungeProgress += lungeSpeed * Time.deltaTime;
+                if (this == null || target == null) return;
                 transform.position = Vector3.Lerp(originalPosition, targetPosition, lungeProgress);
                 await Task.Yield();
             }

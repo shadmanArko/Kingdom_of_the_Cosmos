@@ -120,6 +120,8 @@ namespace Enemy.Services
             while (elapsedTime < warningDuration)
             {
                 // Check if player is still in attack range
+                if (this == null || target == null) return;
+
                 float distanceToPlayer = Vector3.Distance(transform.position, target.transform.position);
                 if (distanceToPlayer > AttackRange)
                 {

@@ -15,12 +15,12 @@ namespace Enemy.Services
         private EnemyProjectilePoolManager _enemyProjectilePoolManager;
         private bool _canMove = false;
         
-        public void SetStats(float damage, float speed, Transform target, EnemyProjectilePoolManager enemyProjectilePoolManager)
+        public void SetStats(float damage, float speed, Transform target, Vector2 targetPosition, EnemyProjectilePoolManager enemyProjectilePoolManager)
         {
             _damage = damage;
             _speed = speed;
             _target = target;
-            _targetPosition = target.position;
+            _targetPosition = targetPosition;
             _enemyProjectilePoolManager = enemyProjectilePoolManager;
             _canMove = true;
         }

@@ -112,7 +112,7 @@ namespace Enemy.Services
                 // Calculate target position along the new direction
                 Vector3 projectileTarget = transform.position + (projectileDirection * Vector3.Distance(transform.position, target.transform.position));
                 
-                projectile.SetStats(Damage, 5, target.transform, enemyProjectilePoolManager);
+                projectile.SetStats(Damage, 5, target.transform, projectileTarget, enemyProjectilePoolManager);
             }
             
             await Task.Delay(500);

@@ -130,10 +130,10 @@ TextureImporter:
       name: shallow_waters_waves_tile_4_0
       rect:
         serializedVersion: 2
-        x: 7
+        x: 0
         y: 0
-        width: 40
-        height: 22
+        width: 46
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,10 +152,10 @@ TextureImporter:
       name: shallow_waters_waves_tile_4_1
       rect:
         serializedVersion: 2
-        x: 53
+        x: 46
         y: 0
-        width: 40
-        height: 22
+        width: 46
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,10 +174,10 @@ TextureImporter:
       name: shallow_waters_waves_tile_4_2
       rect:
         serializedVersion: 2
-        x: 99
+        x: 92
         y: 0
-        width: 40
-        height: 21
+        width: 46
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -196,10 +196,10 @@ TextureImporter:
       name: shallow_waters_waves_tile_4_3
       rect:
         serializedVersion: 2
-        x: 145
+        x: 138
         y: 0
-        width: 40
-        height: 21
+        width: 46
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -218,10 +218,10 @@ TextureImporter:
       name: shallow_waters_waves_tile_4_4
       rect:
         serializedVersion: 2
-        x: 191
+        x: 184
         y: 0
-        width: 40
-        height: 22
+        width: 46
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -240,10 +240,10 @@ TextureImporter:
       name: shallow_waters_waves_tile_4_5
       rect:
         serializedVersion: 2
-        x: 237
+        x: 230
         y: 0
-        width: 40
-        height: 22
+        width: 46
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -262,10 +262,10 @@ TextureImporter:
       name: shallow_waters_waves_tile_4_6
       rect:
         serializedVersion: 2
-        x: 283
+        x: 276
         y: 0
-        width: 40
-        height: 21
+        width: 46
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -284,10 +284,10 @@ TextureImporter:
       name: shallow_waters_waves_tile_4_7
       rect:
         serializedVersion: 2
-        x: 329
+        x: 322
         y: 0
-        width: 40
-        height: 21
+        width: 46
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -306,10 +306,10 @@ TextureImporter:
       name: shallow_waters_waves_tile_4_8
       rect:
         serializedVersion: 2
-        x: 375
+        x: 368
         y: 0
-        width: 40
-        height: 21
+        width: 46
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -328,10 +328,10 @@ TextureImporter:
       name: shallow_waters_waves_tile_4_9
       rect:
         serializedVersion: 2
-        x: 421
+        x: 414
         y: 0
-        width: 39
-        height: 21
+        width: 46
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -350,7 +350,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: aa92f5c1c5af7374a8de560ce1801bdc
     internalID: 0
     vertices: []
     indices: 

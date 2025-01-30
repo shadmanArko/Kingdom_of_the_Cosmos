@@ -13,9 +13,11 @@ namespace PlayerSystem.Services.HealthService
             player.health = Mathf.Clamp(health, 0, player.maxHealth);
         }
 
-        public void IncreaseHealth()
+        public void IncreaseHealth(Player player, float value)
         {
-            
+            var health = player.health + value;
+            health = Mathf.Clamp(health, 0, player.maxHealth);
+            player.health = health;
         }
 
         private void ReduceHealth(Player player, float damageAmount)

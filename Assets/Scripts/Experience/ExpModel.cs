@@ -37,6 +37,7 @@ namespace Experience
             _collectedExp.Value = extraExp;
             _maxExp.Value += 20;
             _playerHealthService.SetShield(_playerScriptableObject.player, _playerScriptableObject.player.maxShield);
+            _playerHealthService.IncreaseHealth(_playerScriptableObject.player, 15f);
         }
 
         public float ExpSliderValueInPercentage() => _collectedExp.Value / _maxExp.Value * 100f;

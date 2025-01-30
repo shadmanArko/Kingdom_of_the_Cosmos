@@ -107,6 +107,7 @@ namespace Enemy.Models
             health -= amount;
             if (health <= 0)
             {
+                EnemyManager.OnEnemyTakeDeathDamage?.Invoke(transform.position, amount, Color.red);
                 Die();
             }
             // HealthSlider.value = 1 - (MaxHealth - health)/MaxHealth;

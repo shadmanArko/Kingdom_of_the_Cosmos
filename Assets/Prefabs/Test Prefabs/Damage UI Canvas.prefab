@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 1944373382117342172}
   - component: {fileID: 4112301953191792365}
   - component: {fileID: 6258871542426912297}
+  - component: {fileID: 8695350292266168063}
   m_Layer: 5
   m_Name: Damage UI Canvas
   m_TagString: Untagged
@@ -232,7 +233,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &6258871542426912297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,6 +251,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8695350292266168063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2766523963877309055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c05a41b65219a9d4692670eb4e8a7eff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageValueText: {fileID: 2544134740220336425}
 --- !u!1 &4820044624150325725
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,6 +617,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 962a040d19a7d46408fc00bac92a52a7, type: 3}
+--- !u!114 &2544134740220336425 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7506445404200120845, guid: 962a040d19a7d46408fc00bac92a52a7, type: 3}
+  m_PrefabInstance: {fileID: 5432138580420356900}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7bc363b44662954f8d76c71dfc54df1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6187905030375664801 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2214943724625102725, guid: 962a040d19a7d46408fc00bac92a52a7, type: 3}

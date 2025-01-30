@@ -21,6 +21,7 @@ namespace Enemy.Manager
         public static Action<int> EnemyCountUpdated;
         public static Action<float> EnemyDamagedPlayer;
         public static Action<BaseEnemy> OnEnemyDied;
+        public static Action<Vector3, float, Color> OnEnemyTakeDeathDamage;
    
 
         private readonly PlayerController _playerController;

@@ -2,7 +2,7 @@ using PlayerSystem.Models;
 using UnityEngine;
 using Zenject;
 
-namespace PlayerStats
+namespace PlayerStats.Views
 {
     public class PlayerStatsView : MonoBehaviour
     {

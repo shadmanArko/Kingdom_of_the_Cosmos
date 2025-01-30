@@ -13,9 +13,11 @@ namespace PlayerSystem.Services.HealthService
             player.health = Mathf.Clamp(health, 0, player.maxHealth);
         }
 
-        public void IncreaseHealth()
+        public void IncreaseHealth(Player player, float value)
         {
-            
+            var health = player.health + value;
+            health = Mathf.Clamp(health, 0, player.maxHealth);
+            player.health = health;
         }
 
         private void ReduceHealth(Player player, float damageAmount)
@@ -29,14 +31,16 @@ namespace PlayerSystem.Services.HealthService
 
         #region Shield
 
-        public void SetShield(Player player, float shield)
+        public void SetShield(Player player, float value)
         {
-            player.shield = Mathf.Clamp(shield, 0, player.maxHealth);
+            player.shield = Mathf.Clamp(value, 0, player.maxHealth);
         }
 
-        private void IncreaseShield()
+        public void IncreaseShield(Player player, float value)
         {
-            
+            var shield = player.shield + value;
+            shield = Mathf.Clamp(shield, 0, player.maxShield);
+            player.shield = shield;
         }
 
         private void ReduceShield(Player player, float damageAmount)

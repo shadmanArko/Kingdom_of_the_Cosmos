@@ -73,12 +73,12 @@ namespace PlayerSystem.Services
         
         private void SetupLineRenderer()
         {
-            _lineRenderer.startWidth = 0.2f;
-            _lineRenderer.endWidth = 0.2f;
+            _lineRenderer.startWidth = 0.05f;
+            _lineRenderer.endWidth = 0.1f;
             _lineRenderer.positionCount = 2;
             _lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-            _lineRenderer.startColor = Color.blue;
-            _lineRenderer.endColor = Color.blue;
+            _lineRenderer.startColor = new Color(1,1,1,0.5f);
+            _lineRenderer.endColor = new Color(1,1,1,0.5f);
             _lineRenderer.enabled = false;
             
             _lineRenderer.sortingOrder = 10;

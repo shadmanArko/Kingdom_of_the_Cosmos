@@ -1,0 +1,24 @@
+[
+  {
+    "Id": "Speed Boost",
+    "Type": "Drop",
+    "StatModifications": {
+      "MovementSpeed": 5.0,
+      "DodgeDistance": 2.0
+    },
+    "IsPermanent": false,
+    "Duration": 10.0,
+    "Icon": "speed_boost_icon"
+  },
+  {
+    "Id": "Health Upgrade",
+    "Type": "Checkpoint",
+    "StatModifications": {
+      "MaxHealth": 50.0,
+      "LifeRegeneration": 2.0
+    },
+    "IsPermanent": true,
+    "Duration": 0,
+    "Icon": "health_upgrade_icon"
+  }
+]

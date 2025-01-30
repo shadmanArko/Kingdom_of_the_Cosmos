@@ -12,6 +12,7 @@ using PlayerSystem.Signals.InputSignals;
 using PlayerSystem.Views;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using WeaponSystem.Managers;
 using Zenject;
 using Vector2 = UnityEngine.Vector2;
@@ -30,7 +31,7 @@ namespace PlayerSystem.Controllers
         private readonly PlayerHealthService _playerHealthService;
         
         private readonly PlayerView _playerView;
-        private readonly PlayerHealthView _playerHealthView;
+        private readonly PlayerStatusUiView _playerStatusUiView;
         
         private readonly SignalBus _signalBus;
         
@@ -44,7 +45,7 @@ namespace PlayerSystem.Controllers
         #region Player Settings Variables
 
         private bool _isAutoAttacking;
-        public float _speed = 5f;
+        [FormerlySerializedAs("_speed")] public float speed = 5f;
 
         #endregion
 
@@ -91,7 +92,7 @@ namespace PlayerSystem.Controllers
             SignalBus signalBus,
             PlayerScriptableObject playerScriptableObject,
             PlayerView playerView,
-            PlayerHealthView playerHealthView,
+            PlayerStatusUiView playerStatusUiView,
             PlayerHealthService playerHealthService, 
             ExpController expController)
         {
@@ -105,7 +106,7 @@ namespace PlayerSystem.Controllers
             _signalBus = signalBus;
             
             _playerView = playerView;
-            _playerHealthView = playerHealthView;
+            _playerStatusUiView = playerStatusUiView;
 
             _playerHealthService = playerHealthService;
             _expController = expController;
@@ -124,13 +125,13 @@ namespace PlayerSystem.Controllers
             canPerformLightAttack = true;
             canPerformHeavyAttack = true;
             
-            _speed = moveSpeed;
+            speed = moveSpeed;
             _dashCooldownDuration = 2f;
             _totalDashCount = 2;
             _runningDataScriptable.playerController = this;
             
             SetHealthAndShield();
-            _signalBus.Fire(new HeavyAttackChargeMeterSignal(3, 3));   // setting initial height to 4
+            _signalBus.Fire(new HeavyAttackChargeMeterSignal(3, 4));   // setting initial height to 4
         }
 
         #region Subscribe and Unsubscribe
@@ -169,16 +170,19 @@ namespace PlayerSystem.Controllers
             _playerHealthService.SetHealth(_playerScriptableObject.player, _playerScriptableObject.player.maxHealth);
             _playerHealthService.SetShield(_playerScriptableObject.player, _playerScriptableObject.player.maxShield);
             
-            _playerHealthView.maxHealthBar = _playerScriptableObject.player.maxHealth;
-            _playerHealthView.maxShieldBar = _playerScriptableObject.player.maxShield;
-            _playerHealthView.HealthBar = _playerScriptableObject.player.health;
-            _playerHealthView.ShieldBar = _playerScriptableObject.player.shield;
+            _playerStatusUiView.maxHealthBar = _playerScriptableObject.player.maxHealth;
+            _playerStatusUiView.maxShieldBar = _playerScriptableObject.player.maxShield;
         }
         
         public void FixedTick()
         {
-            _runningDataScriptable.playerVelocity = _playerView.rb.linearVelocity;
-            _runningDataScriptable.playerVelocityMagnitude = _playerView.rb.linearVelocity.magnitude;
+            var linearVelocity = _playerView.rb.linearVelocity;
+            _runningDataScriptable.playerVelocity = linearVelocity;
+            _runningDataScriptable.playerVelocityMagnitude = linearVelocity.magnitude;
+            
+            _playerStatusUiView.HealthBar = _playerScriptableObject.player.health;
+            _playerStatusUiView.ShieldBar = _playerScriptableObject.player.shield;
+            
             if (_lightAttackTimer > 0)
                 _lightAttackTimer -= Time.fixedDeltaTime;
             else if(_isAutoAttacking) 
@@ -189,6 +193,8 @@ namespace PlayerSystem.Controllers
             
             if(isHeavyAttackCharging)
                 ChargeHeavyAttackMeter();
+            
+            if(_canRegenShield) RegenerateShield();
         }
 
         #region Player Movement
@@ -197,7 +203,7 @@ namespace PlayerSystem.Controllers
         {
             movement = playerMovementSignal.MovePos.normalized;
             if(!canMove) return;
-            _playerView.rb.linearVelocity = movement * _speed;
+            _playerView.rb.linearVelocity = movement * speed;
             var stateInfo = _playerView.playerAnimationController.animator.GetCurrentAnimatorStateInfo(0);
 
             if (_playerView.rb.linearVelocity.magnitude > 0)
@@ -264,6 +270,7 @@ namespace PlayerSystem.Controllers
             if (!_weaponManager.TriggerControlledWeaponLightAttack()) return;
             _playerView.playerAnimationController.PlayAnimation("attack");  
             _lightAttackTimer = _lightAttackCooldownTimer;
+            _playerStatusUiView.SetLightAttackSliderCooldown(Mathf.CeilToInt(_lightAttackCooldownTimer * 1000));
         }
 
         #endregion
@@ -330,6 +337,7 @@ namespace PlayerSystem.Controllers
             heavyAttackChargeMeterDistance = 0f;
             heavyAttackChargeMeterAngle = 0f;
             heavyAttackTimer = HeavyAttackCooldownTimer;
+            _playerStatusUiView.SetHeavyAttackSliderCooldown(Mathf.CeilToInt(heavyAttackTimer * 1000));
         }
         
         private void StopHeavyAttack()
@@ -344,7 +352,7 @@ namespace PlayerSystem.Controllers
             canMove = true;
             heavyAttackChargeMeterDistance = 0f;
             heavyAttackChargeMeterAngle = 0f;
-            _signalBus.Fire(new HeavyAttackChargeMeterSignal(3, 3));   // meter back to normal
+            _signalBus.Fire(new HeavyAttackChargeMeterSignal(3, 4));   // meter back to normal
             canPerformHeavyAttack = true;
         }
 
@@ -357,9 +365,10 @@ namespace PlayerSystem.Controllers
             canMove = true;
             isHeavyAttackCharging = false;
             canPerformHeavyAttack = true;
-            _signalBus.Fire(new HeavyAttackChargeMeterSignal(3, 3));   // meter back to normal
+            _signalBus.Fire(new HeavyAttackChargeMeterSignal(3, 4));   // meter back to normal
             
             heavyAttackTimer = HeavyAttackCooldownTimer / 2f;
+            _playerStatusUiView.SetHeavyAttackSliderCooldown(Mathf.CeilToInt(heavyAttackTimer * 1000));
         }
         
         #endregion
@@ -397,6 +406,12 @@ namespace PlayerSystem.Controllers
             Debug.Log("Start Dash called");
             canAttack = false;
             _isDashing = true;
+
+            _dashCount--;
+            if (_dashCount <= 0)
+                _playerStatusUiView.PrimaryDashSliderValue = 0;
+            else
+                _playerStatusUiView.SecondaryDashSliderValue = 0;
             
             _signalBus.Fire<DashPerformSignal>();
             LungeDash();
@@ -408,7 +423,7 @@ namespace PlayerSystem.Controllers
             {
                 _isDashing = true;
                 _isLungeDashing = true;
-                _speed = _lungeDashSpeed;
+                speed = _lungeDashSpeed;
                 await Task.Delay(Mathf.CeilToInt(_lungeDashDuration * 1000));
                 _isLungeDashing = false;
             
@@ -425,12 +440,11 @@ namespace PlayerSystem.Controllers
             try
             {
                 _isRollDashing = true;
-                _speed = _rollDashSpeed;
+                speed = _rollDashSpeed;
                 await Task.Delay(Mathf.CeilToInt(_rollDashDuration * 1000));
                 _isRollDashing = false;
             
                 StopDash();
-                StartDashCooldown();
             }
             catch (Exception e)
             {
@@ -441,24 +455,37 @@ namespace PlayerSystem.Controllers
         private void StopDash()
         {
             if(!_isDashing) return;
-            _speed = moveSpeed;
+            speed = moveSpeed;
             canAttack = true;
             _isDashing = false;
+            StartDashCooldown();
         }
 
         private async void StartDashCooldown()
         {
             try
             {
-                _dashCount -= 1;
-                await Task.Delay(Mathf.CeilToInt(_dashCooldownDuration * 1000));
+                var dashCooldownLimit = Mathf.CeilToInt(_dashCooldownDuration * 1000);
+                // _dashCount -= 1;
+                if (_dashCount <= 0)
+                    _playerStatusUiView.SetPrimarySliderCooldown(dashCooldownLimit);
+                else
+                    _playerStatusUiView.SetSecondarySliderCooldown(dashCooldownLimit);
+                
+                await Task.Delay(Mathf.CeilToInt(dashCooldownLimit));
+
                 _dashCount += 1;
-                _dashCount = math.clamp(_dashCount, 0, _totalDashCount);
+                _dashCount = Mathf.Clamp(_dashCount, 0, _totalDashCount);
             }
             catch (Exception e)
             {
                 Debug.Log($"Start Dash Cooldown Error: {e}");
             }
+        }
+
+        float MapToRange(int value, int oldMin, int oldMax, int newMin, int newMax)
+        {
+            return ((float)(value - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin;
         }
 
         #endregion
@@ -498,8 +525,40 @@ namespace PlayerSystem.Controllers
         public void Damage(float damageAmount)
         {
             _playerHealthService.TakeDamage(_playerScriptableObject, damageAmount);
-            _playerHealthView.ShieldBar = _playerScriptableObject.player.shield;
-            _playerHealthView.HealthBar = _playerScriptableObject.player.health;
+            _isPlayerAttacked = true;
+        }
+
+        #endregion
+
+        #region Shield Regeneration
+
+        private float _shieldRegenInterval = 5f;
+        private float _shieldRegenTimer;
+        private float _shieldRegenValue = 0.25f;
+        
+        private bool _isPlayerAttacked;
+        private bool _canRegenShield = true;
+
+        private void RegenerateShield()
+        {
+            if(!_canRegenShield) return;
+            var player = _playerScriptableObject.player;
+            if(player.shield >= player.maxShield) return;
+            if (_isPlayerAttacked)
+            {
+                _shieldRegenTimer = _shieldRegenInterval;
+                _isPlayerAttacked = false;
+                return;
+            }
+
+            if (_shieldRegenTimer > 0)
+            {
+                _shieldRegenTimer -= Time.fixedDeltaTime;
+                return;
+            }
+
+            var regenValue = _shieldRegenValue * Time.fixedDeltaTime * 10;
+            _playerHealthService.IncreaseShield(player, regenValue);
         }
 
         #endregion

@@ -85,6 +85,12 @@ TagManager:
   - name: Pickup
     uniqueID: 3691104999
     locked: 0
+  - name: EnemyProjectile
+    uniqueID: 2918446501
+    locked: 0
+  - name: PlayerProjectile
+    uniqueID: 3302105763
+    locked: 0
   - name: UI
     uniqueID: 12987711
     locked: 0
